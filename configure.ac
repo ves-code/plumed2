@@ -239,7 +239,6 @@ PLUMED_CONFIG_ENABLE([external-lapack],[search for external lapack],[yes])
 PLUMED_CONFIG_ENABLE([external-blas],[search for external blas],[yes])
 PLUMED_CONFIG_ENABLE([molfile-plugins],[use molfile_plugins],[yes])
 PLUMED_CONFIG_ENABLE([external-molfile-plugins],[search for external molfile_plugins],[yes])
-PLUMED_CONFIG_ENABLE([matheval],[search for matheval],[yes])
 PLUMED_CONFIG_ENABLE([zlib],[search for zlib],[yes])
 PLUMED_CONFIG_ENABLE([readdir-r],[search for readdir_r (threadsafe)],[yes])
 PLUMED_CONFIG_ENABLE([cregex],[search for C regular expression],[yes])
@@ -560,7 +559,7 @@ mpi_found=ko
 # optional libraries follow
 if test $mpi == true ; then
   PLUMED_CHECK_PACKAGE([mpi.h],[MPI_Init],[__PLUMED_HAS_MPI])
-  if test "x$ac_cv_func_MPI_Init" = xyes; then
+  if test "$__PLUMED_HAS_MPI" = yes; then
     mpi_found=ok
   fi
 else 
