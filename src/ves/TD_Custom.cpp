@@ -31,7 +31,7 @@
 
 namespace PLMD {
 namespace ves {
-  
+
 static std::map<std::string, double> leptonConstants= {
   {"e", std::exp(1.0)},
   {"log2e", 1.0/std::log(2.0)},
@@ -46,8 +46,8 @@ static std::map<std::string, double> leptonConstants= {
 //  {"2_sqrtpi", 2.0/std::sqrt(pi)},
   {"sqrt2", std::sqrt(2.0)},
   {"sqrt1_2", std::sqrt(0.5)}
-};  
-  
+};
+
 
 //+PLUMEDOC VES_TARGETDIST TD_CUSTOM
 /*
@@ -187,9 +187,9 @@ TD_Custom::TD_Custom(const ActionOptions& ao):
   //
   lepton::ParsedExpression pe=lepton::Parser::parse(func_str).optimize(leptonConstants);
   log<<"  function as parsed by lepton: "<<pe<<"\n";
-  expression=pe.createCompiledExpression();  
+  expression=pe.createCompiledExpression();
   // if(evaluator_pntr_==NULL) plumed_merror(getName()+": there was some problem in parsing matheval formula "+func_str);
-    
+
   for(auto &p: expression.getVariables()) {
     std::string curr_var = p;
     unsigned int cv_idx;
@@ -256,7 +256,7 @@ void TD_Custom::updateGrid() {
     std::vector<double> point = targetDistGrid().getPoint(l);
     for(unsigned int k=0; k<cv_var_str_.size() ; k++) {
       try {
-        expression.getVariableReference(cv_var_str_[k]) = point[cv_var_idx_[k]];      
+        expression.getVariableReference(cv_var_str_[k]) = point[cv_var_idx_[k]];
       } catch(PLMD::lepton::Exception& exc) {}
     }
     if(use_fes_) {
@@ -265,7 +265,7 @@ void TD_Custom::updateGrid() {
       } catch(PLMD::lepton::Exception& exc) {}
     }
     double value = expression.evaluate();
-    
+
     if(value<0.0 && !isTargetDistGridShiftedToZero()) {plumed_merror(getName()+": The target distribution function gives negative values. You should change the definition of the function used for the target distribution to avoid this. You can also use the SHIFT_TO_ZERO keyword to avoid this problem.");}
     targetDistGrid().setValue(l,value);
     norm += integration_weights[l]*value;

@@ -28,7 +28,7 @@
 
 namespace PLMD {
 namespace ves {
-  
+
 static std::map<std::string, double> leptonConstants= {
   {"e", std::exp(1.0)},
   {"log2e", 1.0/std::log(2.0)},
@@ -44,13 +44,13 @@ static std::map<std::string, double> leptonConstants= {
   {"sqrt2", std::sqrt(2.0)},
   {"sqrt1_2", std::sqrt(0.5)}
 };
-  
+
 
 //+PLUMEDOC VES_BASISF BF_CUSTOM
 /*
 Basis functions given by arbitrary mathematical expressions.
 
-This allows you to define basis functions using arbitrary mathematical expressions 
+This allows you to define basis functions using arbitrary mathematical expressions
 that are parsed using the lepton library.
 The basis functions
 \f$f_{i}(x)\f$ are given in mathematical expressions with _x_ as a variable using
@@ -191,12 +191,12 @@ BF_Custom::BF_Custom(const ActionOptions&ao):
   for(unsigned int i=1; i<getNumberOfBasisFunctions(); i++) {
     std::string is; Tools::convert(i,is);
     lepton::ParsedExpression pe_value = lepton::Parser::parse(bf_str[i]).optimize(leptonConstants);
-    std::ostringstream tmp_stream; tmp_stream << pe_value; 
+    std::ostringstream tmp_stream; tmp_stream << pe_value;
     bf_values_parsed[i] = tmp_stream.str();
-    bf_values_expressions_[i] = pe_value.createCompiledExpression(); 
-    
+    bf_values_expressions_[i] = pe_value.createCompiledExpression();
+
     //  plumed_merror("There was some problem in parsing matheval formula "+bf_str[i]+" given in FUNC"+is);
-  
+
     std::vector<std::string> var_str;
     for(auto &p: bf_values_expressions_[i].getVariables()) {
       var_str.push_back(p);
@@ -207,16 +207,16 @@ BF_Custom::BF_Custom(const ActionOptions&ao):
     if(var_str[0]!=variable_str_) {
       plumed_merror("Problem with function "+bf_str[i]+" given in FUNC"+is+": you should use "+variable_str_+" as a variable");
     }
-    
-    lepton::ParsedExpression pe_deriv = lepton::Parser::parse(bf_str[i]).differentiate(variable_str_).optimize(leptonConstants);  
-    std::ostringstream tmp_stream2; tmp_stream2 << pe_deriv; 
+
+    lepton::ParsedExpression pe_deriv = lepton::Parser::parse(bf_str[i]).differentiate(variable_str_).optimize(leptonConstants);
+    std::ostringstream tmp_stream2; tmp_stream2 << pe_deriv;
     bf_derivs_parsed[i] = tmp_stream2.str();
     bf_derivs_expressions_[i] = pe_deriv.createCompiledExpression();
-        
+
     //  plumed_merror("There was some problem in parsing the derivative of the matheval formula "+bf_str[i]+" given in FUNC"+is);
   }
   //
-  
+
 
   std::string transf_value_parsed;
   std::string transf_deriv_parsed;
@@ -233,30 +233,30 @@ BF_Custom::BF_Custom(const ActionOptions&ao):
       if(transf_str.find("max")!=std::string::npos) {transf_str.replace(transf_str.find("max"), std::string("max").length(),intervalMaxStr());}
       else {break;}
     }
-    
+
     lepton::ParsedExpression pe_value = lepton::Parser::parse(transf_str).optimize(leptonConstants);;
-    std::ostringstream tmp_stream; tmp_stream << pe_value; 
+    std::ostringstream tmp_stream; tmp_stream << pe_value;
     transf_value_parsed = tmp_stream.str();
     transf_value_expression_ = pe_value.createCompiledExpression();
-            
+
     //  plumed_merror("There was some problem in parsing matheval formula "+transf_str+" given in TRANSFORM");
-    
+
     std::vector<std::string> var_str;
     for(auto &p: transf_value_expression_.getVariables()) {
       var_str.push_back(p);
-    }    
+    }
     if(var_str.size()!=1) {
       plumed_merror("Problem with function "+transf_str+" given in TRANSFORM: there should only be one variable");
     }
     if(var_str[0]!=transf_variable_str_) {
       plumed_merror("Problem with function "+transf_str+" given in TRANSFORM: you should use "+transf_variable_str_+" as a variable");
     }
-    
+
     lepton::ParsedExpression pe_deriv = lepton::Parser::parse(transf_str).differentiate(transf_variable_str_).optimize(leptonConstants);;
-    std::ostringstream tmp_stream2; tmp_stream2 << pe_deriv; 
+    std::ostringstream tmp_stream2; tmp_stream2 << pe_deriv;
     transf_deriv_parsed = tmp_stream2.str();
     transf_deriv_expression_ = pe_deriv.createCompiledExpression();
-    
+
     //  plumed_merror("There was some problem in parsing the derivative of the matheval formula "+transf_str+" given in TRANSFORM");
   }
   //
@@ -285,25 +285,25 @@ void BF_Custom::getAllValues(const double arg, double& argT, bool& inside_range,
   double transf_derivf=1.0;
   //
   if(do_transf_) {
-    // has to copy as the function is const 
+    // has to copy as the function is const
     lepton::CompiledExpression ce_value = transf_value_expression_;
     try {
       ce_value.getVariableReference(transf_variable_str_) = argT;
-    } catch(PLMD::lepton::Exception& exc) {}       
-    
+    } catch(PLMD::lepton::Exception& exc) {}
+
     lepton::CompiledExpression ce_deriv = transf_deriv_expression_;
     try {
-      ce_deriv.getVariableReference(transf_variable_str_) = argT;    
-    } catch(PLMD::lepton::Exception& exc) {}       
-    
+      ce_deriv.getVariableReference(transf_variable_str_) = argT;
+    } catch(PLMD::lepton::Exception& exc) {}
+
     argT = ce_value.evaluate();
     transf_derivf = ce_deriv.evaluate();
-    
+
     if(check_nan_inf_ && (std::isnan(argT) || std::isinf(argT)) ) {
       std::string vs; Tools::convert(argT,vs);
       plumed_merror(getName()+" with label "+getLabel()+": problem with the transform function, it gives " + vs);
     }
-    
+
     if(check_nan_inf_ && (std::isnan(transf_derivf) || std::isinf(transf_derivf)) ) {
       std::string vs; Tools::convert(transf_derivf,vs);
       plumed_merror(getName()+" with label "+getLabel()+": problem with the transform function, its derivative gives " + vs);
@@ -316,13 +316,13 @@ void BF_Custom::getAllValues(const double arg, double& argT, bool& inside_range,
     lepton::CompiledExpression ce_value = bf_values_expressions_[i];
     try {
       ce_value.getVariableReference(variable_str_) = argT;
-    } catch(PLMD::lepton::Exception& exc) {}     
+    } catch(PLMD::lepton::Exception& exc) {}
     values[i] = ce_value.evaluate();
-    
+
     lepton::CompiledExpression ce_deriv = bf_derivs_expressions_[i];
     try {
-    ce_deriv.getVariableReference(variable_str_) = argT;
-    } catch(PLMD::lepton::Exception& exc) {}     
+      ce_deriv.getVariableReference(variable_str_) = argT;
+    } catch(PLMD::lepton::Exception& exc) {}
     derivs[i] = ce_deriv.evaluate();
     if(do_transf_) {derivs[i]*=transf_derivf;}
     // NaN checks
