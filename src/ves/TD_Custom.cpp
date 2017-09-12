@@ -21,24 +21,37 @@
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
 #include "TargetDistribution.h"
+#include "GridIntegrationWeights.h"
 
 #include "core/ActionRegister.h"
 #include "tools/Grid.h"
 
-#include "GridIntegrationWeights.h"
-
-
-#ifdef __PLUMED_HAS_MATHEVAL
-#include <matheval.h>
-#endif
+#include "lepton/Lepton.h"
 
 
 namespace PLMD {
 namespace ves {
+  
+static std::map<std::string, double> leptonConstants= {
+  {"e", std::exp(1.0)},
+  {"log2e", 1.0/std::log(2.0)},
+  {"log10e", 1.0/std::log(10.0)},
+  {"ln2", std::log(2.0)},
+  {"ln10", std::log(10.0)},
+  {"pi", pi},
+  {"pi_2", pi*0.5},
+  {"pi_4", pi*0.25},
+//  {"1_pi", 1.0/pi},
+//  {"2_pi", 2.0/pi},
+//  {"2_sqrtpi", 2.0/std::sqrt(pi)},
+  {"sqrt2", std::sqrt(2.0)},
+  {"sqrt1_2", std::sqrt(0.5)}
+};  
+  
 
 //+PLUMEDOC VES_TARGETDIST TD_CUSTOM
 /*
-Target distribution given by a matheval parsed function (static or dynamic).
+Target distribution given by an arbitrary mathematical function (static or dynamic).
 
 Use as a target distribution the distribution defined by
 \f[
@@ -46,7 +59,7 @@ p(\mathbf{s}) =
 \frac{f(\mathbf{s})}{\int d\mathbf{s} \, f(\mathbf{s})}
 \f]
 where \f$f(\mathbf{s})\f$ is some arbitrary mathematical function that
-is parsed by the matheval library.
+is parsed by the lepton library.
 
 The function \f$f(\mathbf{s})\f$ is given by the FUNCTION keywords by
 using _s1_,_s2_,..., as variables for the arguments
@@ -68,10 +81,6 @@ which it is defined on. Therefore, the function given in
 FUNCTION needs to be non-negative and normalizable. The
 code will perform checks to make sure that this is indeed the case.
 
-
-\attention
-The TD_CUSTOM only works if libmatheval is installed on the system and
-PLUMED has been linked to it.
 
 \par Examples
 
@@ -125,7 +134,7 @@ class TD_Custom : public TargetDistribution {
 private:
   void setupAdditionalGrids(const std::vector<Value*>&, const std::vector<std::string>&, const std::vector<std::string>&, const std::vector<unsigned int>&);
   //
-  void* evaluator_pntr_;
+  lepton::CompiledExpression expression;
   //
   std::vector<unsigned int> cv_var_idx_;
   std::vector<std::string> cv_var_str_;
@@ -143,10 +152,9 @@ public:
   explicit TD_Custom(const ActionOptions& ao);
   void updateGrid();
   double getValue(const std::vector<double>&) const;
-  ~TD_Custom();
+  ~TD_Custom() {};
 };
 
-#ifdef __PLUMED_HAS_MATHEVAL
 PLUMED_REGISTER_ACTION(TD_Custom,"TD_CUSTOM")
 
 
@@ -158,15 +166,8 @@ void TD_Custom::registerKeywords(Keywords& keys) {
 }
 
 
-TD_Custom::~TD_Custom() {
-  evaluator_destroy(evaluator_pntr_);
-}
-
-
-
 TD_Custom::TD_Custom(const ActionOptions& ao):
   PLUMED_VES_TARGETDISTRIBUTION_INIT(ao),
-  evaluator_pntr_(NULL),
 //
   cv_var_idx_(0),
   cv_var_str_(0),
@@ -184,15 +185,13 @@ TD_Custom::TD_Custom(const ActionOptions& ao):
   parse("FUNCTION",func_str);
   checkRead();
   //
-  evaluator_pntr_=evaluator_create(const_cast<char*>(func_str.c_str()));
-  if(evaluator_pntr_==NULL) plumed_merror(getName()+": there was some problem in parsing matheval formula "+func_str);
-  //
-  char** var_names;
-  int var_count;
-  evaluator_get_variables(evaluator_pntr_,&var_names,&var_count);
-  //
-  for(int i=0; i<var_count; i++) {
-    std::string curr_var = var_names[i];
+  lepton::ParsedExpression pe=lepton::Parser::parse(func_str).optimize(leptonConstants);
+  log<<"  function as parsed by lepton: "<<pe<<"\n";
+  expression=pe.createCompiledExpression();  
+  // if(evaluator_pntr_==NULL) plumed_merror(getName()+": there was some problem in parsing matheval formula "+func_str);
+    
+  for(auto &p: expression.getVariables()) {
+    std::string curr_var = p;
     unsigned int cv_idx;
     if(curr_var.substr(0,cv_var_prefix_str_.size())==cv_var_prefix_str_ && Tools::convert(curr_var.substr(cv_var_prefix_str_.size()),cv_idx) && cv_idx>0) {
       cv_var_idx_.push_back(cv_idx-1);
@@ -209,7 +208,7 @@ TD_Custom::TD_Custom(const ActionOptions& ao):
       use_beta_=true;
     }
     else {
-      plumed_merror(getName()+": problem with parsing matheval formula, cannot recognise the variable "+curr_var);
+      plumed_merror(getName()+": problem with parsing formula with lepton, cannot recognise the variable "+curr_var);
     }
   }
   //
@@ -236,23 +235,18 @@ double TD_Custom::getValue(const std::vector<double>& argument) const {
 
 
 void TD_Custom::updateGrid() {
-  std::vector<char*> var_char(cv_var_str_.size());
-  std::vector<double> var_values(cv_var_str_.size());
-  for(unsigned int j=0; j<cv_var_str_.size(); j++) {
-    var_char[j] = const_cast<char*>(cv_var_str_[j].c_str());
-  }
   if(use_fes_) {
     plumed_massert(getFesGridPntr()!=NULL,"the FES grid has to be linked to the free energy in the target distribution");
-    var_char.push_back(const_cast<char*>(fes_var_str_.c_str()));
-    var_values.push_back(0.0);
   }
   if(use_kbt_) {
-    var_char.push_back(const_cast<char*>(kbt_var_str_.c_str()));
-    var_values.push_back(1.0/getBeta());
+    try {
+      expression.getVariableReference(kbt_var_str_) = 1.0/getBeta();
+    } catch(PLMD::lepton::Exception& exc) {}
   }
   if(use_beta_) {
-    var_char.push_back(const_cast<char*>(beta_var_str_.c_str()));
-    var_values.push_back(getBeta());
+    try {
+      expression.getVariableReference(beta_var_str_) = getBeta();
+    } catch(PLMD::lepton::Exception& exc) {}
   }
   //
   std::vector<double> integration_weights = GridIntegrationWeights::getIntegrationWeights(getTargetDistGridPntr());
@@ -260,14 +254,18 @@ void TD_Custom::updateGrid() {
   //
   for(Grid::index_t l=0; l<targetDistGrid().getSize(); l++) {
     std::vector<double> point = targetDistGrid().getPoint(l);
-    for(unsigned int k=0; k<cv_var_idx_.size() ; k++) {
-      var_values[k] = point[cv_var_idx_[k]];
+    for(unsigned int k=0; k<cv_var_str_.size() ; k++) {
+      try {
+        expression.getVariableReference(cv_var_str_[k]) = point[cv_var_idx_[k]];      
+      } catch(PLMD::lepton::Exception& exc) {}
     }
     if(use_fes_) {
-      var_values[cv_var_idx_.size()] = getFesGridPntr()->getValue(l);
+      try {
+        expression.getVariableReference(fes_var_str_) = getFesGridPntr()->getValue(l);
+      } catch(PLMD::lepton::Exception& exc) {}
     }
-    double value = evaluator_evaluate(evaluator_pntr_,var_char.size(),&var_char[0],&var_values[0]);
-
+    double value = expression.evaluate();
+    
     if(value<0.0 && !isTargetDistGridShiftedToZero()) {plumed_merror(getName()+": The target distribution function gives negative values. You should change the definition of the function used for the target distribution to avoid this. You can also use the SHIFT_TO_ZERO keyword to avoid this problem.");}
     targetDistGrid().setValue(l,value);
     norm += integration_weights[l]*value;
@@ -281,9 +279,6 @@ void TD_Custom::updateGrid() {
   }
   logTargetDistGrid().setMinToZero();
 }
-
-
-#endif
 
 
 }
