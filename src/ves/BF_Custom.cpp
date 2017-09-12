@@ -127,6 +127,7 @@ private:
   std::string variable_str_;
   std::string transf_variable_str_;
   bool do_transf_;
+  bool check_nan_inf_;
 public:
   static void registerKeywords( Keywords&);
   explicit BF_Custom(const ActionOptions&);
@@ -152,7 +153,8 @@ BF_Custom::BF_Custom(const ActionOptions&ao):
   bf_derivs_expressions_(0),
   variable_str_("x"),
   transf_variable_str_("t"),
-  do_transf_(false)
+  do_transf_(false),
+  check_nan_inf_(true)
 {
   std::vector<std::string> bf_str;
   std::string str_t1="1";
@@ -282,8 +284,6 @@ void BF_Custom::getAllValues(const double arg, double& argT, bool& inside_range,
   argT=checkIfArgumentInsideInterval(arg,inside_range);
   double transf_derivf=1.0;
   //
-  bool check_nan_inf = true;
-  //
   if(do_transf_) {
     // has to copy as the function is const 
     lepton::CompiledExpression ce_value = transf_value_expression_;
@@ -299,12 +299,12 @@ void BF_Custom::getAllValues(const double arg, double& argT, bool& inside_range,
     argT = ce_value.evaluate();
     transf_derivf = ce_deriv.evaluate();
     
-    if(check_nan_inf && (std::isnan(argT) || std::isinf(argT)) ) {
+    if(check_nan_inf_ && (std::isnan(argT) || std::isinf(argT)) ) {
       std::string vs; Tools::convert(argT,vs);
       plumed_merror(getName()+" with label "+getLabel()+": problem with the transform function, it gives " + vs);
     }
     
-    if(check_nan_inf && (std::isnan(transf_derivf) || std::isinf(transf_derivf)) ) {
+    if(check_nan_inf_ && (std::isnan(transf_derivf) || std::isinf(transf_derivf)) ) {
       std::string vs; Tools::convert(transf_derivf,vs);
       plumed_merror(getName()+" with label "+getLabel()+": problem with the transform function, its derivative gives " + vs);
     }
@@ -326,13 +326,13 @@ void BF_Custom::getAllValues(const double arg, double& argT, bool& inside_range,
     derivs[i] = ce_deriv.evaluate();
     if(do_transf_) {derivs[i]*=transf_derivf;}
     // NaN checks
-    if(check_nan_inf && (std::isnan(values[i]) || std::isinf(values[i])) ) {
+    if(check_nan_inf_ && (std::isnan(values[i]) || std::isinf(values[i])) ) {
       std::string vs; Tools::convert(values[i],vs);
       std::string is; Tools::convert(i,is);
       plumed_merror(getName()+" with label "+getLabel()+": problem with the basis function given in FUNC"+is+", it gives "+vs);
     }
     //
-    if(check_nan_inf && (std::isnan(derivs[i])|| std::isinf(derivs[i])) ) {
+    if(check_nan_inf_ && (std::isnan(derivs[i])|| std::isinf(derivs[i])) ) {
       std::string vs; Tools::convert(derivs[i],vs);
       std::string is; Tools::convert(i,is);
       plumed_merror(getName()+" with label "+getLabel()+": problem with derivative of the basis function given in FUNC"+is+", it gives "+vs);
