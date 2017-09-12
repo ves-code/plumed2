@@ -3,9 +3,7 @@
 phi:   TORSION ATOMS=5,7,9,15     NOPBC
 
 bf1: BF_FOURIER ORDER=5 INTERVAL_MIN=-pi INTERVAL_MAX=pi
-td1: TD_CUSTOM FUNCTION=exp(-(beta/10.0)*FE)+exp(-(1.0/(kBT*10.0))*(FE+s1))
-# td1: TD_CUSTOM FUNCTION=exp(-(beta/10.0)*FE)+exp(-(beta/10.0)*(FE+s1))
-
+td1: TD_CUSTOM FUNCTION=exp(-(beta/10.0)*FE)
 
 VES_LINEAR_EXPANSION ...
  ARG=phi
