@@ -51,7 +51,7 @@ static std::map<std::string, double> leptonConstants= {
 
 //+PLUMEDOC VES_TARGETDIST TD_CUSTOM
 /*
-Target distribution given by an arbitrary mathematical function (static or dynamic).
+Target distribution given by an arbitrary mathematical expression (static or dynamic).
 
 Use as a target distribution the distribution defined by
 \f[
