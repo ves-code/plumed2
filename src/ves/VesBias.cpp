@@ -192,15 +192,15 @@ VesBias::VesBias(const ActionOptions&ao):
       projection_args_.push_back(proj_arg);
     }
   }
-  
-  if(keywords.exists("CALC_REWEIGHT_FACTOR")){
+
+  if(keywords.exists("CALC_REWEIGHT_FACTOR")) {
     parseFlag("CALC_REWEIGHT_FACTOR",calc_reweightfactor_);
-    if(calc_reweightfactor_){
+    if(calc_reweightfactor_) {
       addComponent("rct"); componentIsNotPeriodic("rct");
-      updateReweightFactor();      
+      updateReweightFactor();
     }
   }
-    
+
 
 }
 
@@ -247,7 +247,7 @@ void VesBias::registerKeywords( Keywords& keys ) {
   keys.reserve("numbered","PROJ_ARG","arguments for doing projections of the FES or the target distribution.");
   //
   keys.reserveFlag("CALC_REWEIGHT_FACTOR",false,"enable the calculation of the reweight factor c(t). You should also give a stride for updating the reweight factor in the optimizer by using the REWEIGHT_FACTOR_STRIDE keyword if the coefficients are updated.");
-  
+
 }
 
 
@@ -720,7 +720,7 @@ bool VesBias::useMultipleWalkers() const {
 void VesBias::updateReweightFactor() {
   if(calc_reweightfactor_) {
     double value = calculateReweightFactor();
-    getPntrToComponent("rct")->set(value);    
+    getPntrToComponent("rct")->set(value);
   }
 };
 

@@ -109,7 +109,7 @@ public:
   void writeTargetDistToFile();
   void writeTargetDistProjToFile();
   //
-  double calculateReweightFactor() const; 
+  double calculateReweightFactor() const;
   //
   static void registerKeywords( Keywords& keys );
 };

@@ -252,17 +252,20 @@ Optimizer::Optimizer(const ActionOptions&ao):
       }
     }
   }
-  
+
   if(keywords.exists("REWEIGHT_FACTOR_STRIDE")) {
+    bool reweightfactor_calculated = false;
+    for(unsigned int i=0; i<nbiases_; i++) {
+      reweightfactor_calculated = bias_pntrs_[i]->isReweightFactorCalculated();
+    }
     parse("REWEIGHT_FACTOR_STRIDE",ustride_reweightfactor_);
-    if(ustride_reweightfactor_>0){
-      bool reweightfactor_calculated = false;
-      for(unsigned int i=0; i<nbiases_; i++) {
-        reweightfactor_calculated= bias_pntrs_[i]->isReweightFactorCalculated();
-      } 
-      if(!reweightfactor_calculated){
+    if(ustride_reweightfactor_==0 && reweightfactor_calculated) {
+      plumed_merror("the calculation of the reweight factor is enabled, You need to use the REWEIGHT_FACTOR_STRIDE keyword to specfiy how often it should be updated.");
+    }
+    if(ustride_reweightfactor_>0) {
+      if(!reweightfactor_calculated) {
         plumed_merror("In order to use the REWEIGHT_FACTOR_STRIDE keyword you need to enable the calculation of the reweight factor in the VES bias by using the CALC_REWEIGHT_FACTOR flag.");
-      }     
+      }
       log.printf("  the reweight factor c(t) will be updated very %u coefficent iterations\n",ustride_reweightfactor_);
     }
   }
@@ -1015,8 +1018,8 @@ void Optimizer::update() {
         bias_pntrs_[i]->updateReweightFactor();
       }
     }
-    
-    
+
+
     //
     if(isBiasOutputActive() && getIterationCounter()%getBiasOutputStride()==0) {
       writeBiasOutputFiles();
