@@ -108,6 +108,9 @@ public:
   //
   void writeTargetDistToFile();
   void writeTargetDistProjToFile();
+  //
+  double calculateReweightFactor() const; 
+  //
   static void registerKeywords( Keywords& keys );
 };
 
@@ -329,6 +332,11 @@ void VesLinearExpansion::writeTargetDistProjToFile() {
     bias_expansion_pntr_->writeTargetDistProjGridToFile(args,*ofile_pntr);
     ofile_pntr->close(); delete ofile_pntr;
   }
+}
+
+
+double VesLinearExpansion::calculateReweightFactor() const {
+  return bias_expansion_pntr_->calculateReweightFactor();
 }
 
 

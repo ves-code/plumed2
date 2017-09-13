@@ -75,7 +75,8 @@ VesBias::VesBias(const ActionOptions&ao):
   bias_cutoff_active_(false),
   bias_cutoff_value_(0.0),
   bias_current_max_value(0.0),
-  bias_cutoff_swfunc_pntr_(NULL)
+  bias_cutoff_swfunc_pntr_(NULL),
+  calc_reweightfactor_(false)
 {
   log << plumed.cite("Valsson and Parrinello, Phys. Rev. Lett. 113, 090601 (2014)");
 
@@ -191,7 +192,15 @@ VesBias::VesBias(const ActionOptions&ao):
       projection_args_.push_back(proj_arg);
     }
   }
-
+  
+  if(keywords.exists("CALC_REWEIGHT_FACTOR")){
+    parseFlag("CALC_REWEIGHT_FACTOR",calc_reweightfactor_);
+    if(calc_reweightfactor_){
+      addComponent("rct"); componentIsNotPeriodic("rct");
+      updateReweightFactor();      
+    }
+  }
+    
 
 }
 
@@ -236,6 +245,9 @@ void VesBias::registerKeywords( Keywords& keys ) {
   keys.reserve("optional","BIAS_CUTOFF_FERMI_LAMBDA","the lambda value used in the Fermi switching function for the bias cutoff (BIAS_CUTOFF). Lambda is by default 1.0.");
   //
   keys.reserve("numbered","PROJ_ARG","arguments for doing projections of the FES or the target distribution.");
+  //
+  keys.reserveFlag("CALC_REWEIGHT_FACTOR",false,"enable the calculation of the reweight factor c(t). You should also give a stride for updating the reweight factor in the optimizer by using the REWEIGHT_FACTOR_STRIDE keyword if the coefficients are updated.");
+  
 }
 
 
@@ -275,6 +287,12 @@ void VesBias::useBiasCutoffKeywords(Keywords& keys) {
 
 void VesBias::useProjectionArgKeywords(Keywords& keys) {
   keys.use("PROJ_ARG");
+}
+
+
+void VesBias::useReweightFactorKeywords(Keywords& keys) {
+  keys.use("CALC_REWEIGHT_FACTOR");
+  keys.addOutputComponent("rct","CALC_REWEIGHT_FACTOR","the reweight factor c(t).");
 }
 
 
@@ -696,6 +714,20 @@ bool VesBias::useMultipleWalkers() const {
     use_mwalkers_mpi=true;
   }
   return use_mwalkers_mpi;
+}
+
+
+void VesBias::updateReweightFactor() {
+  if(calc_reweightfactor_) {
+    double value = calculateReweightFactor();
+    getPntrToComponent("rct")->set(value);    
+  }
+};
+
+
+double VesBias::calculateReweightFactor() const {
+  plumed_merror(getName()+" with label "+getLabel()+": calculation of the reweight factor c(t) has not been implemented for this type of VES bias");
+  return 0.0;
 }
 
 

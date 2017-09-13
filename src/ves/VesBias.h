@@ -110,6 +110,7 @@ private:
   //
   std::vector< std::vector<std::string> > projection_args_;
   //
+  bool calc_reweightfactor_;
 private:
   void initializeCoeffs(CoeffsVector*);
   std::vector<double> computeCovarianceFromAverages(const unsigned int) const;
@@ -150,6 +151,7 @@ public:
   static void useGridLimitsKeywords(Keywords&);
   static void useBiasCutoffKeywords(Keywords&);
   static void useProjectionArgKeywords(Keywords&);
+  static void useReweightFactorKeywords(Keywords&);
   //
   std::vector<CoeffsVector*> getCoeffsPntrs() const {return coeffs_pntrs_;}
   std::vector<CoeffsVector*> getTargetDistAveragesPntrs() const {return targetdist_averages_pntrs_;}
@@ -277,6 +279,10 @@ public:
   virtual void setupTargetDistProjFileOutput() {};
   virtual void writeTargetDistProjToFile() {};
   virtual void resetTargetDistProjFileOutput() {};
+  //
+  void updateReweightFactor();
+  virtual double calculateReweightFactor() const;
+  bool isReweightFactorCalculated() const {return calc_reweightfactor_;}
 };
 
 

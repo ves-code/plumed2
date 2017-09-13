@@ -53,6 +53,7 @@ Optimizer::Optimizer(const ActionOptions&ao):
   mwalkers_mpi_single_files_(true),
   dynamic_targetdists_(0),
   ustride_targetdist_(0),
+  ustride_reweightfactor_(0),
   coeffssetid_prefix_(""),
   coeffs_wstride_(100),
   coeffsOFiles_(0),
@@ -249,6 +250,20 @@ Optimizer::Optimizer(const ActionOptions&ao):
         }
         log.printf("\n");
       }
+    }
+  }
+  
+  if(keywords.exists("REWEIGHT_FACTOR_STRIDE")) {
+    parse("REWEIGHT_FACTOR_STRIDE",ustride_reweightfactor_);
+    if(ustride_reweightfactor_>0){
+      bool reweightfactor_calculated = false;
+      for(unsigned int i=0; i<nbiases_; i++) {
+        reweightfactor_calculated= bias_pntrs_[i]->isReweightFactorCalculated();
+      } 
+      if(!reweightfactor_calculated){
+        plumed_merror("In order to use the REWEIGHT_FACTOR_STRIDE keyword you need to enable the calculation of the reweight factor in the VES bias by using the CALC_REWEIGHT_FACTOR flag.");
+      }     
+      log.printf("  the reweight factor c(t) will be updated very %u coefficent iterations\n",ustride_reweightfactor_);
     }
   }
 
@@ -815,6 +830,8 @@ void Optimizer::registerKeywords( Keywords& keys ) {
   keys.add("optional","FES_OUTPUT","how often the FES(s) should be written out to file. Note that the value is given in terms of coefficent iterations.");
   keys.add("optional","FES_PROJ_OUTPUT","how often the projections of the FES(s) should be written out to file. Note that the value is given in terms of coefficent iterations.");
   //
+  keys.reserve("optional","REWEIGHT_FACTOR_STRIDE","stride for updating the reweighting factor c(t). Note that the value is given in terms of coefficent iterations.");
+  //
   keys.use("RESTART");
   //
   keys.use("UPDATE_FROM");
@@ -824,6 +841,7 @@ void Optimizer::registerKeywords( Keywords& keys ) {
   keys.addOutputComponent("gradmax","default","the largest absolute value of the coefficent gradient. For multiple biases this component is labeled using the number of the bias as gradmax-#.");
   ActionWithValue::useCustomisableComponents(keys);
   // keys.addOutputComponent("gradmaxidx","default","the index of the maximum absolute value of the gradient");
+
 }
 
 
@@ -872,6 +890,11 @@ void Optimizer::useDynamicTargetDistributionKeywords(Keywords& keys) {
   keys.use("TARGETDIST_STRIDE");
   keys.use("TARGETDIST_OUTPUT");
   keys.use("TARGETDIST_PROJ_OUTPUT");
+}
+
+
+void Optimizer::useReweightFactorKeywords(Keywords& keys) {
+  keys.use("REWEIGHT_FACTOR_STRIDE");
 }
 
 
@@ -987,6 +1010,13 @@ void Optimizer::update() {
         }
       }
     }
+    if(ustride_reweightfactor_>0 && getIterationCounter()%ustride_reweightfactor_==0) {
+      for(unsigned int i=0; i<nbiases_; i++) {
+        bias_pntrs_[i]->updateReweightFactor();
+      }
+    }
+    
+    
     //
     if(isBiasOutputActive() && getIterationCounter()%getBiasOutputStride()==0) {
       writeBiasOutputFiles();

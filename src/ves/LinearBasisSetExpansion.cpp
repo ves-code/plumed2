@@ -584,6 +584,19 @@ bool LinearBasisSetExpansion::biasCutoffActive() const {
 }
 
 
+double LinearBasisSetExpansion::calculateReweightFactor() const {
+  plumed_massert(targetdist_grid_pntr_!=NULL,"calculateReweightFactor only be used if the target distribution grid is defined");
+  plumed_massert(bias_grid_pntr_!=NULL,"calculateReweightFactor only be used if the bias grid is defined");
+  double sum = 0.0;
+  std::vector<double> integration_weights = GridIntegrationWeights::getIntegrationWeights(targetdist_grid_pntr_);
+  //
+  for(Grid::index_t l=0; l<targetdist_grid_pntr_->getSize(); l++) {
+    sum += integration_weights[l] * targetdist_grid_pntr_->getValue(l) * exp(+beta_*bias_grid_pntr_->getValue(l));
+  }  
+  return (1.0/beta_)*std::log(sum);
+}
+
+
 
 
 }

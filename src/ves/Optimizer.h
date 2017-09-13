@@ -73,6 +73,8 @@ private:
   std::vector<bool> dynamic_targetdists_;
   unsigned int ustride_targetdist_;
   //
+  unsigned int ustride_reweightfactor_;
+  //
   std::string coeffssetid_prefix_;
   //
   unsigned int coeffs_wstride_;
@@ -161,6 +163,7 @@ public:
   static void useRestartKeywords(Keywords&);
   static void useMonitorAveragesKeywords(Keywords&);
   static void useDynamicTargetDistributionKeywords(Keywords&);
+  static void useReweightFactorKeywords(Keywords&);
   //
   explicit Optimizer(const ActionOptions&ao);
   ~Optimizer();

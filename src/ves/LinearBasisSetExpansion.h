@@ -175,6 +175,8 @@ public:
   //
   bool biasCutoffActive() const;
   //
+  double calculateReweightFactor() const;
+  //
 private:
   //
   Grid* setupGeneralGrid(const std::string&, const bool usederiv=false);
