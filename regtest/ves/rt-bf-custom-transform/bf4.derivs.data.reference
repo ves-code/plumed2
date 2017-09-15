@@ -1,5 +1,5 @@
 #! FIELDS arg d_f0(s) d_f1(s) d_f2(s) d_f3(s) d_f4(s)
-#! SET bf_keywords {BF_CUSTOM INTERVAL_MIN=0.00001 INTERVAL_MAX=4.0 FUNC1=x FUNC2=x^2 FUNC3=x^3 FUNC4=x^4}
+#! SET bf_keywords {BF_CUSTOM INTERVAL_MIN=0.00001 INTERVAL_MAX=4.0 FUNC1=x FUNC2=x^2 FUNC3=x^3 FUNC4=x^4 CHECK_NAN_INF}
 #! SET min 0.00001
 #! SET max 4.0
 #! SET nbins  301

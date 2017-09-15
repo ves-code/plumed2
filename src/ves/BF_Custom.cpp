@@ -71,7 +71,8 @@ that they are periodic.
 The basis functions \f$f_{i}(x)\f$ and the transform function \f$x(t)\f$ need
 to be well behaved in the interval on which the basis functions are defined,
 e.g. not result in a not a number (nan) or infinity (inf).
-The code will perform checks to make sure that this is the case.
+The code will not perform checks to make sure that this is the case unless the 
+flag CHECK_NAN_INF is enabled. 
 
 \par Examples
 
@@ -143,6 +144,7 @@ void BF_Custom::registerKeywords(Keywords& keys) {
   keys.add("numbered","FUNC","The basis functions f_i(x) given in mathematical expressions using _x_ as a variable.");
   keys.add("optional","TRANSFORM","An optional function that can be used to transform the argument before calculating the basis function values. You should use _t_ as a variable. You can use the variables _min_ and _max_ to give the minimum and the maximum of the interval.");
   keys.addFlag("PERIODIC",false,"Indicate that the basis functions are periodic.");
+  keys.addFlag("CHECK_NAN_INF",false,"Indicate that the basis functions are periodic.");
   keys.remove("NUMERICAL_INTEGRALS");
 }
 
@@ -154,7 +156,7 @@ BF_Custom::BF_Custom(const ActionOptions&ao):
   variable_str_("x"),
   transf_variable_str_("t"),
   do_transf_(false),
-  check_nan_inf_(true)
+  check_nan_inf_(false)
 {
   std::vector<std::string> bf_str;
   std::string str_t1="1";
@@ -274,6 +276,15 @@ BF_Custom::BF_Custom(const ActionOptions&ao):
     log.printf("  Arguments are not transformed\n");
   }
   //
+  
+  parseFlag("CHECK_NAN_INF",check_nan_inf_); addKeywordToList("CHECK_NAN_INF",check_nan_inf_);
+  if(check_nan_inf_) {
+    log.printf("  The code will check that values given are numercially stable, e.g. do not result in a not a number (nan) or infinity (inf).\n");    
+  }
+  else {
+    log.printf("  The code will NOT check that values given are numercially stable, e.g. do not result in a not a number (nan) or infinity (inf).\n");    
+  }
+  
   setupBF();
   checkRead();
 }
