@@ -71,8 +71,8 @@ that they are periodic.
 The basis functions \f$f_{i}(x)\f$ and the transform function \f$x(t)\f$ need
 to be well behaved in the interval on which the basis functions are defined,
 e.g. not result in a not a number (nan) or infinity (inf).
-The code will not perform checks to make sure that this is the case unless the 
-flag CHECK_NAN_INF is enabled. 
+The code will not perform checks to make sure that this is the case unless the
+flag CHECK_NAN_INF is enabled.
 
 \par Examples
 
@@ -276,15 +276,15 @@ BF_Custom::BF_Custom(const ActionOptions&ao):
     log.printf("  Arguments are not transformed\n");
   }
   //
-  
+
   parseFlag("CHECK_NAN_INF",check_nan_inf_); addKeywordToList("CHECK_NAN_INF",check_nan_inf_);
   if(check_nan_inf_) {
-    log.printf("  The code will check that values given are numercially stable, e.g. do not result in a not a number (nan) or infinity (inf).\n");    
+    log.printf("  The code will check that values given are numercially stable, e.g. do not result in a not a number (nan) or infinity (inf).\n");
   }
   else {
-    log.printf("  The code will NOT check that values given are numercially stable, e.g. do not result in a not a number (nan) or infinity (inf).\n");    
+    log.printf("  The code will NOT check that values given are numercially stable, e.g. do not result in a not a number (nan) or infinity (inf).\n");
   }
-  
+
   setupBF();
   checkRead();
 }
