@@ -110,7 +110,7 @@ public:
     const std::string& multicoeffs_label="bias"
   );
   //
-  ~CoeffsBase() {}
+  ~CoeffsBase();
   //
   std::string getLabel() const {return label_;}
   void setLabel(const std::string&);

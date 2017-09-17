@@ -96,7 +96,7 @@ public:
     Communicator& cc,
     const bool diagonal=true);
   //
-  ~CoeffsMatrix() {}
+  ~CoeffsMatrix();
   //
   size_t getSize() const;
   //

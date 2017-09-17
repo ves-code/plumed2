@@ -85,7 +85,7 @@ public:
     CoeffsMatrix*,
     Communicator&);
   //
-  ~CoeffsVector() {}
+  ~CoeffsVector();
   //
   size_t getSize() const {return numberOfCoeffs();}
   // clear coeffs

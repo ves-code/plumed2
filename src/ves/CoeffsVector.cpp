@@ -105,6 +105,9 @@ CoeffsVector::CoeffsVector(
 }
 
 
+CoeffsVector::~CoeffsVector() {}
+
+
 void CoeffsVector::clear() {
   data.resize(getSize());
   for(size_t i=0; i<data.size(); i++) {

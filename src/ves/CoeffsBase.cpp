@@ -174,6 +174,9 @@ CoeffsBase::CoeffsBase(
 }
 
 
+CoeffsBase::~CoeffsBase() {}
+
+
 void CoeffsBase::initializeIndices(const std::vector<unsigned int>& indices_shape, const std::vector<std::string>& dimension_labels) {
   plumed_massert(indices_shape.size()==dimension_labels.size(),"indices shape and dimension labels must be of the same size");
   ndimensions_=indices_shape.size();

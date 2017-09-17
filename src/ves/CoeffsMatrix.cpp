@@ -126,6 +126,9 @@ CoeffsMatrix::CoeffsMatrix(
 }
 
 
+CoeffsMatrix::~CoeffsMatrix() {}
+
+
 void CoeffsMatrix::setupMatrix() {
   nrows_=numberOfCoeffs();
   ncolumns_=nrows_;
