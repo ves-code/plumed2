@@ -44,17 +44,34 @@ p(s) =
 \left(\frac{s-a}{\sigma}\right) \right),
 \f]
 where \f$a\f$ is the minimum of the distribution that is defined on the interval \f$[a,\infty)\f$,
-the parameter \f$k\f$ (known as the "degrees of freedom") determines how far
-the peak of the distribution is from the minimum,
-and the parameter \f$\sigma\f$ determines the broadness of the distribution.
+the parameter \f$k\f$ (given as a postive integer larger than 2) determines how far
+the peak of the distribution is from the minimum (known as the "degrees of freedom"),
+and the parameter \f$\sigma>0\f$ determines the broadness of the distribution.
 
 The minimum \f$a\f$ is given using the MINIMUM keyword, the parameter \f$k\f$ is given
-using the KAPPA keyword, and the parameter \f$\sigma\f$ is given using the SIGMA keyword.
+using the KAPPA keyword, and the parameter \f$\sigma\f$ is given using the SIGMA keyword. 
 
 This target distribution action is only defined for one dimension, for multiple dimensions
-it should be used in combination with \ref TD_PRODUCT_DISTRIBUTION action.
+it should be used in combination with the \ref TD_PRODUCT_DISTRIBUTION action.
 
 \par Examples
+
+Chi-squared distribution with \f$a=-10.0\f$, \f$\sigma=2.0\f$, and \f$k=2\f$
+\plumedfile
+td: TD_CHISQUARED  MINIMUM=-10.0  SIGMA=2.0  KAPPA=2
+\endplumedfile
+
+The Chi-squared distribution is only defined for one dimension so for multiple 
+dimensions we have to use it in combination with the \ref TD_PRODUCT_DISTRIBUTION action as shown in 
+the following example where we have a Chi-squared distribution for argument 1 
+and uniform distribution for argument 2
+\plumedfile
+td_chisq: TD_CHISQUARED  MINIMUM=10.0  SIGMA=2.0  KAPPA=2
+
+td_uni: TD_UNIFORM
+
+td_pd: TD_PRODUCT_DISTRIBUTION DISTRIBUTIONS=td_chisq,td_uni
+\endplumedfile 
 
 */
 //+ENDPLUMEDOC
@@ -77,8 +94,8 @@ PLUMED_REGISTER_ACTION(TD_ChiSquared,"TD_CHISQUARED")
 void TD_ChiSquared::registerKeywords(Keywords& keys) {
   TargetDistribution::registerKeywords(keys);
   keys.add("compulsory","MINIMUM","The minimum of the chi-squared distribution.");
-  keys.add("compulsory","SIGMA","The sigma parameter of the chi-squared distribution.");
-  keys.add("compulsory","KAPPA","The kappa parameter of the chi-squared distribution.");
+  keys.add("compulsory","SIGMA","The \\f$\\sigma\\f$ parameter of the chi-squared distribution given as a postive number.");
+  keys.add("compulsory","KAPPA","The \\f$k\\f$ parameter of the chi-squared distribution given as postive integer larger than 2.");
   keys.use("WELLTEMPERED_FACTOR");
   keys.use("SHIFT_TO_ZERO");
   keys.use("NORMALIZE");
@@ -100,7 +117,7 @@ TD_ChiSquared::TD_ChiSquared(const ActionOptions& ao):
 
   std::vector<unsigned int> kappa_int(0);
   parseVector("KAPPA",kappa_int);
-  if(kappa_int.size()==0) {plumed_merror(getName()+": some problem with KAPPA keyword, should given as postive integer larger than 1");}
+  if(kappa_int.size()==0) {plumed_merror(getName()+": some problem with KAPPA keyword, should given as postive integer larger than 2");}
   kappa_.resize(kappa_int.size());
   for(unsigned int k=0; k<kappa_int.size(); k++) {
     if(kappa_int[k] < 2) {plumed_merror(getName()+": KAPPA should be an integer 2 or higher");}
@@ -108,7 +125,7 @@ TD_ChiSquared::TD_ChiSquared(const ActionOptions& ao):
   }
 
   setDimension(minima_.size());
-  if(getDimension()>1) {plumed_merror(getName()+": only defined for one dimension");}
+  if(getDimension()>1) {plumed_merror(getName()+": only defined for one dimension, for multiple dimensions it should be used in combination with the TD_PRODUCT_DISTRIBUTION action.");}
   if(sigma_.size()!=getDimension()) {plumed_merror(getName()+": the SIGMA keyword does not match the given dimension in MINIMUM");}
   if(kappa_.size()!=getDimension()) {plumed_merror(getName()+": the KAPPA keyword does not match the given dimension in MINIMUM");}
 
