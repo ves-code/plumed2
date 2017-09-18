@@ -185,10 +185,14 @@ TD_Custom::TD_Custom(const ActionOptions& ao):
   parse("FUNCTION",func_str);
   checkRead();
   //
-  lepton::ParsedExpression pe=lepton::Parser::parse(func_str).optimize(leptonConstants);
-  log<<"  function as parsed by lepton: "<<pe<<"\n";
-  expression=pe.createCompiledExpression();
-  // if(evaluator_pntr_==NULL) plumed_merror(getName()+": there was some problem in parsing matheval formula "+func_str);
+  try {
+    lepton::ParsedExpression pe=lepton::Parser::parse(func_str).optimize(leptonConstants);
+    log<<"  function as parsed by lepton: "<<pe<<"\n";
+    expression=pe.createCompiledExpression();
+  }
+  catch(PLMD::lepton::Exception& exc) {
+    plumed_merror("There was some problem in parsing the function "+func_str+" given in FUNCTION with lepton");
+  }
 
   for(auto &p: expression.getVariables()) {
     std::string curr_var = p;
