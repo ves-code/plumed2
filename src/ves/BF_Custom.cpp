@@ -60,7 +60,7 @@ the constant. The interval on which the basis functions are defined is
 given using the INTERVAL_MIN and INTERVAL_MAX keywords.
 
 Using the TRANSFORM keyword it is possible to define a function \f$x(t)\f$ that
-js used to transform the argument before calculating the basis functions
+is used to transform the argument before calculating the basis functions
 values. The variables _min_ and _max_ can be used to indicate the minimum
 and the maximum of the interval. By default the arguments are not transformed,
 i.e. \f$x(t)=t\f$.
