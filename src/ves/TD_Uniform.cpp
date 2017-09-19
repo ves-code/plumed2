@@ -130,7 +130,8 @@ We can also define a target distribution that goes smoothly to zero
 at the boundaries of the uniform distribution. In the following
 we consider an interval of 0 to 10 for the target distribution.
 The following input would result in a target distribution that
-would be uniform from 2 to 7 and then smoothly go to zero.
+would be uniform from 2 to 7 and then smoothly go to zero from 
+2 to 0 and from 7 to 10. 
 \plumedfile
 TD_UNIFORM ...
  MINIMA=2.0
@@ -142,7 +143,7 @@ TD_UNIFORM ...
 \endplumedfile
 It is also possible to employ a smooth switching function for just one
 of the boundaries as shown here where the target distribution
-would be uniform from 0 to 7.
+would be uniform from 0 to 7 and then smoothly go to zero from 7 to 10. 
 \plumedfile
 TD_UNIFORM ...
  MAXIMA=+7.0

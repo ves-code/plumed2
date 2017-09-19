@@ -63,7 +63,7 @@ linear combination will generally lead to different results than normalizing
 each distribution separately.
 
 The linear combination will be a dynamic target distribution if one or more
-of the distributions used is a dynamic distribution. Otherwise it will be a
+of the distributions used is a dynamic distribution, otherwise it will be a
 static distribution.
 
 \par Examples
@@ -151,7 +151,7 @@ PLUMED_REGISTER_ACTION(TD_LinearCombination,"TD_LINEAR_COMBINATION")
 
 void TD_LinearCombination::registerKeywords(Keywords& keys) {
   TargetDistribution::registerKeywords(keys);
-  keys.add("compulsory","DISTRIBUTIONS","The labels of the target distributions to be used in the linear combination.");
+  keys.add("compulsory","DISTRIBUTIONS","The labels of the target distribution actions to be used in the linear combination.");
   keys.add("optional","WEIGHTS","The weights of target distributions. Have to be as many as the number of target distribution labels given in DISTRIBUTIONS. If no weights are given the distributions are weighted equally. The weights are automatically normalized to 1.");
   keys.use("WELLTEMPERED_FACTOR");
   //keys.use("SHIFT_TO_ZERO");

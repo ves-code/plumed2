@@ -50,8 +50,8 @@ Note the difference between this target distribution and the one defined in
 product of one-dimensional distribution \f$p_{k}(s_{k})\f$.
 
 The labels of the one-dimensional distributions \f$p_{k}(s_{k})\f$ to be
-used in the product distribution are given in the DISTRIBUTIONS keyword, where
-of course the order of the labels is important.
+used in the product distribution are given in the DISTRIBUTIONS keyword. 
+Note that the order of the labels is very important. 
 
 It is assumed that all the distributions to be used in the product distribution
 are normalized. If that is not the case you need to
@@ -106,7 +106,7 @@ PLUMED_REGISTER_ACTION(TD_ProductDistribution,"TD_PRODUCT_DISTRIBUTION")
 
 void TD_ProductDistribution::registerKeywords(Keywords& keys) {
   TargetDistribution::registerKeywords(keys);
-  keys.add("compulsory","DISTRIBUTIONS","Labels of the one-dimensional target distributions for each argument to be used in the product distribution. Note that order of the labels is important.");
+  keys.add("compulsory","DISTRIBUTIONS","Labels of the one-dimensional target distribution actions for each argument to be used in the product distribution. Note that order of the labels is important.");
   keys.use("WELLTEMPERED_FACTOR");
   keys.use("SHIFT_TO_ZERO");
   keys.use("NORMALIZE");

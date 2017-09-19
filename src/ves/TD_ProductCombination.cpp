@@ -127,7 +127,7 @@ PLUMED_REGISTER_ACTION(TD_ProductCombination,"TD_PRODUCT_COMBINATION")
 
 void TD_ProductCombination::registerKeywords(Keywords& keys) {
   TargetDistribution::registerKeywords(keys);
-  keys.add("compulsory","DISTRIBUTIONS","The labels of the target distributions to be used in the product combination.");
+  keys.add("compulsory","DISTRIBUTIONS","The labels of the target distribution actions to be used in the product combination.");
   keys.use("WELLTEMPERED_FACTOR");
   keys.use("SHIFT_TO_ZERO");
 }
