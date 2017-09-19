@@ -193,14 +193,14 @@ BF_Custom::BF_Custom(const ActionOptions&ao):
   for(unsigned int i=1; i<getNumberOfBasisFunctions(); i++) {
     std::string is; Tools::convert(i,is);
     try {
-      lepton::ParsedExpression pe_value = lepton::Parser::parse(bf_str[i]).optimize(leptonConstants);      
+      lepton::ParsedExpression pe_value = lepton::Parser::parse(bf_str[i]).optimize(leptonConstants);
       std::ostringstream tmp_stream; tmp_stream << pe_value;
       bf_values_parsed[i] = tmp_stream.str();
       bf_values_expressions_[i] = pe_value.createCompiledExpression();
     }
     catch(PLMD::lepton::Exception& exc) {
       plumed_merror("There was some problem in parsing the function "+bf_str[i]+" given in FUNC"+is + " with lepton");
-    }    
+    }
 
     std::vector<std::string> var_str;
     for(auto &p: bf_values_expressions_[i].getVariables()) {
@@ -220,7 +220,7 @@ BF_Custom::BF_Custom(const ActionOptions&ao):
       bf_derivs_expressions_[i] = pe_deriv.createCompiledExpression();
     }
     catch(PLMD::lepton::Exception& exc) {
-      plumed_merror("There was some problem in parsing the derivative of the function "+bf_str[i]+" given in FUNC"+is + " with lepton");      
+      plumed_merror("There was some problem in parsing the derivative of the function "+bf_str[i]+" given in FUNC"+is + " with lepton");
     }
 
   }
@@ -261,7 +261,7 @@ BF_Custom::BF_Custom(const ActionOptions&ao):
     if(var_str[0]!=transf_variable_str_) {
       plumed_merror("Problem with function "+transf_str+" given in TRANSFORM: you should use "+transf_variable_str_+" as a variable");
     }
-    
+
     try {
       lepton::ParsedExpression pe_deriv = lepton::Parser::parse(transf_str).differentiate(transf_variable_str_).optimize(leptonConstants);;
       std::ostringstream tmp_stream2; tmp_stream2 << pe_deriv;

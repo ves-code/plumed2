@@ -61,9 +61,9 @@ Chi distribution with \f$a=10.0\f$, \f$\sigma=2.0\f$, and \f$k=2\f$
 td: TD_CHI  MINIMUM=10.0  SIGMA=2.0  KAPPA=2
 \endplumedfile
 
-The Chi distribution is only defined for one dimension so for multiple 
-dimensions we have to use it in combination with the \ref TD_PRODUCT_DISTRIBUTION action as shown in 
-the following example where we have a uniform distribution for argument 1 and 
+The Chi distribution is only defined for one dimension so for multiple
+dimensions we have to use it in combination with the \ref TD_PRODUCT_DISTRIBUTION action as shown in
+the following example where we have a uniform distribution for argument 1 and
 a Chi distribution for argument 1
 \plumedfile
 td_uni: TD_UNIFORM
@@ -71,7 +71,7 @@ td_uni: TD_UNIFORM
 td_chi: TD_CHI  MINIMUM=-10.0  SIGMA=2.0  KAPPA=2
 
 td_pd: TD_PRODUCT_DISTRIBUTION DISTRIBUTIONS=td_uni,td_chi
-\endplumedfile 
+\endplumedfile
 
 */
 //+ENDPLUMEDOC

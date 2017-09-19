@@ -52,20 +52,20 @@ it should be used in combination with \ref TD_PRODUCT_DISTRIBUTION action.
 
 Exponential distribution with \f$a=10.0\f$ and \f$\lambda=0.5\f$
 \plumedfile
-td: TD_EXPONENTIAL  MINIMUM=-10.0  LAMBDA=0.5  
+td: TD_EXPONENTIAL  MINIMUM=-10.0  LAMBDA=0.5
 \endplumedfile
 
-The exponential distribution is only defined for one dimension so for multiple 
-dimensions we have to use it in combination with the \ref TD_PRODUCT_DISTRIBUTION action as shown in 
-the following example where we have a uniform distribution for argument 1 and 
-and an exponential distribution for argument 2 
+The exponential distribution is only defined for one dimension so for multiple
+dimensions we have to use it in combination with the \ref TD_PRODUCT_DISTRIBUTION action as shown in
+the following example where we have a uniform distribution for argument 1 and
+and an exponential distribution for argument 2
 \plumedfile
 td_uni: TD_UNIFORM
 
-td_exp: TD_EXPONENTIAL  MINIMUM=-10.0  LAMBDA=0.5  
+td_exp: TD_EXPONENTIAL  MINIMUM=-10.0  LAMBDA=0.5
 
 td_pd: TD_PRODUCT_DISTRIBUTION DISTRIBUTIONS=td_uni,td_exp
-\endplumedfile 
+\endplumedfile
 
 
 */

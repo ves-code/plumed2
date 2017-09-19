@@ -49,7 +49,7 @@ the peak of the distribution is from the minimum (known as the "degrees of freed
 and the parameter \f$\sigma>0\f$ determines the broadness of the distribution.
 
 The minimum \f$a\f$ is given using the MINIMUM keyword, the parameter \f$k\f$ is given
-using the KAPPA keyword, and the parameter \f$\sigma\f$ is given using the SIGMA keyword. 
+using the KAPPA keyword, and the parameter \f$\sigma\f$ is given using the SIGMA keyword.
 
 This target distribution action is only defined for one dimension, for multiple dimensions
 it should be used in combination with the \ref TD_PRODUCT_DISTRIBUTION action.
@@ -61,9 +61,9 @@ Chi-squared distribution with \f$a=-10.0\f$, \f$\sigma=2.0\f$, and \f$k=2\f$
 td: TD_CHISQUARED  MINIMUM=-10.0  SIGMA=2.0  KAPPA=2
 \endplumedfile
 
-The Chi-squared distribution is only defined for one dimension so for multiple 
-dimensions we have to use it in combination with the \ref TD_PRODUCT_DISTRIBUTION action as shown in 
-the following example where we have a Chi-squared distribution for argument 1 
+The Chi-squared distribution is only defined for one dimension so for multiple
+dimensions we have to use it in combination with the \ref TD_PRODUCT_DISTRIBUTION action as shown in
+the following example where we have a Chi-squared distribution for argument 1
 and uniform distribution for argument 2
 \plumedfile
 td_chisq: TD_CHISQUARED  MINIMUM=10.0  SIGMA=2.0  KAPPA=2
@@ -71,7 +71,7 @@ td_chisq: TD_CHISQUARED  MINIMUM=10.0  SIGMA=2.0  KAPPA=2
 td_uni: TD_UNIFORM
 
 td_pd: TD_PRODUCT_DISTRIBUTION DISTRIBUTIONS=td_chisq,td_uni
-\endplumedfile 
+\endplumedfile
 
 */
 //+ENDPLUMEDOC
