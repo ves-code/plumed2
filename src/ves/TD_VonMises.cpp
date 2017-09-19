@@ -45,9 +45,9 @@ p(\mathbf{s}) = \sum_{i} \, w_{i}
 \frac{\exp\left(\kappa_{k,i} \, \cos (s_{k}-\mu_{k,i}) \right)}
 {2\pi I_{0}(\kappa_{k,i})}
 \f]
-where \f$\boldsymbol{\mu}_{i}=(\mu_{1,i},\mu_{2,i},\ldots,\mu_{d,i})\f$
+where \f$(\mu_{1,i},\mu_{2,i},\ldots,\mu_{d,i})\f$
 are the centers of the distributions,
-\f$\boldsymbol{\kappa}_{i}=(\kappa_{1,i},\kappa_{2,i},\ldots,\kappa_{d,i})\f$
+\f$(\kappa_{1,i},\kappa_{2,i},\ldots,\kappa_{d,i})\f$
 are parameters that determine the extend of each distribution,
 and \f$I_{0}(x)\f$ is the modified Bessel function of order 0.
 The weights \f$w_{i}\f$ are normalized to 1, \f$\sum_{i}w_{i}=1\f$.
@@ -58,9 +58,9 @@ The parameter \f$ \sqrt{1/\kappa}\f$ is comparable to the standard deviation
 \f$\sigma\f$ for the Gaussian distribution.
 
 To use this target distribution you need to give the centers
-\f$\boldsymbol{\mu}_{i}=(\mu_{1,i},\mu_{2,i},\ldots,\mu_{d,i})\f$ by
+\f$(\mu_{1,i},\mu_{2,i},\ldots,\mu_{d,i})\f$ by
 using the numbered CENTER keywords and the "standard deviations"
-\f$\boldsymbol{\sigma}_{i}=(\sqrt{1/\kappa_{1,i}},\sqrt{1/\kappa_{2,i}},\ldots,\sqrt{1/\kappa_{d,i}})\f$ using the numbered SIGMA keywords.
+\f$(\sqrt{1/\kappa_{1,i}},\sqrt{1/\kappa_{2,i}},\ldots,\sqrt{1/\kappa_{d,i}})\f$ using the numbered SIGMA keywords.
 
 
 \par Examples
@@ -113,8 +113,8 @@ PLUMED_REGISTER_ACTION(TD_VonMises,"TD_VONMISES")
 
 void TD_VonMises::registerKeywords(Keywords& keys) {
   TargetDistribution::registerKeywords(keys);
-  keys.add("numbered","CENTER","The centers of the Von Mises distributions. For one distribution you can use either CENTER or CENTER1. For more distributions you need to use the numbered CENTER keywords, one for each distribution.");
-  keys.add("numbered","SIGMA","The standard deviations of the Von Mises distributions. For one distribution you can use either CENTER or CENTER1. For more distributions you need to use the numbered CENTER keywords, one for each distribution.");
+  keys.add("numbered","CENTER","The centers of the Von Mises distributions.");
+  keys.add("numbered","SIGMA","The \"standard deviations\" of the Von Mises distributions.");
   keys.add("optional","WEIGHTS","The weights of the Von Mises distributions. Have to be as many as the number of centers given with the numbered CENTER keywords. If no weights are given the distributions are weighted equally. The weights are automatically normalized to 1.");
   keys.add("hidden","PERIODS","The periods for each of the dimensions. By default they are 2*pi for each dimension.");
   keys.use("WELLTEMPERED_FACTOR");

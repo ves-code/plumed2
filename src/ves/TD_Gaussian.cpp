@@ -35,37 +35,37 @@ Target distribution given by a sum of Gaussians (static).
 Employ a target distribution that is given by a sum of multivariate Gaussian (or normal)
 distributions, defined as
 \f[
-p(\mathbf{s}) = \sum_{i} \, w_{i} \, N(\mathbf{s};\boldsymbol{\mu}_{i},\boldsymbol{\Sigma}_{i})
+p(\mathbf{s}) = \sum_{i} \, w_{i} \, N(\mathbf{s};\mathbf{\mu}_{i},\mathbf{\Sigma}_{i})
 \f]
-where \f$\boldsymbol{\mu}_{i}=(\mu_{1,i},\mu_{2,i},\ldots,\mu_{d,i})\f$
-and \f$\boldsymbol{\Sigma}_{i}\f$ are
-the center and covariance matrix for the \f$i\f$-th Gaussian.
+where \f$\mathbf{\mu}_{i}=(\mu_{1,i},\mu_{2,i},\ldots,\mu_{d,i})\f$
+and \f$\mathbf{\Sigma}_{i}\f$ are
+the center and the covariance matrix for the \f$i\f$-th Gaussian.
 The weights \f$w_{i}\f$ are normalized to 1, \f$\sum_{i}w_{i}=1\f$.
 
 By default the Gaussian distributions are considered as separable into
 independent one-dimensional Gaussian distributions. In other words,
 the covariance matrix is taken as diagonal
-\f$\boldsymbol{\Sigma}_{i}=(\sigma^2_{1,i},\sigma^2_{2,i},\ldots,\sigma^{2}_{d,i})\f$.
+\f$\mathbf{\Sigma}_{i}=(\sigma^2_{1,i},\sigma^2_{2,i},\ldots,\sigma^{2}_{d,i})\f$.
 The Gaussian distribution is then written as
 \f[
-N(\mathbf{s};\boldsymbol{\mu}_{i},\boldsymbol{\sigma}_{i}) =
+N(\mathbf{s};\mathbf{\mu}_{i},\mathbf{\sigma}_{i}) =
 \prod^{d}_{k} \, \frac{1}{\sqrt{2\pi\sigma^2_{d,i}}} \,
 \exp\left(
 -\frac{(s_{d}-\mu_{d,i})^2}{2\sigma^2_{d,i}}
 \right)
 \f]
 where
-\f$\boldsymbol{\sigma}_{i}=(\sigma_{1,i},\sigma_{2,i},\ldots,\sigma_{d,i})\f$
+\f$\mathbf{\sigma}_{i}=(\sigma_{1,i},\sigma_{2,i},\ldots,\sigma_{d,i})\f$
 is the standard deviation.
-In this case you need to specify the centers \f$\boldsymbol{\mu}_{i}\f$ using the
-numbered CENTER keywords and the standard deviations \f$\boldsymbol{\sigma}_{i}\f$
+In this case you need to specify the centers \f$\mathbf{\mu}_{i}\f$ using the
+numbered CENTER keywords and the standard deviations \f$\mathbf{\sigma}_{i}\f$
 using the numbered SIGMA keywords.
 
 For two arguments it is possible to employ
 [bivariate Gaussians](https://en.wikipedia.org/wiki/Multivariate_normal_distribution)
 with correlation between arguments, defined as
 \f[
-N(\mathbf{s};\boldsymbol{\mu}_{i},\boldsymbol{\sigma}_{i},\rho_i) =
+N(\mathbf{s};\mathbf{\mu}_{i},\mathbf{\sigma}_{i},\rho_i) =
 \frac{1}{2 \pi \sigma_{1,i} \sigma_{2,i} \sqrt{1-\rho_i^2}}
 \,
 \exp\left(
@@ -78,11 +78,9 @@ N(\mathbf{s};\boldsymbol{\mu}_{i},\boldsymbol{\sigma}_{i},\rho_i) =
 \right)
 \f]
 where \f$\rho_i\f$ is the correlation between \f$s_{1}\f$ and \f$s_{2}\f$
-that goes from -1 to 1. A value of 0 means that the arguments are considered as
-un-correlated, which is the default behavior.
-In this case the covariance matrix is given as
+that goes from -1 to 1. In this case the covariance matrix is given as
 \f[
-\boldsymbol{\Sigma}=
+\mathbf{\Sigma}=
 \left[
 \begin{array}{cc}
 \sigma^2_{1,i} & \rho_i \sigma_{1,i} \sigma_{2,i} \\
@@ -90,8 +88,10 @@ In this case the covariance matrix is given as
 \end{array}
 \right]
 \f]
-For the bivariate Gaussians the correlation \f$\rho\f$ is given using
-the numbered CORRELATION keywords.
+The correlation \f$\rho\f$ is given using
+the numbered CORRELATION keywords. A value of \f$\rho=0\f$ means 
+that the arguments are considered as
+un-correlated, which is the default behavior.
 
 The Gaussian distributions are always defined with the conventional
 normalization factor such that they are normalized to 1 over an unbounded
@@ -178,9 +178,9 @@ PLUMED_REGISTER_ACTION(TD_Gaussian,"TD_GAUSSIAN")
 
 void TD_Gaussian::registerKeywords(Keywords& keys) {
   TargetDistribution::registerKeywords(keys);
-  keys.add("numbered","CENTER","The centers of the Gaussian distributions. For one Gaussians you can use either CENTER or CENTER1. For more Gaussians you need to use the numbered CENTER keywords, one for each Gaussian.");
-  keys.add("numbered","SIGMA","The standard deviations of the Gaussian distributions. For one Gaussians you can use either SIGMA or SIGMA1. For more Gaussians you need to use the numbered SIGMA keywords, one for each Gaussian.");
-  keys.add("numbered","CORRELATION","The correlation for two-dimensional bivariate Gaussian distributions. Only works for two arguments. The value should be between -1 and 1. If no value is given the Gaussians is considered as un-correlated (i.e. value of 0.0). For one Gaussians you can use either CORRELATION or CORRELATION1. For more Gaussians you need to use the numbered CORRELATION keywords, one for each Gaussian.");
+  keys.add("numbered","CENTER","The centers of the Gaussian distributions.");
+  keys.add("numbered","SIGMA","The standard deviations of the Gaussian distributions.");
+  keys.add("numbered","CORRELATION","The correlation for two-dimensional bivariate Gaussian distributions. Only works for two arguments. The value should be between -1 and 1. If no value is given the Gaussians is considered as un-correlated (i.e. value of 0.0).");
   keys.add("optional","WEIGHTS","The weights of the Gaussian distributions. Have to be as many as the number of centers given with the numbered CENTER keywords. If no weights are given the distributions are weighted equally. The weights are automatically normalized to 1.");
   keys.use("WELLTEMPERED_FACTOR");
   keys.use("SHIFT_TO_ZERO");
