@@ -38,7 +38,7 @@ namespace ves {
 Target distribution given by a sum of Von Mises distributions (static).
 
 Employ a target distribution that is given by a sum where each
-term is a product of one-dimensional 
+term is a product of one-dimensional
 [Von Mises distributions](https://en.wikipedia.org/wiki/Von_Mises_distribution),
 \f[
 p(\mathbf{s}) = \sum_{i} \, w_{i}
