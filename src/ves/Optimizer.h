@@ -182,6 +182,7 @@ public:
   //
   unsigned int getIterationCounter() const;
   double getIterationCounterDbl() const;
+  std::string getIterationCounterStr(const int offset=0) const; 
   void setIterationCounter(const unsigned int);
   void increaseIterationCounter();
   //
