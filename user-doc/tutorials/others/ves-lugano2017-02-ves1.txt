@@ -447,13 +447,15 @@ continuously.
 As an exercise, you can use a target distribution consisting in a gaussian
 centered at the dissociation barrier. The syntax in Plumed is:
 \verbatim
+td1: GAUSSIAN CENTER=0.325 SIGMA=0.03
+
 VES_LINEAR_EXPANSION ...
  ARG=d1
  BASIS_FUNCTIONS=bf1
  LABEL=b1
  TEMP=300.0
  GRID_BINS=300
- TARGET_DISTRIBUTION={GAUSSIAN CENTER=0.325 SIGMA=0.03}
+ TARGET_DISTRIBUTION=td1
 ... VES_LINEAR_EXPANSION
 \endverbatim
 
