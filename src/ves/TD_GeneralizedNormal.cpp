@@ -43,33 +43,33 @@ p(\mathbf{s}) = \sum_{i} \, w_{i}
 \exp\left( -\left\vert \frac{s_{k}-\mu_{k,i}}{\alpha_{k,i}} \right\vert^{\beta_{k,i}} \right)
 \f]
 where \f$(\mu_{1,i},\mu_{2,i},\ldots,\mu_{d,i})\f$
-are the centers of the distributions, 
-\f$(\alpha_{1,i},\alpha_{2,i},\ldots,\alpha_{d,i})\f$ are the scale 
-parameters of the distributions, 
-\f$(\beta_{1,i},\beta_{2,i},\ldots,\beta_{d,i})\f$ are the shape 
-parameters of the distributions, and \f$\Gamma(x)\f$ is the 
+are the centers of the distributions,
+\f$(\alpha_{1,i},\alpha_{2,i},\ldots,\alpha_{d,i})\f$ are the scale
+parameters of the distributions,
+\f$(\beta_{1,i},\beta_{2,i},\ldots,\beta_{d,i})\f$ are the shape
+parameters of the distributions, and \f$\Gamma(x)\f$ is the
 gaamma function.
 The weights \f$w_{i}\f$ are normalized to 1, \f$\sum_{i}w_{i}=1\f$.
 
-Employing \f$\beta=2\f$ results in a 
-Gaussian (normal) distributions with mean 
-\f$\mu\f$ and variance \f$\alpha^2/2\f$, 
-\f$\beta=1\f$ gives the Laplace distribution, and 
-the limit \f$\beta \to \infty\f$ results in a 
-uniform  distribution on the interval \f$[\mu-\alpha,\mu+\alpha]\f$. 
+Employing \f$\beta=2\f$ results in a
+Gaussian (normal) distributions with mean
+\f$\mu\f$ and variance \f$\alpha^2/2\f$,
+\f$\beta=1\f$ gives the Laplace distribution, and
+the limit \f$\beta \to \infty\f$ results in a
+uniform  distribution on the interval \f$[\mu-\alpha,\mu+\alpha]\f$.
 
-The centers \f$(\mu_{1,i},\mu_{2,i},\ldots,\mu_{d,i})\f$ 
-are given using the numbered CENTER keywords, the scale 
-parameters \f$(\alpha_{1,i},\alpha_{2,i},\ldots,\alpha_{d,i})\f$ 
-using the numbered SCALE keywords, and the shape parameters 
-\f$(\beta_{1,i},\beta_{2,i},\ldots,\beta_{d,i})\f$ using the 
-numbered SHAPE keywords. 
-The weights are given using the WEIGHTS keywords, if no weights are 
-given are all terms weighted equally. 
+The centers \f$(\mu_{1,i},\mu_{2,i},\ldots,\mu_{d,i})\f$
+are given using the numbered CENTER keywords, the scale
+parameters \f$(\alpha_{1,i},\alpha_{2,i},\ldots,\alpha_{d,i})\f$
+using the numbered SCALE keywords, and the shape parameters
+\f$(\beta_{1,i},\beta_{2,i},\ldots,\beta_{d,i})\f$ using the
+numbered SHAPE keywords.
+The weights are given using the WEIGHTS keywords, if no weights are
+given are all terms weighted equally.
 
 \par Examples
 
-A generalized normal distribution in one-dimensional 
+A generalized normal distribution in one-dimensional
 \plumedfile
 td1: TD_GENERALIZED_NORMAL CENTER1=+20.0  ALPHA1=5.0  BETA1=4.0
 \endplumedfile
