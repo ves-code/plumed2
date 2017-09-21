@@ -50,8 +50,8 @@ Note the difference between this target distribution and the one defined in
 product of one-dimensional distribution \f$p_{k}(s_{k})\f$.
 
 The labels of the one-dimensional distributions \f$p_{k}(s_{k})\f$ to be
-used in the product distribution are given in the DISTRIBUTIONS keyword. 
-Note that the order of the labels is very important. 
+used in the product distribution are given in the DISTRIBUTIONS keyword.
+Note that the order of the labels is very important.
 
 It is assumed that all the distributions to be used in the product distribution
 are normalized. If that is not the case you need to

@@ -89,7 +89,7 @@ that goes from -1 to 1. In this case the covariance matrix is given as
 \right]
 \f]
 The correlation \f$\rho\f$ is given using
-the numbered CORRELATION keywords. A value of \f$\rho=0\f$ means 
+the numbered CORRELATION keywords. A value of \f$\rho=0\f$ means
 that the arguments are considered as
 un-correlated, which is the default behavior.
 

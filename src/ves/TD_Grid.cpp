@@ -73,7 +73,7 @@ will make values outside to be taken as zero.
 \par Examples
 
 Generally you only need to provide the the filename of the external grid
-file. 
+file.
 \plumedfile
 td: TD_GRID FILE=input-grid.data
 \endplumedfile
