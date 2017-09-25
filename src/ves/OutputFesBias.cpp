@@ -20,7 +20,6 @@
    along with the ves-code module.  If not, see <http://www.gnu.org/licenses/>.
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
-#include "Optimizer.h"
 #include "CoeffsVector.h"
 #include "VesTools.h"
 #include "VesBias.h"
@@ -34,9 +33,9 @@
 namespace PLMD {
 namespace ves {
 
-//+PLUMEDOC VES_UTILS FES_DUMPER
+//+PLUMEDOC VES_UTILS VES_OUTPUT_FES
 /*
-Tool to output biases and FESs from coefficients.
+Tool to output biases and FESs from previously obtained coefficients.
 
 \par Examples
 
@@ -54,7 +53,7 @@ public:
 };
 
 
-PLUMED_REGISTER_ACTION(Opt_FesDumper,"FES_DUMPER")
+PLUMED_REGISTER_ACTION(Opt_FesDumper,"VES_OUTPUT_FES")
 
 
 void Opt_FesDumper::registerKeywords(Keywords& keys) {
