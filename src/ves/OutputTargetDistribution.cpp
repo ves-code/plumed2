@@ -34,7 +34,7 @@
 namespace PLMD {
 namespace ves {
 
-//+PLUMEDOC VES_UTILS DUMP_TARGET_DISTRIBUTION
+//+PLUMEDOC VES_UTILS VES_OUTPUT_TARGET_DISTRIBUTION
 /*
 Dump target distribution to file.
 
@@ -43,20 +43,20 @@ Dump target distribution to file.
 //+ENDPLUMEDOC
 
 
-class DumpTargetDistribution :
+class OutputTargetDistribution :
   public Action
 {
 public:
-  explicit DumpTargetDistribution(const ActionOptions&);
+  explicit OutputTargetDistribution(const ActionOptions&);
   void calculate() {}
   void apply() {}
   static void registerKeywords(Keywords& keys);
 };
 
 
-PLUMED_REGISTER_ACTION(DumpTargetDistribution,"DUMP_TARGET_DISTRIBUTION")
+PLUMED_REGISTER_ACTION(OutputTargetDistribution,"VES_OUTPUT_TARGET_DISTRIBUTION")
 
-void DumpTargetDistribution::registerKeywords(Keywords& keys) {
+void OutputTargetDistribution::registerKeywords(Keywords& keys) {
   Action::registerKeywords(keys);
   keys.add("compulsory","GRID_MIN","the lower bounds for the grid");
   keys.add("compulsory","GRID_MAX","the upper bounds for the grid");
@@ -69,7 +69,7 @@ void DumpTargetDistribution::registerKeywords(Keywords& keys) {
   keys.addFlag("DO_1D_PROJECTIONS",false,"Also output the one-dimensional marginal distributions for multi-dimensional target distribution.");
 }
 
-DumpTargetDistribution::DumpTargetDistribution(const ActionOptions&ao):
+OutputTargetDistribution::OutputTargetDistribution(const ActionOptions&ao):
   Action(ao)
 {
 
@@ -78,7 +78,7 @@ DumpTargetDistribution::DumpTargetDistribution(const ActionOptions&ao):
   std::string log_targetdist_fname;
   parse("LOG_TARGETDIST_FILE",log_targetdist_fname);
   if(targetdist_fname==log_targetdist_fname) {
-    plumed_merror("error in DUMP_TARGET_DISTRIBUTION: TARGETDIST_FILE and LOG_TARGETDIST_FILE cannot be the same");
+    plumed_merror("error in " + getName() + ":TARGETDIST_FILE and LOG_TARGETDIST_FILE cannot be the same");
   }
 
   std::vector<unsigned int> grid_bins;
@@ -132,7 +132,7 @@ DumpTargetDistribution::DumpTargetDistribution(const ActionOptions&ao):
   if(error_msg.size()>0) {plumed_merror("Error in keyword TARGET_DISTRIBUTION of "+getName()+": "+error_msg);}
   //
   if(targetdist_pntr->isDynamic()) {
-    plumed_merror("DUMP_TARGET_DISTRIBUTION only works for static target distributions");
+    plumed_merror(getName() + " only works for static target distributions");
   }
   targetdist_pntr->setupGrids(arguments,grid_min,grid_max,grid_bins);
   targetdist_pntr->updateTargetDist();

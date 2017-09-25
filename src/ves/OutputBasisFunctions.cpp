@@ -36,7 +36,7 @@
 namespace PLMD {
 namespace ves {
 
-//+PLUMEDOC VES_UTILS DUMP_BASISFUNCTIONS
+//+PLUMEDOC VES_UTILS VES_OUTPUT_BASISFUNCTIONS
 /*
 Dump basis functions to file.
 
@@ -46,12 +46,12 @@ Dump basis functions to file.
 //+ENDPLUMEDOC
 
 
-class DumpBasisFunctions :
+class OutputBasisFunctions :
   public Action
 {
   std::vector<BasisFunctions*> bf_pntrs;
 public:
-  explicit DumpBasisFunctions(const ActionOptions&);
+  explicit OutputBasisFunctions(const ActionOptions&);
   TargetDistribution* setupTargetDistPntr(std::string keyword) const;
   void calculate() {}
   void apply() {}
@@ -59,9 +59,9 @@ public:
 };
 
 
-PLUMED_REGISTER_ACTION(DumpBasisFunctions,"DUMP_BASISFUNCTIONS")
+PLUMED_REGISTER_ACTION(OutputBasisFunctions,"VES_OUTPUT_BASISFUNCTIONS")
 
-void DumpBasisFunctions::registerKeywords(Keywords& keys) {
+void OutputBasisFunctions::registerKeywords(Keywords& keys) {
   Action::registerKeywords(keys);
   keys.add("compulsory","BASIS_SET","the label of the basis set that you want to use");
   keys.add("optional","GRID_BINS","the number of bins used for the grid for writing the basis function values and derivatives. The default value is 1000.");
@@ -78,7 +78,7 @@ void DumpBasisFunctions::registerKeywords(Keywords& keys) {
   keys.addFlag("NUMERICAL_DERIVATIES",false,"if the derivatives of the basis functions should be calculated numerically.");
 }
 
-DumpBasisFunctions::DumpBasisFunctions(const ActionOptions&ao):
+OutputBasisFunctions::OutputBasisFunctions(const ActionOptions&ao):
   Action(ao),
   bf_pntrs(0)
 {
