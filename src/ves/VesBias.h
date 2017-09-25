@@ -96,13 +96,15 @@ private:
   std::string targetdist_averages_filename_;
   std::string coeffs_id_prefix_;
   //
+  bool filenames_have_iteration_number_;
+  //
   bool bias_fileoutput_active_;
   bool fes_fileoutput_active_;
   bool fesproj_fileoutput_active_;
   bool dynamic_targetdist_fileoutput_active_;
   bool static_targetdist_fileoutput_active_;
-
   //
+
   bool bias_cutoff_active_;
   double bias_cutoff_value_;
   double bias_current_max_value;
@@ -213,6 +215,9 @@ public:
   void setGridMax(const std::vector<double>&);
   std::vector<double> getGridMin() const {return grid_min_;}
   void setGridMin(const std::vector<double>&);
+  //
+  bool filenamesIncludeIterationNumber() const {return filenames_have_iteration_number_;}
+  void enableIterationNumberInFilenames() {filenames_have_iteration_number_=true;}
   //
   std::string getIterationFilenameSuffix() const;
   std::string getCoeffsSetFilenameSuffix(const unsigned int coeffs_id) const;

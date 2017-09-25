@@ -14,7 +14,6 @@ VES_LINEAR_EXPANSION ...
 
 FES_DUMPER ...
   BIAS=ves1
-  LABEL=o1
   FES_OUTPUT=5
   BIAS_OUTPUT=5
   COEFFS_INPUT=coeffs.input.data

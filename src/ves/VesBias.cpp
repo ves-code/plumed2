@@ -67,6 +67,7 @@ VesBias::VesBias(const ActionOptions&ao):
   fes_filename_(""),
   targetdist_filename_(""),
   coeffs_id_prefix_("c-"),
+  filenames_have_iteration_number_(false),
   bias_fileoutput_active_(false),
   fes_fileoutput_active_(false),
   fesproj_fileoutput_active_(false),
@@ -523,6 +524,9 @@ unsigned int VesBias::getIterationCounter() const {
   if(optimizeCoeffs()) {
     iteration = getOptimizerPntr()->getIterationCounter();
   }
+  else {
+    iteration = getCoeffsPntrs()[0]->getIterationCounter();
+  }
   return iteration;
 }
 
@@ -538,6 +542,7 @@ void VesBias::linkOptimizer(Optimizer* optimizer_pntr_in) {
   }
   checkThatTemperatureIsGiven();
   optimize_coeffs_ = true;
+  filenames_have_iteration_number_ = true;
 }
 
 
@@ -635,7 +640,7 @@ std::string VesBias::getCurrentOutputFilename(const std::string& base_filename, 
   if(suffix.size()>0) {
     filename = FileBase::appendSuffix(filename,"."+suffix);
   }
-  if(optimizeCoeffs()) {
+  if(filenamesIncludeIterationNumber()) {
     filename = FileBase::appendSuffix(filename,"."+getIterationFilenameSuffix());
   }
   return filename;
@@ -647,7 +652,7 @@ std::string VesBias::getCurrentTargetDistOutputFilename(const std::string& suffi
   if(suffix.size()>0) {
     filename = FileBase::appendSuffix(filename,"."+suffix);
   }
-  if(optimizeCoeffs() && dynamicTargetDistribution()) {
+  if(filenamesIncludeIterationNumber() && dynamicTargetDistribution()) {
     filename = FileBase::appendSuffix(filename,"."+getIterationFilenameSuffix());
   }
   return filename;
@@ -656,7 +661,7 @@ std::string VesBias::getCurrentTargetDistOutputFilename(const std::string& suffi
 
 std::string VesBias::getIterationFilenameSuffix() const {
   std::string iter_str;
-  Tools::convert(getOptimizerPntr()->getIterationCounter(),iter_str);
+  Tools::convert(getIterationCounter(),iter_str);
   iter_str = "iter-" + iter_str;
   return iter_str;
 }

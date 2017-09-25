@@ -22,6 +22,9 @@
 
 #include "Optimizer.h"
 #include "CoeffsVector.h"
+#include "VesTools.h"
+#include "VesBias.h"
+
 
 #include "tools/File.h"
 #include "core/ActionRegister.h"
@@ -31,7 +34,7 @@
 namespace PLMD {
 namespace ves {
 
-//+PLUMEDOC VES_OPTIMIZER FES_DUMPER
+//+PLUMEDOC VES_UTILS FES_DUMPER
 /*
 Tool to output biases and FESs from coefficients.
 
@@ -40,13 +43,14 @@ Tool to output biases and FESs from coefficients.
 */
 //+ENDPLUMEDOC
 
-class Opt_FesDumper : public Optimizer {
+class Opt_FesDumper : public Action {
 
 public:
   static void registerKeywords(Keywords&);
   explicit Opt_FesDumper(const ActionOptions&);
-  void update() {};
-  void coeffsUpdate(const unsigned int c_id = 0) {};
+  void update() {}
+  void calculate() {}
+  void apply() {}
 };
 
 
@@ -54,55 +58,106 @@ PLUMED_REGISTER_ACTION(Opt_FesDumper,"FES_DUMPER")
 
 
 void Opt_FesDumper::registerKeywords(Keywords& keys) {
-  Optimizer::registerKeywords(keys);
-  keys.remove("COEFFS_FILE");
-  keys.remove("COEFFS_OUTPUT");
-  keys.remove("COEFFS_FMT");
-  keys.remove("GRADIENT_FILE");
-  keys.remove("GRADIENT_OUTPUT");
-  keys.remove("GRADIENT_FMT");
-  keys.remove("COEFFS_SET_ID_PREFIX");
-  keys.remove("INITIAL_COEFFS");
-  keys.remove("STRIDE");
-  keys.remove("TARGETDIST_AVERAGES_FILE");
-  keys.remove("TARGETDIST_AVERAGES_OUTPUT");
-  keys.remove("TARGETDIST_AVERAGES_FMT");
-  keys.remove("RESTART");
-  keys.add("compulsory","COEFFS_INPUT","coeffs.data","the name of input coefficient file");
+  keys.add("compulsory","BIAS","the label of the VES bias for to output the FESs and the bias files");
+  keys.add("compulsory","COEFFS_INPUT","the name of input coefficient file");
+  keys.add("optional","BIAS_OUTPUT","how often the bias(es) should be written out to file. Note that the value is given in terms of coefficent iterations.");
+  keys.add("optional","FES_OUTPUT","how often the FES(s) should be written out to file. Note that the value is given in terms of coefficent iterations.");
+  keys.add("optional","FES_PROJ_OUTPUT","how often the projections of the FES(s) should be written out to file. Note that the value is given in terms of coefficent iterations.");
   //
 }
 
 
 Opt_FesDumper::Opt_FesDumper(const ActionOptions&ao):
-  PLUMED_VES_OPTIMIZER_INIT(ao)
+  Action(ao)
 {
-  turnOffHessian();
-  turnOffCoeffsOutputFiles();
 
-  plumed_massert(numberOfBiases()==1,"FES_DUMPER only works with one bias for now");
-  plumed_massert(numberOfCoeffsSets()==1,"FES_DUMPER only works with one coefficient for now");
-  std::string fname = "coeffs.data";
-  parse("COEFFS_INPUT",fname);
-  checkRead();
-  IFile ifile;
-  ifile.open(fname);
-  while(ifile) {
-    getBiasPntrs()[0]->resetBiasFileOutput();
-    getBiasPntrs()[0]->resetFesFileOutput();
+  std::vector<std::string> bias_labels;
+  parseVector("BIAS",bias_labels);
+  if(bias_labels.size()>1) {
+    plumed_merror(getName()+" only support one VES bias");
+  }
 
-    getCoeffsPntrs()[0]->readOneSetFromFile(ifile);
+  std::string error_msg = "";
+  std::vector<VesBias*> bias_pntrs = VesTools::getPointersFromLabels<VesBias*>(bias_labels,plumed.getActionSet(),error_msg);
+  if(error_msg.size()>0) {plumed_merror("Error in keyword BIAS of "+getName()+": "+error_msg);}
 
-    setIterationCounter(getCoeffsPntrs()[0]->getIterationCounter());
-    if(isBiasOutputActive() && getIterationCounter()%getBiasOutputStride()==0) {
-      writeBiasOutputFiles();
-    }
-    if(isFesOutputActive() && getIterationCounter()%getFesOutputStride()==0) {
-      writeFesOutputFiles();
-    }
-    if(isFesProjOutputActive() && getIterationCounter()%getFesProjOutputStride()==0) {
-      writeFesProjOutputFiles();
+  for(unsigned int i=0; i<bias_pntrs.size(); i++) {
+    if(bias_pntrs[i]->numberOfCoeffsSets()>1) {
+      plumed_merror(getName()+" at the moment supports only VES biases with a single coefficient set");
     }
   }
+
+  std::vector<std::string> coeffs_fnames;
+  parseVector("COEFFS_INPUT",coeffs_fnames);
+  if(coeffs_fnames.size()!=bias_pntrs.size()) {
+    plumed_merror(getName()+": there have to be as many coefficient file given in COEFFS_INPUT as VES biases given in BIAS");
+  }
+
+  unsigned int bias_output_stride = 0;
+  parse("BIAS_OUTPUT",bias_output_stride);
+
+  unsigned int fes_output_stride = 0;
+  parse("FES_OUTPUT",fes_output_stride);
+
+  unsigned int fesproj_output_stride = 0;
+  parse("FES_PROJ_OUTPUT",fesproj_output_stride);
+
+  if(bias_output_stride == 0 && fes_output_stride == 0 && fesproj_output_stride == 0) {
+    plumed_merror(getName()+": you are not telling the action to do anything, you need to use one of the keywords BIAS_OUTPUT, FES_OUTPUT, or FES_PROJ_OUTPUT");
+  }
+
+  checkRead();
+
+  for(unsigned int i=0; i<bias_pntrs.size(); i++) {
+
+    if(bias_pntrs[i]->dynamicTargetDistribution()) {
+      plumed_merror(getName()+" does not support dynamic target distributions at the moment");
+    }
+
+    if(bias_output_stride>0) {
+      bias_pntrs[i]->enableBiasFileOutput();
+      bias_pntrs[i]->setupBiasFileOutput();
+    }
+
+    if(fes_output_stride>0) {
+      bias_pntrs[i]->enableFesFileOutput();
+      bias_pntrs[i]->setupFesFileOutput();
+    }
+
+    if(fesproj_output_stride>0) {
+      bias_pntrs[i]->enableFesProjFileOutput();
+      bias_pntrs[i]->setupFesProjFileOutput();
+    }
+
+    bias_pntrs[i]->enableIterationNumberInFilenames();
+
+    IFile ifile;
+    ifile.open(coeffs_fnames[i]);
+
+    while(ifile) {
+
+      bias_pntrs[i]->resetBiasFileOutput();
+      bias_pntrs[i]->resetFesFileOutput();
+
+      bias_pntrs[i]->getCoeffsPntrs()[0]->readOneSetFromFile(ifile);
+      unsigned int iteration = bias_pntrs[i]->getCoeffsPntrs()[0]->getIterationCounter();
+
+      if(bias_output_stride>0 && iteration%bias_output_stride==0) {
+        bias_pntrs[i]->writeBiasToFile();
+      }
+
+      if(fes_output_stride>0 && iteration%fes_output_stride==0) {
+        bias_pntrs[i]->writeFesToFile();
+      }
+
+      if(fesproj_output_stride>0 && iteration%fesproj_output_stride==0) {
+        bias_pntrs[i]->writeFesProjToFile();
+      }
+
+    }
+
+  }
+
   log.printf("Stopping");
   plumed.stop();
 }
