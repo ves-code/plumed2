@@ -146,19 +146,21 @@ OutputFesBias::OutputFesBias(const ActionOptions&ao):
       bias_pntrs[i]->resetBiasFileOutput();
       bias_pntrs[i]->resetFesFileOutput();
 
-      bias_pntrs[i]->getCoeffsPntrs()[0]->readOneSetFromFile(ifile);
-      unsigned int iteration = bias_pntrs[i]->getCoeffsPntrs()[0]->getIterationCounter();
+      if(bias_pntrs[i]->getCoeffsPntrs()[0]->readOneSetFromFile(ifile)>0) {
+        unsigned int iteration = bias_pntrs[i]->getCoeffsPntrs()[0]->getIterationCounter();
 
-      if(bias_output_stride>0 && iteration%bias_output_stride==0) {
-        bias_pntrs[i]->writeBiasToFile();
-      }
+        if(bias_output_stride>0 && iteration%bias_output_stride==0) {
+          bias_pntrs[i]->writeBiasToFile();
+        }
 
-      if(fes_output_stride>0 && iteration%fes_output_stride==0) {
-        bias_pntrs[i]->writeFesToFile();
-      }
+        if(fes_output_stride>0 && iteration%fes_output_stride==0) {
+          bias_pntrs[i]->writeFesToFile();
+        }
 
-      if(fesproj_output_stride>0 && iteration%fesproj_output_stride==0) {
-        bias_pntrs[i]->writeFesProjToFile();
+        if(fesproj_output_stride>0 && iteration%fesproj_output_stride==0) {
+          bias_pntrs[i]->writeFesProjToFile();
+        }
+        
       }
 
     }
