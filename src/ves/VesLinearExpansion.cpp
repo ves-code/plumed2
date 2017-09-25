@@ -174,6 +174,7 @@ VesLinearExpansion::VesLinearExpansion(const ActionOptions&ao):
   if(getNumberOfTargetDistributionPntrs()==0) {
     log.printf("  using an uniform target distribution: \n");
     bias_expansion_pntr_->setupUniformTargetDistribution();
+    disableStaticTargetDistFileOutput();
   }
   else if(getNumberOfTargetDistributionPntrs()==1) {
     if(biasCutoffActive()) {getTargetDistributionPntrs()[0]->setupBiasCutoff();}
