@@ -853,7 +853,9 @@ size_t CoeffsVector::readDataFromFile(IFile& ifile, const bool ignore_missing_co
     ifile.scanField();
     ncoeffs_read++;
     if(ncoeffs_read==numberOfCoeffs()) {
-      plumed_massert((static_cast<unsigned int>(idx_tmp)+1)==numberOfCoeffs(),"something strange about the coefficent file, perhaps multiple entries and missing values");
+      if((static_cast<unsigned int>(idx_tmp)+1)!=numberOfCoeffs()) {
+        plumed_merror("something strange about the coefficent file that is being read in, perhaps multiple entries or missing values");
+      }
       break;
     }
   }
