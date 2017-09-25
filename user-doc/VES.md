@@ -151,7 +151,7 @@ The following list contains the CV available in the VES code.
 
 \page ves_utils Utilities
 
-The following list contains various utilities available in the VES code.
+The following list contains various utilities available in the VES code. 
 
 @VES_UTILS@
 
