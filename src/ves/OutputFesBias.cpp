@@ -160,7 +160,7 @@ OutputFesBias::OutputFesBias(const ActionOptions&ao):
         if(fesproj_output_stride>0 && iteration%fesproj_output_stride==0) {
           bias_pntrs[i]->writeFesProjToFile();
         }
-        
+
       }
 
     }
