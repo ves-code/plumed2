@@ -113,6 +113,14 @@ OutputFesBias::OutputFesBias(const ActionOptions&ao):
       plumed_merror(getName()+" does not support dynamic target distributions at the moment");
     }
 
+    if(bias_pntrs[i]->isStaticTargetDistFileOutputActive()) {
+      bias_pntrs[i]->setupTargetDistFileOutput();
+      bias_pntrs[i]->writeTargetDistToFile();
+      bias_pntrs[i]->setupTargetDistProjFileOutput();
+      bias_pntrs[i]->writeTargetDistProjToFile();
+    }
+
+
     if(bias_output_stride>0) {
       bias_pntrs[i]->enableBiasFileOutput();
       bias_pntrs[i]->setupBiasFileOutput();
