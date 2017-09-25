@@ -42,21 +42,21 @@ Tool to output biases and FESs from previously obtained coefficients.
 */
 //+ENDPLUMEDOC
 
-class Opt_FesDumper : public Action {
+class OutputFesBias : public Action {
 
 public:
   static void registerKeywords(Keywords&);
-  explicit Opt_FesDumper(const ActionOptions&);
+  explicit OutputFesBias(const ActionOptions&);
   void update() {}
   void calculate() {}
   void apply() {}
 };
 
 
-PLUMED_REGISTER_ACTION(Opt_FesDumper,"VES_OUTPUT_FES")
+PLUMED_REGISTER_ACTION(OutputFesBias,"VES_OUTPUT_FES")
 
 
-void Opt_FesDumper::registerKeywords(Keywords& keys) {
+void OutputFesBias::registerKeywords(Keywords& keys) {
   keys.add("compulsory","BIAS","the label of the VES bias for to output the FESs and the bias files");
   keys.add("compulsory","COEFFS_INPUT","the name of input coefficient file");
   keys.add("optional","BIAS_OUTPUT","how often the bias(es) should be written out to file. Note that the value is given in terms of coefficent iterations.");
@@ -66,7 +66,7 @@ void Opt_FesDumper::registerKeywords(Keywords& keys) {
 }
 
 
-Opt_FesDumper::Opt_FesDumper(const ActionOptions&ao):
+OutputFesBias::OutputFesBias(const ActionOptions&ao):
   Action(ao)
 {
 
