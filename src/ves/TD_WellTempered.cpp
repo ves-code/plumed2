@@ -25,6 +25,8 @@
 
 #include "core/ActionRegister.h"
 #include "tools/Grid.h"
+#include "core/PlumedMain.h"
+
 
 
 namespace PLMD {
@@ -120,6 +122,10 @@ TD_WellTempered::TD_WellTempered(const ActionOptions& ao):
   PLUMED_VES_TARGETDISTRIBUTION_INIT(ao),
   bias_factor_(0.0)
 {
+  log.printf("  Well-tempered target distribution, see and cite ");
+  log << plumed.cite("Valsson and Parrinello, J. Chem. Theory Comput. 11, 1996-2002 (2015)");
+  log << plumed.cite("Barducci, Bussi, and Parrinello, Phys. Rev. Lett. 100, 020603 (2008)");
+  log.printf("\n");
   parse("BIASFACTOR",bias_factor_);
   if(bias_factor_<=1.0) {
     plumed_merror("TD_WELLTEMPERED target distribution: the value of the bias factor doesn't make sense, it should be larger than 1.0");

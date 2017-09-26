@@ -224,6 +224,9 @@ Optimizer::Optimizer(const ActionOptions&ao):
     log.printf("  optimization performed using multiple walkers connected via MPI:\n");
     log.printf("   number of walkers: %d\n",numwalkers);
     log.printf("   walker number: %d\n",walker_rank);
+    log.printf("   please see and cite ");
+    log << plumed.cite("Raiteri, Laio, Gervasio, Micheletti, and Parrinello, J. Phys. Chem. B 110, 3533 (2006)");
+    log.printf("\n");
   }
 
   dynamic_targetdists_.resize(nbiases_,false);
@@ -251,6 +254,9 @@ Optimizer::Optimizer(const ActionOptions&ao):
         }
         log.printf("\n");
       }
+      log.printf("  See and cite ");
+      log << plumed.cite("Valsson and Parrinello, J. Chem. Theory Comput. 11, 1996-2002 (2015)");
+      log.printf("\n");
     }
   }
 

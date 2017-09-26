@@ -79,7 +79,9 @@ VesBias::VesBias(const ActionOptions&ao):
   bias_cutoff_swfunc_pntr_(NULL),
   calc_reweightfactor_(false)
 {
+  log.printf("  VES bias, please read and cite ");
   log << plumed.cite("Valsson and Parrinello, Phys. Rev. Lett. 113, 090601 (2014)");
+  log.printf("\n");
 
   double temp=0.0;
   parse("TEMP",temp);
@@ -162,6 +164,9 @@ VesBias::VesBias(const ActionOptions&ao):
       double fermi_lambda=1.0;
       parse("BIAS_CUTOFF_FERMI_LAMBDA",fermi_lambda);
       setupBiasCutoff(cutoff_value,fermi_lambda);
+      log.printf("  Employing a bias cutoff of %f (the lambda value for the Fermi switching function is %f), see and cite ",cutoff_value,fermi_lambda);
+      log << plumed.cite("McCarty, Valsson, Tiwary, and Parrinello, Phys. Rev. Lett. 115, 070601 (2015)");
+      log.printf("\n");
     }
   }
 

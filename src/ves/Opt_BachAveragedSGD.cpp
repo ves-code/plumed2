@@ -67,7 +67,7 @@ COEFFS_FILE keyword. How often the coefficients are written
 to this file is controlled by the COEFFS_OUTPUT keyword.
 
 If the VES bias employes a dynamic target distribution that needes to be 
-iteratively updated (e.g. \ref TD_WELLTEMPERED), you will need to specify 
+iteratively updated (e.g. \ref TD_WELLTEMPERED) \cite Valsson-JCTC-2015, you will need to specify 
 the stride for updating the target distribution by using 
 the TARGETDIST_STRIDE keyword where the stride 
 is given in terms coefficent iterations. For example if the 
