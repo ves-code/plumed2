@@ -33,7 +33,39 @@ namespace ves {
 /*
 Dummy optimizer for debugging.
 
+This is dummy optimizer that can be used for debugging. It will not update the 
+coefficients but can be used to monitor the gradient and Hessian for a given 
+VES bias. 
+
 \par Examples
+In the following input we use the OPT_DUMMY to monitor the gradient and 
+Hessian for a given VES bias every 1 iteration. 
+\plumedfile
+phi:   TORSION ATOMS=5,7,9,15     
+
+bf1: BF_FOURIER ORDER=5 INTERVAL_MIN=-pi INTERVAL_MAX=pi
+
+VES_LINEAR_EXPANSION ...
+ ARG=phi
+ BASIS_FUNCTIONS=bf1
+ LABEL=ves1
+ TEMP=300.0
+ GRID_BINS=100
+... VES_LINEAR_EXPANSION
+
+OPT_DUMMY ...
+  BIAS=ves1
+  STRIDE=1000
+  LABEL=o1
+  MONITOR_HESSIAN
+  GRADIENT_FILE=gradient.data
+  GRADIENT_OUTPUT=1
+  GRADIENT_FMT=%12.6f
+  HESSIAN_FILE=hessian.data
+  HESSIAN_OUTPUT=1
+  HESSIAN_FMT=%12.6f
+... OPT_DUMMY
+\endplumedfile
 
 */
 //+ENDPLUMEDOC
