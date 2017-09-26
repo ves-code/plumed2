@@ -646,4 +646,17 @@ int MD_LinearExpansionPES::main( FILE* in, FILE* out, PLMD::Communicator& pc) {
 
   if(plumed) {delete plumed;}
   if(plumed_bf) {delete plumed_bf;}
-  if(potential_expans
+  if(potential_expansion_pntr) {delete potential_expansion_pntr;}
+  if(coeffs_pntr) {delete coeffs_pntr;}
+  for(unsigned int i=0; i<args.size(); i++) {delete args[i];}
+  args.clear();
+  //printf("Rank: %d, Size: %d \n", pc.Get_rank(), pc.Get_size() );
+  //printf("Rank: %d, Size: %d, MultiSimCommRank: %d, MultiSimCommSize: %d \n", pc.Get_rank(), pc.Get_size(), multi_sim_comm.Get_rank(), multi_sim_comm.Get_size() );
+  fclose(fp);
+  fclose(file_dummy);
+
+  return 0;
+}
+
+}
+}
