@@ -74,7 +74,7 @@ VES_OUTPUT_FES ...
 \endplumedfile
 
 This input should be run through the driver by using a command similar to the 
-following where the trajectory/configuration file conf.gro is needed to 
+following one where the trajectory/configuration file conf.gro is needed to 
 correctly define the CVs
 \verbatim
 plumed driver --plumed plumed.dat --igro conf.gro

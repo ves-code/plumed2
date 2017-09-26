@@ -38,9 +38,42 @@ namespace ves {
 
 //+PLUMEDOC VES_UTILS VES_OUTPUT_BASISFUNCTIONS
 /*
-Dump basis functions to file.
+Output basis functions to file. 
+
+This action can be used to write out to a grid file the values and derivatives of 
+given basis functions. This is normally used for debugging when programing new 
+types of basis functions. For example, it is possible to calculate the 
+derivatives numerically and compare that to the analytically calculated 
+derivatives. 
+
+This action is normally used through the \ref driver. 
 
 \par Examples
+
+In the following input we define a Legendre polynomials basis functions 
+of order 14 over the interval -4.0 to 4.0 and output their values 
+and derivatives to files called bfL.values.data and bfL.derivs.data.
+\plumedfile
+BF_LEGENDRE ...
+ ORDER=14
+ INTERVAL_MIN=-4.0
+ INTERVAL_MAX=4.0
+ LABEL=bfL
+... BF_LEGENDRE
+
+VES_OUTPUT_BASISFUNCTIONS ...
+ BASIS_FUNCTIONS=bfL
+ GRID_BINS=200
+ FORMAT_VALUES_DERIVS=%13.6f
+... VES_OUTPUT_BASISFUNCTIONS
+\endplumedfile
+
+This input should be run through the driver by using a command similar to the 
+following one where the trajectory/configuration file conf.gro is needed to 
+trick the code to exit correctly.
+\verbatim
+plumed driver --plumed plumed.dat --igro conf.gro
+\endverbatim
 
 */
 //+ENDPLUMEDOC

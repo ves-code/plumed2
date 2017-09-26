@@ -36,9 +36,43 @@ namespace ves {
 
 //+PLUMEDOC VES_UTILS VES_OUTPUT_TARGET_DISTRIBUTION
 /*
-Dump target distribution to file.
+Output target distribution to file. 
+
+This action can be used to output target distributions to a grid file, 
+for example to see how they look like before using them in a VES bias. 
+This action only support static target distributions.
+
+This action is normally used through the \ref driver. 
+
 
 \par Examples
+
+In the following input we define a target distribution that is uniform for 
+argument 1 and a Gaussian for argument 2 and then output it to a file 
+called targetdist-1.data.
+\plumedfile
+t1_1: TD_UNIFORM  MINIMA=-4.0  MAXIMA=+4.0
+t1_2: TD_GAUSSIAN  CENTER1=-2.0  SIGMA1=0.5
+t1: TD_PRODUCT_DISTRIBUTION  DISTRIBUTIONS=t1_1,t1_2
+
+VES_OUTPUT_TARGET_DISTRIBUTION ...
+ GRID_MIN=-4.0,-4.0
+ GRID_MAX=+4.0,+4.0
+ GRID_BINS=100,100
+ TARGET_DISTRIBUTION=t1
+ TARGETDIST_FILE=targetdist-1.data
+ LOG_TARGETDIST_FILE=targetdist-1.log.data
+ FMT_GRIDS=%11.6f
+... VES_OUTPUT_TARGET_DISTRIBUTION
+\endplumedfile
+
+This input should be run through the driver by using a command similar to the 
+following one where the trajectory/configuration file conf.gro is needed to 
+trick the code to exit correctly.
+\verbatim
+plumed driver --plumed plumed.dat --igro conf.gro
+\endverbatim
+
 */
 //+ENDPLUMEDOC
 
