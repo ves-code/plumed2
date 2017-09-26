@@ -110,14 +110,14 @@ features of the order of around 0.05 nm. We will see afterwards that the order
 of the expansion is not critical as long as we obtain good sampling at
 convergence. If this is the case, it is possible to obtain finer features of
 the FES through reweighting. The syntax for this basis set in Plumed is:
-\verbatim
+\plumedfile
 BF_LEGENDRE ...
  ORDER=10
  INTERVAL_MIN=0.23
  INTERVAL_MAX=0.8
  LABEL=bf1
 ... BF_LEGENDRE
-\endverbatim
+\endplumedfile
 
 We will use a uniform target distribution:
 \f[
@@ -132,7 +132,7 @@ This is the same relation that holds for non-tempered metadynamics.
 
 
 The syntax for the bias potential in Plumed is:
-\verbatim
+\plumedfile
 td1: TD_UNIFORM
 
 VES_LINEAR_EXPANSION ...
@@ -142,7 +142,7 @@ VES_LINEAR_EXPANSION ...
  TARGET_DISTRIBUTION=td1
  LABEL=b1
 ... VES_LINEAR_EXPANSION
-\endverbatim
+\endplumedfile
 
 Finally we have to choose the optimization algorithm. The standard is the
 averaged stochastic gradient descent. One has to define two parameters: the
@@ -159,7 +159,7 @@ the system. The larger the barriers, the larger the step size needed such that
 the bias can grow fast enough to overcome them. For this example we have
 chosen a stride of 500 steps and a step size of 0.5 kJ/mol. The syntax in
 Plumed is:
-\verbatim
+\plumedfile
 OPT_AVERAGED_SGD ...
   BIAS=b1
   STRIDE=500
@@ -169,7 +169,7 @@ OPT_AVERAGED_SGD ...
   BIAS_OUTPUT=500
   COEFFS_OUTPUT=10
 ... OPT_AVERAGED_SGD
-\endverbatim
+\endplumedfile
 
 Now that we have set the scene, we can run our simulation using the run.sh
 script in the Example1 folder. The simulation will produce several files:
@@ -283,7 +283,7 @@ p(s)=
 \f]
 where \f$ s_0=0.6\f$ nm and \f$ \sigma=0.05\f$.
 To define this \f$ p(s) \f$ in Plumed the input is:
-\verbatim
+\plumedfile
 td1: TD_UNIFORM MINIMA=0.23 MAXIMA=0.6 SIGMA_MAXIMA=0.05
 
 VES_LINEAR_EXPANSION ...
@@ -294,20 +294,20 @@ VES_LINEAR_EXPANSION ...
  GRID_BINS=300
  TARGET_DISTRIBUTION=td1
 ... VES_LINEAR_EXPANSION
-\endverbatim
+\endplumedfile
 
 We will choose a basis set of order 20 to be able to capture the features of
 the FES with detail. If you are doing this example in a group, each member of
 the group can choose a different order in the expansion, for instance 5, 10,
 20, and 40. The syntax in Plumed is:
-\verbatim
+\plumedfile
 BF_LEGENDRE ...
  ORDER=20
  INTERVAL_MIN=0.23
  INTERVAL_MAX=0.8
  LABEL=bf1
 ... BF_LEGENDRE
-\endverbatim
+\endplumedfile
 
 Once that you start running the simulation, a file named targetdist.b1.data
 will be created. This file contains the chosen target distribution. We can
@@ -362,7 +362,7 @@ it is possible to calculate the biased distribution of CVs by constructing a
 histogram with equal weights for all points. This distribution should be equal
 to the target distribution \f$ p(s) \f$. The histogram can be calculated in
 plumed using the following input in the plumed.dat file:
-\verbatim
+\plumedfile
 distance: READ FILE=COLVAR  IGNORE_TIME VALUES=d1
 
 HISTOGRAM ...
@@ -375,7 +375,7 @@ HISTOGRAM ...
 ... HISTOGRAM
 
 DUMPGRID GRID=hh1 FILE=histo FMT=%24.16e
-\endverbatim
+\endplumedfile
 and running (or using the run.sh script):
 \verbatim
 plumed --no-mpi driver --plumed plumed.dat --noatoms > plumed.out
@@ -446,8 +446,8 @@ continuously.
 
 As an exercise, you can use a target distribution consisting in a gaussian
 centered at the dissociation barrier. The syntax in Plumed is:
-\verbatim
-td1: GAUSSIAN CENTER=0.325 SIGMA=0.03
+\plumedfile
+td1: TD_GAUSSIAN CENTER=0.325 SIGMA=0.03
 
 VES_LINEAR_EXPANSION ...
  ARG=d1
@@ -457,7 +457,7 @@ VES_LINEAR_EXPANSION ...
  GRID_BINS=300
  TARGET_DISTRIBUTION=td1
 ... VES_LINEAR_EXPANSION
-\endverbatim
+\endplumedfile
 
 Gaussian target distributions are useful to focus the sampling on a particular
 region of CV space. This has been used in protein folding problems to focus

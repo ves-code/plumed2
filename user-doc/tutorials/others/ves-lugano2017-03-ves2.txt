@@ -86,7 +86,7 @@ p_{\mathrm{barrier}}(s)=
 with \f$ C \f$ a normalization factor.
 The files needed for this exercise are in the directory Example1.
 This target distribution can be specified in plumed using:
-\verbatim
+\plumedfile
 td_uniform: TD_UNIFORM MINIMA=0.23 MAXIMA=0.6 SIGMA_MAXIMA=0.05 
 td_welltemp: TD_WELLTEMPERED BIASFACTOR=5
 td_combination: TD_PRODUCT_COMBINATION DISTRIBUTIONS=td_uniform,td_welltemp
@@ -99,7 +99,7 @@ VES_LINEAR_EXPANSION ...
  GRID_BINS=300
  TARGET_DISTRIBUTION=td_combination
 ... VES_LINEAR_EXPANSION
-\endverbatim
+\endplumedfile
 As usual, we run the example using the run.sh script.
 As the simulation progresses we can track the evolution of the target
 distribution. At variance with previous simulations where \f$ p(s) \f$ was
@@ -133,7 +133,7 @@ sed '2,5000d' ../COLVAR > COLVAR
 \endverbatim
 To calculate the biased and unbiased distribution of CVs we use the following
 Plumed's input:
-\verbatim
+\plumedfile
 distance:       READ FILE=COLVAR  IGNORE_TIME VALUES=d1
 ves:       READ FILE=COLVAR IGNORE_TIME VALUES=b1.bias
 
@@ -160,7 +160,7 @@ HISTOGRAM ...
 
 DUMPGRID GRID=hh1 FILE=histo_biased FMT=%24.16e
 DUMPGRID GRID=hh2 FILE=histo_unbiased FMT=%24.16e
-\endverbatim
+\endplumedfile
 If you do not understand what this input does, you might want to read once
 again the previous tutorials.
 The histograms histo_biased and histo_unbiased correspond to \f$ p'(s) \f$ and
@@ -214,7 +214,7 @@ f_{i_1}(s_1)\,  f_{i_2}(s_2) ,
 where \f$ f_{i_1}(s_1)\f$ and \f$ f_{i_2}(s_2) \f$ are the basis functions.
 We will choose to expand the bias potential in Legendre polynomials up to
 order 20 in both dimensions.
-\verbatim
+\plumedfile
 # CV1
 BF_LEGENDRE ...
  ORDER=20
@@ -230,7 +230,7 @@ BF_LEGENDRE ...
  INTERVAL_MAX=7.5
  LABEL=bf2
 ... BF_LEGENDRE
-\endverbatim
+\endplumedfile
 We have chosen the interval [0.23,0.8] nm for the distance and [2.5,7.5] for
 the coordination number.
 The total number of non-zero coefficients will be 400.
@@ -238,7 +238,7 @@ In the coefficients file the indices \f$i_{1}\f$ and \f$i_{2}\f$
 are given by the first two columns.
 We use the well-tempered target distribution together with a barrier at 0.6 nm
 on the distance Na-Cl.
-\verbatim
+\plumedfile
 td_uniform: TD_UNIFORM MINIMA=0.2,2.5 MAXIMA=0.6,7.5 SIGMA_MAXIMA=0.05,0.0
 td_welltemp: TD_WELLTEMPERED BIASFACTOR=5
 td_combination: TD_PRODUCT_COMBINATION DISTRIBUTIONS=td_uniform,td_welltemp
@@ -251,7 +251,7 @@ VES_LINEAR_EXPANSION ...
  GRID_BINS=300,300
  TARGET_DISTRIBUTION=td_combination
 ... VES_LINEAR_EXPANSION
-\endverbatim
+\endplumedfile
 We can now run the simulation and control its progress.
 Since there are 400 coefficients we choose the largest (in absolute value) to control the
 convergence of the simulation. In this case we have chosen coefficients with

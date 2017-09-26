@@ -44,13 +44,13 @@ The system contains 1 Na, 1 Cl, and 106 water molecules (total 320 atoms).
 We first perform a standard MD simulation and control the distance Na-Cl.
 All the files needed for this example are contained in the folder Example1 .
 The distance Na-Cl can be calculated in Plumed 2 using:
-\verbatim
+\plumedfile
 d1:  DISTANCE ATOMS=319,320
-\endverbatim
+\endplumedfile
 
 The coordination number of Na with respect to O in water will also be calculated for later
 use. This variable will represent the collective motion of the solvent.
-\verbatim
+\plumedfile
 COORDINATION ...
  GROUPA=319
  GROUPB=1-318:3
@@ -60,7 +60,7 @@ COORDINATION ...
  NL_STRIDE=10
  LABEL=coord
 ... COORDINATION
-\endverbatim
+\endplumedfile
 
 To run LAMMPS you can use the run.sh script:
 \verbatim
@@ -142,7 +142,7 @@ and therefore the system will evolve under an effective free energy:
 \f]
 that is to say, the largest barrier will be of around 1 \f$k_\mathrm{B} T\f$.
 The input is:
-\verbatim
+\plumedfile
 METAD ...
  LABEL=metad
  ARG=d1
@@ -156,7 +156,7 @@ METAD ...
  GRID_BIN=300
  REWEIGHTING_NGRID=300
 ... METAD
-\endverbatim
+\endplumedfile
 Here the REWEIGHTING_NGRID keyword turns on the calculation of the
 time dependent constant \f$ c(t) \f$ that we will use below when
 reweighting the simulations.
@@ -172,7 +172,7 @@ wall bias \f$ V_{wall}(\mathbf{s}) \f$:
 The wall will focus the sampling in the most interesting region of the free
 energy surface. The effect of this bias potential will have to be corrected later in order to calculate
  ensemble averages. The syntax in Plumed 2 is:
-\verbatim
+\plumedfile
 UPPER_WALLS ...
  ARG=d1
  AT=0.6
@@ -182,7 +182,7 @@ UPPER_WALLS ...
  OFFSET=0.
  LABEL=uwall
 ... UPPER_WALLS
-\endverbatim
+\endplumedfile
 
 You can run the simulation with the run.sh script as done in the previous
 example.
@@ -253,7 +253,7 @@ In this case we will calculate the dissociation barrier, e.g. the height of
 the barrier that separates the associated state from the dissociated one.
 The scripts for this example are found in the folder Barrier_calculation.
 Using the python script calculate_barrier.py  we can compute the barrier, for instance:
-\verbatim
+\code{.py}
 import numpy as np
 
 # Total number of fes files in folder
@@ -270,7 +270,7 @@ for i in range(total_files):
         minimum=np.amin(matrix[min_min:min_max,1])
         maximum=np.amax(matrix[max_min:max_max,1])
         print(str(i) + " " + str(minimum) + " " + str(maximum) + " " + str(maximum-minimum))
-\endverbatim
+\endcode
 
 The script can be executed using:
 \verbatim
@@ -328,7 +328,7 @@ already been discussed while the weights considering both biases are:
 V_{wall}(\mathbf{s}) )}.
 \f]
 The input script for Plumed is:
-\verbatim
+\plumedfile
 # Read COLVAR file
 distance:       READ FILE=COLVAR  IGNORE_TIME VALUES=d1
 metad:       READ FILE=COLVAR IGNORE_TIME VALUES=metad.rbias
@@ -362,7 +362,7 @@ HISTOGRAM ...
 # Print histograms to file
 DUMPGRID GRID=hh1 FILE=histo FMT=%24.16e
 DUMPGRID GRID=hh2 FILE=histo_wall FMT=%24.16e
-\endverbatim
+\endplumedfile
 
 This example can be run with:
 \verbatim
@@ -429,7 +429,7 @@ potential.
 You can use the input files from Example2.tar and changed the plumed.dat file.
 To construct a 2 dimensional bias with metadynamics use the following
 input:
-\verbatim
+\plumedfile
 METAD ...
  LABEL=metad
  ARG=d1,coord
@@ -443,7 +443,7 @@ METAD ...
  GRID_BIN=400,400
  REWEIGHTING_NGRID=400,400
 ... METAD
-\endverbatim
+\endplumedfile
 
 Once that the simulation is completed you can run plumed sum_hills to
 calculate the FES:

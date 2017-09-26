@@ -41,7 +41,7 @@ The <a href="tutorial-resources/ves-lugano2017-kinetics.tar.gz" download="ves-lu
 
 As an example of an activated process in materials science, we will work with the Stone-Wales transformation in a carbon nanotube. The  <a href="tutorial-resources/ves-lugano2017-kinetics.tar.gz" download="ves-lugano2017-kinetics.tar.gz"> tarball </a> for this project contains the inputs neccessary to run a simulation in LAMMPS for a 480 atom carbon nanotube. We use the AIREBO (Adaptive Intermolecular Reactive Empirical Bond Order) force field parameters which can approximately describe C-C bond breakage and formation at reasonable computational cost. For CVs we can use the coordination number in PLUMED to measure the number of covalent bonds among different groups of atoms. The transformation involves breaking two C-C bonds and forming two alternative C-C bonds.A definition of these CVs as well as the relevant C-C bonds are depicted in Figure \ref stone-wales. We prepare a PLUMED input file as follows.
 
-\verbatim
+\plumedfile
 # set distance units to angstrom, time to ps, and energy to eV
 UNITS LENGTH=A TIME=ps ENERGY=eV
 
@@ -51,20 +51,20 @@ COORDINATION GROUPA=229,219 GROUPB=207,238 R_0=1.8 NN=8 MM=16 PAIR LABEL=CV2
 
 # the difference between variables
 COMBINE ARG=CV1,CV2 COEFFICIENTS=1,-1 POWERS=1,1 LABEL=d1 PERIODIC=NO
-\endverbatim
+\endplumedfile
 
 In the above, the first line sets the energy units. The second and third line define the two CVs for the C-C covalent bonds. (We have chosen atoms 238,207,229 and 219; however this choice is arbitrary and other atoms could equally well have been chosen.) Lastly, we define a simple approximate reaction coordinate given by the difference between CV1 and CV2 that we can use to monitor the transition.
 
 Next we will use VES to drive the transformation at 1700 K. We bias the formation of bonds DB and AC shown in Figure \ref stone-wales using CV2 which changes from 0 to 2 during the transformation. (Although a more rigorous treatment would bias both CVs, for this tutorial we will simplify things and work in only one dimension). We choose a Chebyshev polynomial basis set up to order 36
 
-\verbatim
+\plumedfile
 # The basis set to use
 bf1: BF_CHEBYSHEV ORDER=36 INTERVAL_MIN=0.0 INTERVAL_MAX=2.0
-\endverbatim
+\endplumedfile
 
 and we tell PLUMED to use VES acting on CV2 with a free energy cutoff
 
-\verbatim
+\plumedfile
 td_uniform: TD_UNIFORM
 
 VES_LINEAR_EXPANSION ...
@@ -76,7 +76,7 @@ VES_LINEAR_EXPANSION ...
   BIAS_CUTOFF_FERMI_LAMBDA=10.0
   TARGET_DISTRIBUTION=td_uniform
 ... VES_LINEAR_EXPANSION
-\endverbatim
+\endplumedfile
 
 Here we are biasing CV2 with the basis set defined above. The final two lines impose the cutoff at 15 eV. The cutoff is of the form
 
@@ -86,7 +86,7 @@ Here we are biasing CV2 with the basis set defined above. The final two lines im
 where \f$\lambda\f$ (inverse energy units) controls how sharply the function goes to zero. Above we have set \f$\lambda=10.0\f$ to ensure the cutoff goes sharply enough to zero.
 
 The following input updates the VES bias every 200 steps, writing out the bias every 10 iterations. To enforce the energy cutoff we also need to update the target distribution which we do every 40 iterations with the TARGETDIST_STRIDE flag.
-\verbatim
+\plumedfile
 OPT_AVERAGED_SGD ...
   BIAS=variational
   STRIDE=200
@@ -98,13 +98,13 @@ OPT_AVERAGED_SGD ...
   TARGETDIST_OUTPUT=40
   COEFFS_OUTPUT=1
 ... OPT_AVERAGED_SGD
-\endverbatim
+\endplumedfile
 
 Finally, we will stop the simulation when the transition occurs using the COMMITTOR in PLUMED
 
-\verbatim
+\plumedfile
 COMMITTOR ARG=d1 BASIN_LL1=-2.0 BASIN_UL1=-1.0 STRIDE=600
-\endverbatim
+\endplumedfile
 
 Run the simulation using LAMMPS
 
@@ -153,7 +153,7 @@ tail -n 47 coeffs.dat > fixed-coeffs.dat
 
 Now create a new directory from which you will run a new simulation and copy the necessary input files (including the fixed-coeffs.dat) into this directory. Modify the PLUMED file so that the optimized coefficients are read by the VES_LINEAR_EXPANSION
 
-\verbatim
+\plumedfile
 td_uniform: TD_UNIFORM
 
 VES_LINEAR_EXPANSION ...
@@ -166,7 +166,7 @@ VES_LINEAR_EXPANSION ...
   TARGET_DISTRIBUTION=td_uniform
   COEFFS=fixed-coeffs.dat
 ... VES_LINEAR_EXPANSION
-\endverbatim
+\endplumedfile
 
 The final line specifies the coefficients to be read from a file.
 
@@ -174,7 +174,7 @@ Make sure to remove the lines for the stochastic optimization (OPT_AVERAGED_SGD)
 
 We will also perform metadynamics with an infrequent deposition stride to ensure that the trajectory does not get stuck in any regions where the bias potential is not fully converged The following implements metadynamics on both CV1 and CV2 with a deposition stride of 4000 steps and a hill height of 0.15 eV.
 
-\verbatim
+\plumedfile
 METAD ...
    ARG=CV1,CV2
    SIGMA=0.2,0.2
@@ -182,13 +182,13 @@ METAD ...
    PACE=4000
    LABEL=metad
 ... METAD
-\endverbatim
+\endplumedfile
 
 Again we will use the COMMITTOR to stop the trajectory after the transition.
 
-\verbatim
+\plumedfile
 COMMITTOR ARG=d1 BASIN_LL1=-2.0 BASIN_UL1=-1.0
-\endverbatim
+\endplumedfile
 
 Now run a trajectory with the fixed bias. What is the time (biased) to escape? Plot the trajectory of the approximate reaction coordinate (column 4 in the COLVAR) in gnuplot. An example is shown in Figure \ref Figure2.
 
