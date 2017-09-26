@@ -33,8 +33,6 @@
 #include "tools/File.h"
 #include "tools/FileBase.h"
 
-#include <iostream>
-
 namespace PLMD {
 namespace ves {
 
@@ -996,7 +994,7 @@ void Optimizer::update() {
       else {
         std::string msg = "iteration " + getIterationCounterStr(+1) +
                           " for " + bias_pntrs_[i]->getLabel() +
-                          ": the coefficients are not updated as CV values are outside the bias intervals\n";
+                          "- the coefficients are not updated as CV values are outside the bias intervals";
         warning(msg);
       }
 

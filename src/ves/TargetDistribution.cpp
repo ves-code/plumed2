@@ -34,8 +34,6 @@
 
 #include "GridProjWeights.h"
 
-#include <iostream>
-
 namespace PLMD {
 namespace ves {
 
@@ -277,7 +275,7 @@ void TargetDistribution::updateTargetDist() {
     const double normalization_thrshold = 0.1;
     if(normalization < 1.0-normalization_thrshold || normalization > 1.0+normalization_thrshold) {
       std::string norm_str; Tools::convert(normalization,norm_str);
-      std::string msg = "the target distribution grid is not proberly normalized, integrating over the grid gives: " + norm_str + " - You can avoid this problem by using the NORMALIZE keyword\n";
+      std::string msg = "the target distribution grid is not proberly normalized, integrating over the grid gives: " + norm_str + " - You can avoid this problem by using the NORMALIZE keyword";
       warning(msg);
     }
   }
@@ -287,7 +285,7 @@ void TargetDistribution::updateTargetDist() {
     double grid_min_value = targetdist_grid_pntr_->getMinValue();
     if(grid_min_value<nonnegative_thrshold) {
       std::string grid_min_value_str; Tools::convert(grid_min_value,grid_min_value_str);
-      std::string msg = "the target distribution grid has negative values, the lowest value is: " + grid_min_value_str + " - You can avoid this problem by using the SHIFT_TO_ZERO keyword\n";
+      std::string msg = "the target distribution grid has negative values, the lowest value is: " + grid_min_value_str + " - You can avoid this problem by using the SHIFT_TO_ZERO keyword";
       warning(msg);
     }
   }
