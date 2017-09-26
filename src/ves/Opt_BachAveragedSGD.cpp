@@ -132,12 +132,16 @@ Opt_BachAveragedSGD::Opt_BachAveragedSGD(const ActionOptions&ao):
   combinedgradientOFiles_(0),
   decaying_aver_tau_(0.0)
 {
+  log.printf("  Averaged stochastic gradient decent, see and cite ");
   log << plumed.cite("Bach and Moulines, NIPS 26, 773-781 (2013)");
+  log.printf("\n");
   unsigned int decaying_aver_tau_int=0;
   parse("EXP_DECAYING_AVER",decaying_aver_tau_int);
   if(decaying_aver_tau_int>0) {
     decaying_aver_tau_ = static_cast<double>(decaying_aver_tau_int);
-    log.printf("  Coefficients calculated using an exponentially decaying average with a decaying constant of %u iterations\n",decaying_aver_tau_int);
+    log.printf("  Coefficients calculated using an exponentially decaying average with a decaying constant of %u iterations, see and cite ",decaying_aver_tau_int);
+    log << plumed.cite("Invernizzi, Valsson, and Parrinello, Proc. Natl. Acad. Sci. USA 114, 3370-3374 (2017)");
+    log.printf("\n");
   }
   //
   std::vector<std::string> combinedgradient_fnames;
