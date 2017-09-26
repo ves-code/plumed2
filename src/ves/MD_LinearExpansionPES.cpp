@@ -54,11 +54,78 @@ namespace ves {
 /*
 Simple MD code for dynamics on a potential energy surface given by a linear basis set expansion.
 
+This is simple MD code that allows running dynamics of a single particle on a
+potential energy surface given by some linear basis set expansion in one to three
+dimensions.
+
+It is possible to run more than one replica of the system in parallel.
+
 \par Examples
 
-\plumedfile
+In the following example we perform dynamics on the
+Wolfe-Quapp potential that is defined as
+\f[
+U(x,y) = x^4 + y^4 - 2 x^2 - 4 y^2 + xy + 0.3 x + 0.1 y
+\f]
+To define the potential we employ polynomial power basis
+functions (\ref BF_POWERS). The input file is given as
+\verbatim
+nstep             10000
+tstep             0.005
+temperature       1.0
+friction          10.0
+random_seed       4525
+plumed_input      plumed.dat
+dimension         2
+replicas          1
+basis_functions_1 BF_POWERS ORDER=4 INTERVAL_MIN=-3.0 INTERVAL_MAX=+3.0
+basis_functions_2 BF_POWERS ORDER=4 INTERVAL_MIN=-3.0 INTERVAL_MAX=+3.0
+input_coeffs       pot_coeffs_input.data
+initial_position   -1.174,+1.477
+output_potential        potential.data
+output_potential_grid   150
+output_histogram        histogram.data
+
+# Wolfe-Quapp potential given by the equation
+# U(x,y) = x**4 + y**4 - 2.0*x**2 - 4.0*y**2 + x*y + 0.3*x + 0.1*y
+# Minima around (-1.174,1.477); (-0.831,-1.366); (1.124,-1.486)
+# Maxima around (0.100,0.050)
+# Saddle points around (-1.013,-0.036); (0.093,0.174); (-0.208,-1.407)
+\endverbatim
+
+This input is then run by using the following command.
+\verbatim
 plumed ves_md_linearexpansion input
+\endverbatim
+
+The corresponding pot_coeffs_input.data file is
+\plumedfile
+#! FIELDS idx_dim1 idx_dim2 pot.coeffs index description
+#! SET type LinearBasisSet
+#! SET ndimensions  2
+#! SET ncoeffs_total  25
+#! SET shape_dim1  5
+#! SET shape_dim2  5
+       0       0         0.0000000000000000e+00       0  1*1
+       1       0         0.3000000000000000e+00       1  s^1*1
+       2       0        -2.0000000000000000e+00       2  s^2*1
+       4       0         1.0000000000000000e+00       4  s^4*1
+       0       1         0.1000000000000000e+00       5  1*s^1
+       1       1        +1.0000000000000000e+00       6  s^1*s^1
+       0       2        -4.0000000000000000e+00      10  1*s^2
+       0       4         1.0000000000000000e+00      20  1*s^4
+#!-------------------
 \endplumedfile
+
+One then uses the (x,y) postion of the particle as CVs by using the \ref POSITION
+action as shown in the following PLUMED input
+\plumedfile
+p: POSITION ATOM=1
+ene: ENERGY
+PRINT ARG=p.x,p.y,ene FILE=colvar.data FMT=%8.4f
+\endplumedfile
+
+
 
 */
 //+ENDPLUMEDOC
@@ -84,7 +151,7 @@ void MD_LinearExpansionPES::registerKeywords( Keywords& keys ) {
   keys.add("compulsory","nstep","10","The number of steps of dynamics you want to run.");
   keys.add("compulsory","tstep","0.005","The integration timestep.");
   keys.add("compulsory","temperature","1.0","The temperature to perform the simulation at. For multiple replica you can give a seperate value for each replica.");
-  keys.add("compulsory","friction","10.","The friction of the langevin thermostat. For multiple replica you can give a seperate value for each replica.");
+  keys.add("compulsory","friction","10.","The friction of the Langevin thermostat. For multiple replica you can give a seperate value for each replica.");
   keys.add("compulsory","random_seed","5293818","Value of random number seed.");
   keys.add("compulsory","plumed_input","plumed.dat","The name of the plumed input file(s). For multiple replica you can give a seperate value for each replica.");
   keys.add("compulsory","dimension","1","Number of dimensions, supports 1 to 3.");
@@ -579,17 +646,4 @@ int MD_LinearExpansionPES::main( FILE* in, FILE* out, PLMD::Communicator& pc) {
 
   if(plumed) {delete plumed;}
   if(plumed_bf) {delete plumed_bf;}
-  if(potential_expansion_pntr) {delete potential_expansion_pntr;}
-  if(coeffs_pntr) {delete coeffs_pntr;}
-  for(unsigned int i=0; i<args.size(); i++) {delete args[i];}
-  args.clear();
-  //printf("Rank: %d, Size: %d \n", pc.Get_rank(), pc.Get_size() );
-  //printf("Rank: %d, Size: %d, MultiSimCommRank: %d, MultiSimCommSize: %d \n", pc.Get_rank(), pc.Get_size(), multi_sim_comm.Get_rank(), multi_sim_comm.Get_size() );
-  fclose(fp);
-  fclose(file_dummy);
-
-  return 0;
-}
-
-}
-}
+  if(potential_expans
