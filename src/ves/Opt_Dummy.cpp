@@ -33,15 +33,15 @@ namespace ves {
 /*
 Dummy optimizer for debugging.
 
-This is dummy optimizer that can be used for debugging. It will not update the 
-coefficients but can be used to monitor the gradient and Hessian for a given 
-VES bias. 
+This is dummy optimizer that can be used for debugging. It will not update the
+coefficients but can be used to monitor the gradient and Hessian for a given
+VES bias.
 
 \par Examples
-In the following input we use the OPT_DUMMY to monitor the gradient and 
-Hessian for a given VES bias every 1 iteration. 
+In the following input we use the OPT_DUMMY to monitor the gradient and
+Hessian for a given VES bias every 1 iteration.
 \plumedfile
-phi:   TORSION ATOMS=5,7,9,15     
+phi:   TORSION ATOMS=5,7,9,15
 
 bf1: BF_FOURIER ORDER=5 INTERVAL_MIN=-pi INTERVAL_MAX=pi
 

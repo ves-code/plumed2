@@ -37,20 +37,20 @@ namespace ves {
 /*
 Tool to output biases and FESs for VES biases from previously obtained coefficients.
 
-This action can be used to output to file biases and FESs for VES biases from 
-previously obtained coefficients. It should be used through the \ref driver and 
-can only be used in postprocessing. The VES bias needs to be defined in the 
-exact same way as during the simulation. At the current moment this action does 
-not support dynamic target distributions (e.g. well-tempered). 
+This action can be used to output to file biases and FESs for VES biases from
+previously obtained coefficients. It should be used through the \ref driver and
+can only be used in postprocessing. The VES bias needs to be defined in the
+exact same way as during the simulation. At the current moment this action does
+not support dynamic target distributions (e.g. well-tempered).
 
 \par Examples
 
-In the following input we define a VES bias and then read in the coefficient 
-file coeffs.input.data and output the FES and bias every 500 iterations. 
+In the following input we define a VES bias and then read in the coefficient
+file coeffs.input.data and output the FES and bias every 500 iterations.
 
 \plumedfile
-phi:   TORSION ATOMS=5,7,9,15     
-psi:   TORSION ATOMS=7,9,15,17    
+phi:   TORSION ATOMS=5,7,9,15
+psi:   TORSION ATOMS=7,9,15,17
 
 bf1: BF_FOURIER ORDER=5 INTERVAL_MIN=-pi INTERVAL_MAX=pi
 bf2: BF_FOURIER ORDER=5 INTERVAL_MIN=-pi INTERVAL_MAX=pi
@@ -73,8 +73,8 @@ VES_OUTPUT_FES ...
 ... VES_OUTPUT_FES
 \endplumedfile
 
-This input should be run through the driver by using a command similar to the 
-following one where the trajectory/configuration file conf.gro is needed to 
+This input should be run through the driver by using a command similar to the
+following one where the trajectory/configuration file conf.gro is needed to
 correctly define the CVs
 \verbatim
 plumed driver --plumed plumed.dat --igro conf.gro

@@ -66,40 +66,40 @@ The coefficients will be outputted to the file given by the
 COEFFS_FILE keyword. How often the coefficients are written
 to this file is controlled by the COEFFS_OUTPUT keyword.
 
-If the VES bias employes a dynamic target distribution that needes to be 
-iteratively updated (e.g. \ref TD_WELLTEMPERED) \cite Valsson-JCTC-2015, you will need to specify 
-the stride for updating the target distribution by using 
-the TARGETDIST_STRIDE keyword where the stride 
-is given in terms coefficent iterations. For example if the 
-MD time step is 0.02 ps and STRIDE=1000, such that the coefficients 
-are updated every 2 ps, will TARGETDIST_STRIDE=500 mean that the 
-target distribution will be updated every 1000 ps. 
+If the VES bias employes a dynamic target distribution that needes to be
+iteratively updated (e.g. \ref TD_WELLTEMPERED) \cite Valsson-JCTC-2015, you will need to specify
+the stride for updating the target distribution by using
+the TARGETDIST_STRIDE keyword where the stride
+is given in terms coefficent iterations. For example if the
+MD time step is 0.02 ps and STRIDE=1000, such that the coefficients
+are updated every 2 ps, will TARGETDIST_STRIDE=500 mean that the
+target distribution will be updated every 1000 ps.
 
-The output of FESs and biases is controlled by the FES_OUTPUT and the BIAS_OUTPUT 
-keywords. It is also possible to output one-dimensional projections of the FESs 
-by using the FES_PROJ_OUTPUT keyword but for that to work you will need to select 
-for which argument to do the projections by using the numbered PROJ_ARG keyword in 
-the VES bias that is optimized. 
-You can also output dynamic target distributions by using the 
-TARGETDIST_OUTPUT and TARGETDIST_PROJ_OUTPUT keywords. 
+The output of FESs and biases is controlled by the FES_OUTPUT and the BIAS_OUTPUT
+keywords. It is also possible to output one-dimensional projections of the FESs
+by using the FES_PROJ_OUTPUT keyword but for that to work you will need to select
+for which argument to do the projections by using the numbered PROJ_ARG keyword in
+the VES bias that is optimized.
+You can also output dynamic target distributions by using the
+TARGETDIST_OUTPUT and TARGETDIST_PROJ_OUTPUT keywords.
 
 \par Multiple walkers
 
 This optimizer supports the usage of multiple walkers where different copies of the system share the same bias potential (i.e. coefficients) and cooperatively sample the averages needed for the gradient and Hessian. This can significantly help with convergence in difficult cases. It is of course best to start the different copies from different positions in CV space. To activate this option you just need to add the MULTIPLE_WALKERS flag. Note that this is only supported if the MD code support running multiple replicas connected via MPI.
 
-\par Mask file 
+\par Mask file
 
 The optimizer supports the usage of a so-called mask file that can be used to employ different step sizes for different coefficents and/or deactive the optimization of certain coefficients (by putting values of 0.0). The mask file is read-in by using the MASK_FILE keyword and should be in the same format as the coefficent file. It is possible to generate a template mask file by using the OUTPUT_MASK_FILE keyword.
 
 
 \par Examples
 
-In the following input we emloy an averaged stochastic gradient decent with a 
-fixed step size of 1.0 and update the coefficent every 1000 MD steps 
-(e.g. every 2 ps if the MD time step is 0.02 ps). The FES and bias is outputted 
+In the following input we emloy an averaged stochastic gradient decent with a
+fixed step size of 1.0 and update the coefficent every 1000 MD steps
+(e.g. every 2 ps if the MD time step is 0.02 ps). The FES and bias is outputted
 to files every 500 iterations (e.g. every 1000 ps).
 \plumedfile
-phi:   TORSION ATOMS=5,7,9,15     
+phi:   TORSION ATOMS=5,7,9,15
 
 bf1: BF_FOURIER ORDER=5 INTERVAL_MIN=-pi INTERVAL_MAX=pi
 
@@ -124,14 +124,14 @@ OPT_AVERAGED_SGD ...
 \endplumedfile
 
 
-In the following example we employ a well-tempered target distribution that 
-is updated every 500 iterations (e.g. every 1000 ps). The target distribution is 
-also output to a file every 2000 iterations (the TARGETDIST_OUTPUT keyword). 
-Here we also employ MULTIPLE_WALKERS flag to enable the usage of 
-multiple walkers. 
+In the following example we employ a well-tempered target distribution that
+is updated every 500 iterations (e.g. every 1000 ps). The target distribution is
+also output to a file every 2000 iterations (the TARGETDIST_OUTPUT keyword).
+Here we also employ MULTIPLE_WALKERS flag to enable the usage of
+multiple walkers.
 \plumedfile
-phi:   TORSION ATOMS=5,7,9,15     
-psi:   TORSION ATOMS=7,9,15,17    
+phi:   TORSION ATOMS=5,7,9,15
+psi:   TORSION ATOMS=7,9,15,17
 
 bf1: BF_FOURIER ORDER=5 INTERVAL_MIN=-pi INTERVAL_MAX=pi
 bf2: BF_FOURIER ORDER=4 INTERVAL_MIN=-pi INTERVAL_MAX=pi
@@ -154,7 +154,7 @@ OPT_AVERAGED_SGD ...
   STRIDE=1000
   LABEL=o1
   STEPSIZE=1.0
-  MULTIPLE_WALKERS 
+  MULTIPLE_WALKERS
   COEFFS_FILE=coeffs.data
   COEFFS_OUTPUT=50
   FES_OUTPUT=500
