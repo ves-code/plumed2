@@ -994,11 +994,10 @@ void Optimizer::update() {
     for(unsigned int i=0; i<ncoeffssets_; i++) {
       if(gradient_pntrs_[i]->isActive()) {coeffsUpdate(i);}
       else {
-        std::string msg = "PLUMED WARNING - iteration " +
-                          getIterationCounterStr(+1)   +
+        std::string msg = "iteration " + getIterationCounterStr(+1) +
                           " for " + bias_pntrs_[i]->getLabel() +
                           ": the coefficients are not updated as CV values are outside the bias intervals\n";
-        std::cerr << msg;
+        warning(msg);
       }
 
       // +1 as this is done before increaseIterationCounter() is used
