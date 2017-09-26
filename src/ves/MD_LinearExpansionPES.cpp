@@ -99,7 +99,7 @@ plumed ves_md_linearexpansion input
 \endverbatim
 
 The corresponding pot_coeffs_input.data file is
-\plumedfile
+\verbatim
 #! FIELDS idx_dim1 idx_dim2 pot.coeffs index description
 #! SET type LinearBasisSet
 #! SET ndimensions  2
@@ -115,7 +115,7 @@ The corresponding pot_coeffs_input.data file is
        0       2        -4.0000000000000000e+00      10  1*s^2
        0       4         1.0000000000000000e+00      20  1*s^4
 #!-------------------
-\endplumedfile
+\endverbatim
 
 One then uses the (x,y) postion of the particle as CVs by using the \ref POSITION
 action as shown in the following PLUMED input
