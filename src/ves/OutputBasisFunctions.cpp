@@ -63,16 +63,16 @@ PLUMED_REGISTER_ACTION(OutputBasisFunctions,"VES_OUTPUT_BASISFUNCTIONS")
 
 void OutputBasisFunctions::registerKeywords(Keywords& keys) {
   Action::registerKeywords(keys);
-  keys.add("compulsory","BASIS_SET","the label of the basis set that you want to use");
+  keys.add("compulsory","BASIS_FUNCTIONS","the label of the basis functions that you want to use");
   keys.add("optional","GRID_BINS","the number of bins used for the grid for writing the basis function values and derivatives. The default value is 1000.");
   keys.add("optional","GRID_MIN","the minimum of the grid for writing the basis function values and derivatives. By default it is the minimum of the interval on which the basis functions are defined.");
   keys.add("optional","GRID_MAX","the maximum of the grid for writing the basis function values and derivatives. By default it is the maximum of the interval on which the basis functions are defined.");
-  keys.add("optional","FILE_VALUES","filename of the file on which the basis function values are written. By default it is BASIS_SET.values.data.");
-  keys.add("optional","FILE_DERIVS","filename of the file on which the basis function derivatives are written. By default it is BASIS_SET.derivs.data.");
+  keys.add("optional","FILE_VALUES","filename of the file on which the basis function values are written. By default it is BF_LABEL.values.data.");
+  keys.add("optional","FILE_DERIVS","filename of the file on which the basis function derivatives are written. By default it is BF_LABEL.derivs.data.");
   keys.add("optional","FORMAT_VALUES_DERIVS","the numerical format of the basis function values and derivatives written to file. By default it is %15.8f.\n");
-  keys.add("optional","FILE_TARGETDIST_AVERAGES","filename of the file on which the averages over the target distributions are written. By default it is BASIS_SET.targetdist-averages.data.");
+  keys.add("optional","FILE_TARGETDIST_AVERAGES","filename of the file on which the averages over the target distributions are written. By default it is BF_LABEL.targetdist-averages.data.");
   keys.add("optional","FORMAT_TARGETDIST_AVERAGES","the numerical format of the target distribution averages written to file. By default it is %15.8f.\n");
-  keys.add("optional","FILE_TARGETDIST","filename of the files on which the target distributions are written. By default it is BASIS_SET.targetdist-#.data.");
+  keys.add("optional","FILE_TARGETDIST","filename of the files on which the target distributions are written. By default it is BF_LABEL.targetdist-#.data.");
   keys.add("numbered","TARGET_DISTRIBUTION","the target distribution to be used.");
   keys.addFlag("IGNORE_PERIODICITY",false,"if the periodicity of the basis functions should be ignored.");
   keys.addFlag("NUMERICAL_DERIVATIES",false,"if the derivatives of the basis functions should be calculated numerically.");
@@ -83,12 +83,12 @@ OutputBasisFunctions::OutputBasisFunctions(const ActionOptions&ao):
   bf_pntrs(0)
 {
   std::vector<std::string> basisset_labels(0);
-  parseVector("BASIS_SET",basisset_labels);
-  if(basisset_labels.size()>1) {plumed_merror("Only one basis set label allowed in keyword BASIS_SET of "+getName());}
+  parseVector("BASIS_FUNCTIONS",basisset_labels);
+  if(basisset_labels.size()>1) {plumed_merror("Only one basis set label allowed in keyword BASIS_FUNCTIONS of "+getName());}
 
   std::string error_msg = "";
   bf_pntrs = VesTools::getPointersFromLabels<BasisFunctions*>(basisset_labels,plumed.getActionSet(),error_msg);
-  if(error_msg.size()>0) {plumed_merror("Error in keyword BASIS_SET of "+getName()+": "+error_msg);}
+  if(error_msg.size()>0) {plumed_merror("Error in keyword BASIS_FUNCTIONS of "+getName()+": "+error_msg);}
 
   unsigned int nbins = 1000;
   parse("GRID_BINS",nbins);
