@@ -1,5 +1,5 @@
 #! FIELDS arg 1 cos(1*s) sin(1*s) cos(2*s) sin(2*s) cos(3*s) sin(3*s) cos(4*s) sin(4*s) cos(5*s) sin(5*s) cos(6*s) sin(6*s) cos(7*s) sin(7*s) cos(8*s) sin(8*s) cos(9*s) sin(9*s) cos(10*s) sin(10*s)
-#! SET bf_keywords {BF_FOURIER ORDER=10 INTERVAL_MIN=-4.0 INTERVAL_MAX=4.0}
+#! SET bf_keywords {BF_FOURIER ORDER=10 MINIMUM=-4.0 MAXIMUM=4.0}
 #! SET min -4.0
 #! SET max 4.0
 #! SET nbins  300

@@ -57,7 +57,7 @@ The basis functions
 the numbered FUNC keywords that start from
 FUNC1. Consistent with other basis functions is \f$f_{0}(x)=1\f$ defined as
 the constant. The interval on which the basis functions are defined is
-given using the INTERVAL_MIN and INTERVAL_MAX keywords.
+given using the MINIMUM and MAXIMUM keywords.
 
 Using the TRANSFORM keyword it is possible to define a function \f$x(t)\f$ that
 is used to transform the argument before calculating the basis functions
@@ -89,8 +89,8 @@ BF_CUSTOM ...
  FUNC4=(1/8)*(35*x^4-30*x^2+3)
  FUNC5=(1/8)*(63*x^5-70*x^3+15*x)
  FUNC6=(1/16)*(231*x^6-315*x^4+105*x^2-5)
- INTERVAL_MIN=-4.0
- INTERVAL_MAX=4.0
+ MINIMUM=-4.0
+ MAXIMUM=4.0
  LABEL=bf1
 ... BF_CUSTOM
 \endplumedfile
@@ -108,8 +108,8 @@ BF_CUSTOM ...
  FUNC4=sin(2*x)
  FUNC5=cos(3*x)
  FUNC6=sin(3*x)
- INTERVAL_MIN=-pi
- INTERVAL_MAX=+pi
+ MINIMUM=-pi
+ MAXIMUM=+pi
  LABEL=bf1
  PERIODIC
 ... BF_CUSTOM

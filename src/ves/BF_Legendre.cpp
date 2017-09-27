@@ -85,7 +85,7 @@ This results in a total number of 21 basis functions.
 The label used to identify  the basis function action can then be
 referenced later on in the input file.
 \plumedfile
-bf_leg: BF_LEGENDRE INTERVAL_MIN=-4.0 INTERVAL_MAX=8.0 ORDER=20
+bf_leg: BF_LEGENDRE MINIMUM=-4.0 MAXIMUM=8.0 ORDER=20
 \endplumedfile
 
 \par Examples

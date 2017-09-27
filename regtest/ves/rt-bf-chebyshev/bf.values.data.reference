@@ -1,5 +1,5 @@
 #! FIELDS arg T0(s) T1(s) T2(s) T3(s) T4(s) T5(s) T6(s) T7(s) T8(s) T9(s) T10(s) T11(s) T12(s) T13(s) T14(s) T15(s) T16(s) T17(s) T18(s) T19(s) T20(s)
-#! SET bf_keywords {BF_CHEBYSHEV ORDER=20 INTERVAL_MIN=-4.0 INTERVAL_MAX=4.0}
+#! SET bf_keywords {BF_CHEBYSHEV ORDER=20 MINIMUM=-4.0 MAXIMUM=4.0}
 #! SET min -4.0
 #! SET max 4.0
 #! SET nbins  301

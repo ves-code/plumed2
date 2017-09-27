@@ -80,7 +80,7 @@ This results in a total number of 21 basis functions.
 The label used to identify  the basis function action can then be
 referenced later on in the input file.
 \plumedfile
-bfC: BF_CHEBYSHEV INTERVAL_MIN=0.0 INTERVAL_MAX=10.0 ORDER=20
+bfC: BF_CHEBYSHEV MINIMUM=0.0 MAXIMUM=10.0 ORDER=20
 \endplumedfile
 
 */

@@ -70,7 +70,7 @@ This results in a total number of 6 basis functions.
 The label used to identify  the basis function action can then be
 referenced later on in the input file.
 \plumedfile
-BF_POWERS INTERVAL_MIN=-2.0 INTERVAL_MAX=2.0 ORDER=5 LABEL=bf_pow
+BF_POWERS MINIMUM=-2.0 MAXIMUM=2.0 ORDER=5 LABEL=bf_pow
 \endplumedfile
 
 

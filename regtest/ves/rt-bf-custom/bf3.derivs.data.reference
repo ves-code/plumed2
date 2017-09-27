@@ -1,5 +1,5 @@
 #! FIELDS arg d_f0(s) d_f1(s) d_f2(s) d_f3(s) d_f4(s) d_f5(s) d_f6(s)
-#! SET bf_keywords {BF_CUSTOM INTERVAL_MIN=-pi INTERVAL_MAX=+pi FUNC1=cos(x) FUNC2=sin(x) FUNC3=cos(2*x) FUNC4=sin(2*x) FUNC5=cos(3*x) FUNC6=sin(3*x) PERIODIC}
+#! SET bf_keywords {BF_CUSTOM MINIMUM=-pi MAXIMUM=+pi FUNC1=cos(x) FUNC2=sin(x) FUNC3=cos(2*x) FUNC4=sin(2*x) FUNC5=cos(3*x) FUNC6=sin(3*x) PERIODIC}
 #! SET min -pi
 #! SET max +pi
 #! SET nbins  300

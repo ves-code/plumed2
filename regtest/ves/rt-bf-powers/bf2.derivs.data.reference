@@ -1,5 +1,5 @@
 #! FIELDS arg d_1 d_s^1 d_s^2 d_s^3 d_s^4
-#! SET bf_keywords {BF_POWERS ORDER=4 INTERVAL_MIN=-6.5 INTERVAL_MAX=1.5}
+#! SET bf_keywords {BF_POWERS ORDER=4 MINIMUM=-6.5 MAXIMUM=1.5}
 #! SET min -6.5
 #! SET max 1.5
 #! SET nbins  301

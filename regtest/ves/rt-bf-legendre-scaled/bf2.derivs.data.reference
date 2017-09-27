@@ -1,5 +1,5 @@
 #! FIELDS arg d_L0(s) d_L1(s) d_L2(s) d_L3(s) d_L4(s) d_L5(s) d_L6(s) d_L7(s) d_L8(s) d_L9(s) d_L10(s) d_L11(s) d_L12(s) d_L13(s) d_L14(s) d_L15(s) d_L16(s) d_L17(s) d_L18(s) d_L19(s) d_L20(s)
-#! SET bf_keywords {BF_LEGENDRE ORDER=20 INTERVAL_MIN=-6.5 INTERVAL_MAX=1.5 SCALED}
+#! SET bf_keywords {BF_LEGENDRE ORDER=20 MINIMUM=-6.5 MAXIMUM=1.5 SCALED}
 #! SET min -6.5
 #! SET max 1.5
 #! SET nbins  301

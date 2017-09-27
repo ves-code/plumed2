@@ -56,8 +56,8 @@ and derivatives to files called bfL.values.data and bfL.derivs.data.
 \plumedfile
 BF_LEGENDRE ...
  ORDER=14
- INTERVAL_MIN=-4.0
- INTERVAL_MAX=4.0
+ MINIMUM=-4.0
+ MAXIMUM=4.0
  LABEL=bfL
 ... BF_LEGENDRE
 

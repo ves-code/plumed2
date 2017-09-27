@@ -42,8 +42,8 @@ each with 11 basis functions, which are combined. This results
 in a total number of 21 basis functions as only the constant from
 is bf_cos is used.
 \plumedfile
-bf_cos: BF_COSINE INTERVAL_MIN=-pi INTERVAL_MAX=+pi ORDER=10
-bf_sin: BF_SINE   INTERVAL_MIN=-pi INTERVAL_MAX=+pi ORDER=10
+bf_cos: BF_COSINE MINIMUM=-pi MAXIMUM=+pi ORDER=10
+bf_sin: BF_SINE   MINIMUM=-pi MAXIMUM=+pi ORDER=10
 bf_comb: BF_COMBINED BASIS_FUNCTIONS=bf_cos,bf_sin
 \endplumedfile
 In principle this is the same as using BF_FOURIER with
@@ -80,8 +80,8 @@ PLUMED_REGISTER_ACTION(BF_Combined,"BF_COMBINED")
 void BF_Combined::registerKeywords(Keywords& keys) {
   BasisFunctions::registerKeywords(keys);
   keys.remove("ORDER");
-  keys.remove("INTERVAL_MAX");
-  keys.remove("INTERVAL_MIN");
+  keys.remove("MAXIMUM");
+  keys.remove("MINIMUM");
   keys.remove("NUMERICAL_INTEGRALS");
   keys.remove("NGRID_POINTS");
   keys.add("compulsory","BASIS_FUNCTIONS","Labels of the basis functions that should be combined. Note that the order used matters for the ordering of the basis functions. This needs to be kept in mind when restarting from previous coefficients.");
@@ -106,7 +106,7 @@ BF_Combined::BF_Combined(const ActionOptions&ao):
   for(unsigned int i=0; i<basisf_pntrs_.size(); i++) {
     nbasisf_total_ += basisf_pntrs_[i]->getNumberOfBasisFunctions() - 1;
     if(basisf_pntrs_[i]->intervalMinStr()!=basisf_pntrs_[0]->intervalMinStr() || basisf_pntrs_[i]->intervalMaxStr()!=basisf_pntrs_[0]->intervalMaxStr()) {
-      plumed_merror("all the basis functions to be combined should have same INTERVAL_MIN and INTERVAL_MAX");
+      plumed_merror("all the basis functions to be combined should have same MINIMUM and MAXIMUM");
     }
     if(!basisf_pntrs_[i]->arePeriodic()) {periodic=false;}
   }

@@ -1,5 +1,5 @@
 #! FIELDS arg 1 sin(1*s) sin(2*s) sin(3*s) sin(4*s) sin(5*s) sin(6*s) sin(7*s) sin(8*s) sin(9*s) sin(10*s)
-#! SET bf_keywords {BF_SINE ORDER=10 INTERVAL_MIN=-6.5 INTERVAL_MAX=1.5}
+#! SET bf_keywords {BF_SINE ORDER=10 MINIMUM=-6.5 MAXIMUM=1.5}
 #! SET min -6.5
 #! SET max 1.5
 #! SET nbins  300

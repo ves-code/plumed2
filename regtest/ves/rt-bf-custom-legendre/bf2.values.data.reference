@@ -1,5 +1,5 @@
 #! FIELDS arg f0(s) f1(s) f2(s) f3(s) f4(s) f5(s) f6(s)
-#! SET bf_keywords {BF_CUSTOM INTERVAL_MIN=-6.5 INTERVAL_MAX=1.5 FUNC1=x FUNC2=(1/2)*(3*x^2-1) FUNC3=(1/2)*(5*x^3-3*x) FUNC4=(1/8)*(35*x^4-30*x^2+3) FUNC5=(1/8)*(63*x^5-70*x^3+15*x) FUNC6=(1/16)*(231*x^6-315*x^4+105*x^2-5) TRANSFORM=(t-(min+max)/2)/((max-min)/2)}
+#! SET bf_keywords {BF_CUSTOM MINIMUM=-6.5 MAXIMUM=1.5 FUNC1=x FUNC2=(1/2)*(3*x^2-1) FUNC3=(1/2)*(5*x^3-3*x) FUNC4=(1/8)*(35*x^4-30*x^2+3) FUNC5=(1/8)*(63*x^5-70*x^3+15*x) FUNC6=(1/16)*(231*x^6-315*x^4+105*x^2-5) TRANSFORM=(t-(min+max)/2)/((max-min)/2)}
 #! SET min -6.5
 #! SET max 1.5
 #! SET nbins  301

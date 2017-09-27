@@ -1,5 +1,5 @@
 #! FIELDS arg S0(s) S1(s) S2(s) S3(s) S4(s) S5(s) S6(s) S7(s) S8(s) S9(s) S10(s) S11(s) S12(s) S13(s) S14(s) S15(s) S16(s) S17(s) S18(s) S19(s) S20(s) S21(s) S22(s) S23(s)
-#! SET bf_keywords {BF_CUBIC_B_SPLINES ORDER=20 INTERVAL_MIN=-4.0 INTERVAL_MAX=4.0}
+#! SET bf_keywords {BF_CUBIC_B_SPLINES ORDER=20 MINIMUM=-4.0 MAXIMUM=4.0}
 #! SET min -4.0
 #! SET max 4.0
 #! SET nbins  401

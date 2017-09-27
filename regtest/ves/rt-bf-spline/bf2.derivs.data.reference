@@ -1,5 +1,5 @@
 #! FIELDS arg d_S0(s) d_S1(s) d_S2(s) d_S3(s) d_S4(s) d_S5(s) d_S6(s) d_S7(s) d_S8(s) d_S9(s) d_S10(s) d_S11(s) d_S12(s) d_S13(s) d_S14(s) d_S15(s) d_S16(s) d_S17(s) d_S18(s) d_S19(s) d_S20(s) d_S21(s) d_S22(s) d_S23(s)
-#! SET bf_keywords {BF_CUBIC_B_SPLINES ORDER=20 INTERVAL_MIN=-6.5 INTERVAL_MAX=1.5}
+#! SET bf_keywords {BF_CUBIC_B_SPLINES ORDER=20 MINIMUM=-6.5 MAXIMUM=1.5}
 #! SET min -6.5
 #! SET max 1.5
 #! SET nbins  301

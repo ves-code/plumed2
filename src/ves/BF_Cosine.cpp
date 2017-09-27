@@ -63,7 +63,7 @@ This results in a total number of 11 basis functions.
 The label used to identify  the basis function action can then be
 referenced later on in the input file.
 \plumedfile
-BF_COSINE INTERVAL_MIN=-pi INTERVAL_MAX=+pi ORDER=10 LABEL=bf1
+BF_COSINE MINIMUM=-pi MAXIMUM=+pi ORDER=10 LABEL=bf1
 \endplumedfile
 
 

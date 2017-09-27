@@ -59,7 +59,7 @@ Next we will use VES to drive the transformation at 1700 K. We bias the formatio
 
 \plumedfile
 # The basis set to use
-bf1: BF_CHEBYSHEV ORDER=36 INTERVAL_MIN=0.0 INTERVAL_MAX=2.0
+bf1: BF_CHEBYSHEV ORDER=36 MINIMUM=0.0 MAXIMUM=2.0
 \endplumedfile
 
 and we tell PLUMED to use VES acting on CV2 with a free energy cutoff

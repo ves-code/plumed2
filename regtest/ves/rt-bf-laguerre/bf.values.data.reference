@@ -1,5 +1,5 @@
 #! FIELDS arg 1 l0(s) l1(s) l2(s) l3(s) l4(s) l5(s) l6(s) l7(s) l8(s) l9(s) l10(s) l11(s) l12(s) l13(s) l14(s) l15(s) l16(s) l17(s) l18(s) l19(s) l20(s)
-#! SET bf_keywords {BF_LAGUERRE ORDER=20 INTERVAL_MIN=0.0 INTERVAL_MAX=120.0}
+#! SET bf_keywords {BF_LAGUERRE ORDER=20 MINIMUM=0.0 MAXIMUM=120.0}
 #! SET min 0.0
 #! SET max 120.0
 #! SET nbins  301

@@ -43,7 +43,7 @@ Hessian for a given VES bias every 1 iteration.
 \plumedfile
 phi:   TORSION ATOMS=5,7,9,15
 
-bf1: BF_FOURIER ORDER=5 INTERVAL_MIN=-pi INTERVAL_MAX=pi
+bf1: BF_FOURIER ORDER=5 MINIMUM=-pi MAXIMUM=pi
 
 VES_LINEAR_EXPANSION ...
  ARG=phi

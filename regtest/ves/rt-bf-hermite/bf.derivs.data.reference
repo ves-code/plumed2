@@ -1,5 +1,5 @@
 #! FIELDS arg d_1 d_h0(s) d_h1(s) d_h2(s) d_h3(s) d_h4(s) d_h5(s) d_h6(s) d_h7(s) d_h8(s) d_h9(s) d_h10(s) d_h11(s) d_h12(s) d_h13(s) d_h14(s) d_h15(s) d_h16(s) d_h17(s) d_h18(s) d_h19(s) d_h20(s)
-#! SET bf_keywords {BF_HERMITE ORDER=20 INTERVAL_MIN=-10.0 INTERVAL_MAX=+10.0}
+#! SET bf_keywords {BF_HERMITE ORDER=20 MINIMUM=-10.0 MAXIMUM=+10.0}
 #! SET min -10.0
 #! SET max +10.0
 #! SET nbins  301

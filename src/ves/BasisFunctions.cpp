@@ -36,8 +36,8 @@ namespace ves {
 void BasisFunctions::registerKeywords(Keywords& keys) {
   Action::registerKeywords(keys);
   keys.add("compulsory","ORDER","The order of the basis function expansion.");
-  keys.add("compulsory","INTERVAL_MIN","The minimum of the interval on which the basis functions are defined.");
-  keys.add("compulsory","INTERVAL_MAX","The maximum of the interval on which the basis functions are defined.");
+  keys.add("compulsory","MINIMUM","The minimum of the interval on which the basis functions are defined.");
+  keys.add("compulsory","MAXIMUM","The maximum of the interval on which the basis functions are defined.");
   keys.add("hidden","NGRID_POINTS","The number of grid points used for numerical integrals");
   keys.addFlag("DEBUG_INFO",false,"Print out more detailed information about the basis set. Useful for debugging.");
   keys.addFlag("NUMERICAL_INTEGRALS",false,"Calculate basis function integral for the uniform distribution numerically. Useful for debugging.");
@@ -82,9 +82,9 @@ BasisFunctions::BasisFunctions(const ActionOptions&ao):
   nbasis_=norder_+1;
   //
   std::string str_imin; std::string str_imax;
-  if(keywords.exists("INTERVAL_MIN") && keywords.exists("INTERVAL_MAX")) {
-    parse("INTERVAL_MIN",str_imin); addKeywordToList("INTERVAL_MIN",str_imin);
-    parse("INTERVAL_MAX",str_imax); addKeywordToList("INTERVAL_MAX",str_imax);
+  if(keywords.exists("MINIMUM") && keywords.exists("MAXIMUM")) {
+    parse("MINIMUM",str_imin); addKeywordToList("MINIMUM",str_imin);
+    parse("MAXIMUM",str_imax); addKeywordToList("MAXIMUM",str_imax);
   }
   else {
     str_imin = "-1.0";
@@ -93,12 +93,12 @@ BasisFunctions::BasisFunctions(const ActionOptions&ao):
   interval_min_str_ = str_imin;
   interval_max_str_ = str_imax;
   if(!Tools::convert(str_imin,interval_min_)) {
-    plumed_merror(getName()+": cannot convert the value given in INTERVAL_MIN to a double");
+    plumed_merror(getName()+": cannot convert the value given in MINIMUM to a double");
   }
   if(!Tools::convert(str_imax,interval_max_)) {
-    plumed_merror(getName()+": cannot convert the value given in INTERVAL_MAX to a double");
+    plumed_merror(getName()+": cannot convert the value given in MAXIMUM to a double");
   }
-  if(interval_min_>interval_max_) {plumed_merror(getName()+": INTERVAL_MIN and INTERVAL_MAX are not correctly defined");}
+  if(interval_min_>interval_max_) {plumed_merror(getName()+": MINIMUM and MAXIMUM are not correctly defined");}
   //
   parseFlag("DEBUG_INFO",print_debug_info_);
   if(keywords.exists("NUMERICAL_INTEGRALS")) {

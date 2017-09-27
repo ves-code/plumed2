@@ -1,5 +1,5 @@
 #! FIELDS arg 1 cos(1*s) cos(2*s) cos(3*s) cos(4*s) cos(5*s) cos(6*s) cos(7*s) cos(8*s) cos(9*s) cos(10*s)
-#! SET bf_keywords {BF_COSINE ORDER=10 INTERVAL_MIN=-4.0 INTERVAL_MAX=4.0}
+#! SET bf_keywords {BF_COSINE ORDER=10 MINIMUM=-4.0 MAXIMUM=4.0}
 #! SET min -4.0
 #! SET max 4.0
 #! SET nbins  401

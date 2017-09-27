@@ -113,8 +113,8 @@ the FES through reweighting. The syntax for this basis set in Plumed is:
 \plumedfile
 BF_LEGENDRE ...
  ORDER=10
- INTERVAL_MIN=0.23
- INTERVAL_MAX=0.8
+ MINIMUM=0.23
+ MAXIMUM=0.8
  LABEL=bf1
 ... BF_LEGENDRE
 \endplumedfile
@@ -303,8 +303,8 @@ the group can choose a different order in the expansion, for instance 5, 10,
 \plumedfile
 BF_LEGENDRE ...
  ORDER=20
- INTERVAL_MIN=0.23
- INTERVAL_MAX=0.8
+ MINIMUM=0.23
+ MAXIMUM=0.8
  LABEL=bf1
 ... BF_LEGENDRE
 \endplumedfile

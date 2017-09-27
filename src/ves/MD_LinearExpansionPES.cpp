@@ -78,8 +78,8 @@ random_seed       4525
 plumed_input      plumed.dat
 dimension         2
 replicas          1
-basis_functions_1 BF_POWERS ORDER=4 INTERVAL_MIN=-3.0 INTERVAL_MAX=+3.0
-basis_functions_2 BF_POWERS ORDER=4 INTERVAL_MIN=-3.0 INTERVAL_MAX=+3.0
+basis_functions_1 BF_POWERS ORDER=4 MINIMUM=-3.0 MAXIMUM=+3.0
+basis_functions_2 BF_POWERS ORDER=4 MINIMUM=-3.0 MAXIMUM=+3.0
 input_coeffs       pot_coeffs_input.data
 initial_position   -1.174,+1.477
 output_potential        potential.data

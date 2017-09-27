@@ -1,5 +1,5 @@
 #! FIELDS arg f0(s) f1(s) f2(s) f3(s) f4(s)
-#! SET bf_keywords {BF_CUSTOM INTERVAL_MIN=-6.5 INTERVAL_MAX=1.5 FUNC1=x FUNC2=x^2 FUNC3=x^3 FUNC4=x^4}
+#! SET bf_keywords {BF_CUSTOM MINIMUM=-6.5 MAXIMUM=1.5 FUNC1=x FUNC2=x^2 FUNC3=x^3 FUNC4=x^4}
 #! SET min -6.5
 #! SET max 1.5
 #! SET nbins  301

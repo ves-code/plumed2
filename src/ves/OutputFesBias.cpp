@@ -52,8 +52,8 @@ file coeffs.input.data and output the FES and bias every 500 iterations.
 phi:   TORSION ATOMS=5,7,9,15
 psi:   TORSION ATOMS=7,9,15,17
 
-bf1: BF_FOURIER ORDER=5 INTERVAL_MIN=-pi INTERVAL_MAX=pi
-bf2: BF_FOURIER ORDER=5 INTERVAL_MIN=-pi INTERVAL_MAX=pi
+bf1: BF_FOURIER ORDER=5 MINIMUM=-pi MAXIMUM=pi
+bf2: BF_FOURIER ORDER=5 MINIMUM=-pi MAXIMUM=pi
 
 VES_LINEAR_EXPANSION ...
  ARG=phi,psi
