@@ -42,7 +42,9 @@ namespace ves {
 /*
 Linear basis set expansion bias.
 
-This bias action takes the bias potential to be a linear expansion in some basis set that is written as a product of one-dimensional basis functions. For example, for one CV the bias would be written as
+This VES bias action takes the bias potential to be a linear expansion 
+in some basis set that is written as a product of one-dimensional basis functions. 
+For example, for one CV the bias would be written as
 \f[
 V(s_{1};\boldsymbol{\alpha}) = \sum_{i_{1}} \alpha_{i_{1}} \, f_{i_{1}}(s_{1}),
 \f]
@@ -50,30 +52,110 @@ while for two CVs it is written as
 \f[
 V(s_{1},s_{2};\boldsymbol{\alpha}) = \sum_{i_{1},i_{2}} \alpha_{i_{1},i_{2}} \, f_{i_{1}}(s_{1}) \, f_{i_{2}}(s_{2})
 \f]
-where \f$\boldsymbol{\alpha}\f$ is the set of expansion coefficients that are optimized within VES. With an appropriate choice of the basis functions it is possible to represent any generic free energy surface. The relationship between the bias and the free energy surface is given by
+where \f$\boldsymbol{\alpha}\f$ is the set of expansion coefficients that 
+are optimized within VES. With an appropriate choice of the basis functions 
+it is possible to represent any generic free energy surface. 
+The relationship between the bias and the free energy surface is given by
 \f[
 V(\mathbf{s}) = - F(\mathbf{s}) - \frac{1}{\beta} \log p(\mathbf{s}).
 \f]
 where \f$p(\mathbf{s})\f$ is the target distribution that is employed in the VES simulation.
 
-
 \par Basis Functions
 
-Various one-dimensional basis functions are available in the VES code, see the complete list \ref ves_basisf "here". At the current moment we recommend to use \ref BF_LEGENDRE "legendre polynomicals" for non-periodic CVs and \ref BF_FOURIER "Fourier basis functions" for periodic CV (e.g. dihedral angles).
+Various one-dimensional basis functions are available in the VES code, 
+see the complete list \ref ves_basisf "here". 
+At the current moment we recommend to use Legendre polynomials (\ref BF_LEGENDRE) 
+for non-periodic CVs and Fourier basis functions (\ref BF_FOURIER) 
+for periodic CV (e.g. dihedral angles).
 
-To use these basis functions within VES_LINEAR_EXPANSION do you first need to
+To use basis functions within VES_LINEAR_EXPANSION you first need to
 define them in the input file before the VES_LINEAR_EXPANSION action and
 then give their labels using the BASIS_FUNCTIONS keyword.
 
 \par Target Distributions
 
-The default option is to employ a uniform target distribution.
-Various other target distributions \f$p(\mathbf{s})\f$ are available in the VES code,
+Various target distributions \f$p(\mathbf{s})\f$ are available in the VES code,
 see the complete list \ref ves_targetdist "here".
-To use any of these target distribution you need to
-use the TARGET_DISTRIBUTION keyword where the keyword relevant to the
-target distribution are enclosed within curly brackets.
 
+To use a target distribution within VES_LINEAR_EXPANSION you first need to
+define it in the input file before the VES_LINEAR_EXPANSION action and
+then give its label using the TARGET_DISTRIBUTION keyword.
+The default behavior if no TARGET_DISTRIBUTION is given is to
+employ a uniform target distribution.
+
+Some target distribution, like the well-tempered one (\ref TD_WELLTEMPERED), 
+are dynamic and need to be iteratively updated during the optimization. 
+
+\par Optimizer
+
+In order to optimize the coefficients you will need to use VES_LINEAR_EXPANSION 
+in combination with an optimizer, see the list of optimizers available in the 
+VES code \ref ves_optimizer "here". At the current moment we recommend to 
+use the averaged stochastic gradient decent optimizer (\ref OPT_AVERAGED_SGD). 
+
+The optimizer should be defined after the VES_LINEAR_EXPANSION action. 
+
+\par Grid 
+
+Internally the code uses grids to calculate the basis set averages
+over the target distribution that is needed for the gradient. The same grid is 
+also used for the output files (see next section). 
+The size of the grid is determined by the GRID_BINS keyword. By default it has
+ 100 grid points in each dimension, and generally this value should be sufficent. 
+
+\par Outputting Free Energy Surfaces and Other Files
+
+It is possible to output on-the-fly during the simulation the free energy surface 
+estimated from the bias potential. How often this is done is specified within 
+the \ref ves_optimizer "optimizer" by using the FES_OUTPUT keyword. The filename 
+is specified by the FES_FILE keyword, but by default is it fes.LABEL.data, 
+with an added suffix indicating 
+the iteration number (iter-#).
+
+For multi-dimensional case is it possible to also output projections of the 
+free energy surfaces. The arguments for which to do these projections is 
+specified using the numbered PROJ_ARG keywords. For these files a suffix 
+indicating the projection (proj-#) will be added to the filenames. 
+You will also need to specfiy the frequency of the output by using the 
+FES_PROJ_OUTPUT keyword within the optimizer. 
+
+It is also possible to output the bias potential itself, for this the relevant 
+keyword is BIAS_OUTPUT within the optimizer. The filename 
+is specified by the BIAS_FILE keyword, but by default is it bias.LABEL.data, 
+with an added suffix indicating the iteration number (iter-#).
+
+Furthermore is it possible to output the target distribution, and its projections 
+(i.e. marginal distributions). The filenames of these files are specified with 
+the TARGETDIST_FILE, but by default is it targetdist.LABEL.data. The 
+logarithm of the target distribution will also be outputted to file that has a 
+suffix log. For static target distribution these files will be outputted in 
+the beginning of the 
+simulation while for dynamic ones you will need to specify the frequency 
+of the output by using the TARGETDIST_OUTPUT and TARGETDIST_PROJ_OUTPUT 
+keywords within the optimizer.
+
+It is also possible to output free energy surfaces and bias in postprocessing 
+by using the \ref VES_OUTPUT_FES action. However, be aware that this action 
+does does not support dynamic target distribution (e.g. well-tempered).
+
+\par Static Bias 
+
+It is also possible to use VES_LINEAR_EXPANSION as a static bias that uses 
+previously obtained coefficents. In this case the coefficents should be 
+read-in from the coefficent file given in the COEFFS keyword. 
+
+\par Bias Cutoff
+
+It is possible to impose a cutoff on the bias potential using the procedure 
+introduced in Ref \cite McCarty-PRL-2015 such that the free energy surface 
+is only flooded up to a certain value. The bias that results from this procedure 
+can then be used as a static bias for obtaining kinetic rates. 
+The value of the cutoff is given by the BIAS_CUTOFF keyword. 
+To impose the cutoff the code uses a Fermi switching function \f$1/(1+e^{\lambda x})\f$ 
+where the parameter \f$\lambda\f$ controls how sharply the switchingfunction goes to zero. 
+The default value is \f$\lambda=10\f$ but this can be changed by using the 
+BIAS_CUTOFF_FERMI_LAMBDA keyword.
 
 \par Examples
 
