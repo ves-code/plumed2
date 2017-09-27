@@ -161,7 +161,7 @@ VesBias::VesBias(const ActionOptions&ao):
     }
     //
     if(cutoff_value>0.0) {
-      double fermi_lambda=1.0;
+      double fermi_lambda=10.0;
       parse("BIAS_CUTOFF_FERMI_LAMBDA",fermi_lambda);
       setupBiasCutoff(cutoff_value,fermi_lambda);
       log.printf("  Employing a bias cutoff of %f (the lambda value for the Fermi switching function is %f), see and cite ",cutoff_value,fermi_lambda);
@@ -248,7 +248,7 @@ void VesBias::registerKeywords( Keywords& keys ) {
   keys.add("optional","TARGETDIST_FILE","filename of the file on which the target distribution should be written out. By default it is targetdist.LABEL.data. Note that suffixes indicating the iteration number (iter-#) are added to the filename when optimizing coefficients and the target distribution is dynamic.");
   //
   keys.reserve("optional","BIAS_CUTOFF","cutoff the bias such that it only fills the free energy surface up to certain level F_cutoff, here you should give the value of the F_cutoff.");
-  keys.reserve("optional","BIAS_CUTOFF_FERMI_LAMBDA","the lambda value used in the Fermi switching function for the bias cutoff (BIAS_CUTOFF). Lambda is by default 1.0.");
+  keys.reserve("optional","BIAS_CUTOFF_FERMI_LAMBDA","the lambda value used in the Fermi switching function for the bias cutoff (BIAS_CUTOFF), the default value is 10.0.");
   //
   keys.reserve("numbered","PROJ_ARG","arguments for doing projections of the FES or the target distribution.");
   //
