@@ -83,6 +83,10 @@ the VES bias that is optimized.
 You can also output dynamic target distributions by using the
 TARGETDIST_OUTPUT and TARGETDIST_PROJ_OUTPUT keywords.
 
+It is possible to start the optimization from some initial set of
+coefficients that have been previously obtained by using the INITIAL_COEFFS
+keyword.
+
 \par Multiple walkers
 
 This optimizer supports the usage of multiple walkers where different copies of the system share the same bias potential (i.e. coefficients) and cooperatively sample the averages needed for the gradient and Hessian. This can significantly help with convergence in difficult cases. It is of course best to start the different copies from different positions in CV space. To activate this option you just need to add the MULTIPLE_WALKERS flag. Note that this is only supported if the MD code support running multiple replicas connected via MPI.
@@ -96,7 +100,8 @@ The optimizer supports the usage of a so-called mask file that can be used to em
 
 In the following input we emloy an averaged stochastic gradient decent with a
 fixed step size of 1.0 and update the coefficent every 1000 MD steps
-(e.g. every 2 ps if the MD time step is 0.02 ps). The FES and bias is outputted
+(e.g. every 2 ps if the MD time step is 0.02 ps). The coefficent are outputted
+to the coeffs.data every 50 iterations while the FES and bias is outputted
 to files every 500 iterations (e.g. every 1000 ps).
 \plumedfile
 phi:   TORSION ATOMS=5,7,9,15
