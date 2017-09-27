@@ -245,7 +245,7 @@ void VesBias::registerKeywords( Keywords& keys ) {
   //
   keys.add("optional","BIAS_FILE","filename of the file on which the bias should be written out. By default it is bias.LABEL.data. Note that suffixes indicating the iteration number (iter-#) are added to the filename when optimizing coefficients.");
   keys.add("optional","FES_FILE","filename of the file on which the FES should be written out. By default it is fes.LABEL.data. Note that suffixes indicating the iteration number (iter-#) are added to the filename when optimizing coefficients.");
-  keys.add("optional","TARGETDIST_FILE","filename of the file on which the target distribution should be written out. By default it is targetdist.LABEL.data. Note that suffixes indicating the iteration number (iter-#) are added to the filename when optimizing coefficients.");
+  keys.add("optional","TARGETDIST_FILE","filename of the file on which the target distribution should be written out. By default it is targetdist.LABEL.data. Note that suffixes indicating the iteration number (iter-#) are added to the filename when optimizing coefficients and the target distribution is dynamic.");
   //
   keys.reserve("optional","BIAS_CUTOFF","cutoff the bias such that it only fills the free energy surface up to certain level F_cutoff, here you should give the value of the F_cutoff.");
   keys.reserve("optional","BIAS_CUTOFF_FERMI_LAMBDA","the lambda value used in the Fermi switching function for the bias cutoff (BIAS_CUTOFF). Lambda is by default 1.0.");
