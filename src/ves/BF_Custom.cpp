@@ -144,7 +144,7 @@ void BF_Custom::registerKeywords(Keywords& keys) {
   keys.add("numbered","FUNC","The basis functions f_i(x) given in mathematical expressions using _x_ as a variable.");
   keys.add("optional","TRANSFORM","An optional function that can be used to transform the argument before calculating the basis function values. You should use _t_ as a variable. You can use the variables _min_ and _max_ to give the minimum and the maximum of the interval.");
   keys.addFlag("PERIODIC",false,"Indicate that the basis functions are periodic.");
-  keys.addFlag("CHECK_NAN_INF",false,"Indicate that the basis functions are periodic.");
+  keys.addFlag("CHECK_NAN_INF",false,"Check that the basis functions do not result in a not a number (nan) or infinity (inf).");
   keys.remove("NUMERICAL_INTEGRALS");
 }
 
