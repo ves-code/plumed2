@@ -93,12 +93,12 @@ BasisFunctions::BasisFunctions(const ActionOptions&ao):
   interval_min_str_ = str_imin;
   interval_max_str_ = str_imax;
   if(!Tools::convert(str_imin,interval_min_)) {
-    plumed_merror("cannot convert the value given in INTERVAL_MIN to a double");
+    plumed_merror(getName()+": cannot convert the value given in INTERVAL_MIN to a double");
   }
   if(!Tools::convert(str_imax,interval_max_)) {
-    plumed_merror("cannot convert the value given in INTERVAL_MAX to a double");
+    plumed_merror(getName()+": cannot convert the value given in INTERVAL_MAX to a double");
   }
-  if(interval_min_>interval_max_) {plumed_merror("INTERVAL_MIN and INTERVAL_MAX are not correctly defined");}
+  if(interval_min_>interval_max_) {plumed_merror(getName()+": INTERVAL_MIN and INTERVAL_MAX are not correctly defined");}
   //
   parseFlag("DEBUG_INFO",print_debug_info_);
   if(keywords.exists("NUMERICAL_INTEGRALS")) {
