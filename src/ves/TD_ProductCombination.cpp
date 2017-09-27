@@ -73,6 +73,21 @@ static distribution.
 \par Examples
 
 In the following example the overall interval on which the
+target distribution is defined is from 0.23 to 0.8.
+We employ a product combination of a well-tempered
+distribution and a uniform distribution that decays to
+zero at 0.6. This results in a target distribution that
+is well-tempered from 0.23 to 0.6 and then decays to zero.
+In other words, we cut off the tail of the well-tempered
+distribution at 0.6
+\plumedfile
+td_welltemp: TD_WELLTEMPERED BIASFACTOR=5
+td_uniform: TD_UNIFORM MINIMA=0.23 MAXIMA=0.6 SIGMA_MAXIMA=0.05
+td_combination: TD_PRODUCT_COMBINATION DISTRIBUTIONS=td_uniform,td_welltemp
+\endplumedfile
+
+
+In the following example the overall interval on which the
 target distribution is defined is from -4 to 4.
 We employ a product of a Gaussian distribution with two centers
 and distribution that is uniform on the interval -3 to 3 and
