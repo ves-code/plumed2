@@ -96,6 +96,11 @@ private:
   std::string targetdist_averages_filename_;
   std::string coeffs_id_prefix_;
   //
+  std::string bias_file_fmt_;
+  std::string fes_file_fmt_;
+  std::string targetdist_file_fmt_;
+  std::string targetdist_restart_file_fmt_;
+  //
   bool filenames_have_iteration_number_;
   //
   bool bias_fileoutput_active_;
@@ -232,10 +237,12 @@ public:
   void enableBiasFileOutput() {bias_fileoutput_active_=true;}
   void disableBiasFileOutput() {bias_fileoutput_active_=false;}
   bool isBiasFileOutputActive() const {return bias_fileoutput_active_;}
+  std::string getBiasFileFmt() const {return bias_file_fmt_;}
   //
   void enableFesFileOutput() {fes_fileoutput_active_=true;}
   void disableFesFileOutput() {fes_fileoutput_active_=false;}
   bool isFesFileOutputActive() const {return fes_fileoutput_active_;}
+  std::string getFesFileFmt() const {return fes_file_fmt_;}
   //
   void enableFesProjFileOutput() {fesproj_fileoutput_active_=true;}
   void disableFesFileProjOutput() {fesproj_fileoutput_active_=false;}
@@ -244,6 +251,8 @@ public:
   void enableDynamicTargetDistFileOutput() {dynamic_targetdist_fileoutput_active_=true;}
   void disableDynamicTargetDistFileOutput() {dynamic_targetdist_fileoutput_active_=false;}
   bool isDynamicTargetDistFileOutputActive() const {return dynamic_targetdist_fileoutput_active_;}
+  std::string getTargetDistFileFmt() const {return targetdist_file_fmt_;}
+  std::string getTargetDistRestartFileFmt() const {return targetdist_restart_file_fmt_;}
   //
   void enableStaticTargetDistFileOutput() {static_targetdist_fileoutput_active_=true;}
   void disableStaticTargetDistFileOutput() {static_targetdist_fileoutput_active_=false;}
