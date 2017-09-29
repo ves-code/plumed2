@@ -101,8 +101,8 @@ The optimizer should be defined after the VES_LINEAR_EXPANSION action.
 Internally the code uses grids to calculate the basis set averages
 over the target distribution that is needed for the gradient. The same grid is
 also used for the output files (see next section).
-The size of the grid is determined by the GRID_BINS keyword. By default it has
- 100 grid points in each dimension, and generally this value should be sufficent.
+The size of the grid is determined by the GRID_BINS keyword. By default it has 
+100 grid points in each dimension, and generally this value should be sufficent.
 
 \par Outputting Free Energy Surfaces and Other Files
 
@@ -264,7 +264,7 @@ VesLinearExpansion::VesLinearExpansion(const ActionOptions&ao):
     log.printf("  using target distribution of type %s with label %s \n",getTargetDistributionPntrs()[0]->getName().c_str(),getTargetDistributionPntrs()[0]->getLabel().c_str());
   }
   else {
-    plumed_merror("problem with the TARGET_DISTRIBUTION keyword, either give no keyword or just one keyword");
+    plumed_merror("problem with the TARGET_DISTRIBUTION keyword, either give no label or just one label.");
   }
   setTargetDistAverages(bias_expansion_pntr_->TargetDistAverages());
   //
