@@ -43,7 +43,6 @@ class BasisFunctions;
 class CoeffsMatrix;
 
 
-/// \ingroup TOOLBOX
 class CoeffsVector:
   public CoeffsBase
 {
