@@ -749,7 +749,21 @@ Optimizer::Optimizer(const ActionOptions&ao):
 }
 
 
-Optimizer::~Optimizer() {
+Optimizer::~Optimizer() {  
+  //
+  if(!isTargetDistOutputActive()) {
+    for(unsigned int i=0; i<nbiases_; i++) {
+      if(dynamic_targetdists_[i]) {
+        bias_pntrs_[i]->enableDynamicTargetDistFileOutput();
+        bias_pntrs_[i]->setupTargetDistFileOutput();
+        bias_pntrs_[i]->writeTargetDistToFile();
+      }
+    }
+  }
+  else if(isTargetDistOutputActive() && getIterationCounter()%getTargetDistOutputStride()!=0) {
+    writeTargetDistOutputFiles();
+  }
+  //
   for(unsigned int i=0; i<aux_coeffs_pntrs_.size(); i++) {
     delete aux_coeffs_pntrs_[i];
   }
