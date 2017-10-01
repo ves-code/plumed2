@@ -749,7 +749,7 @@ Optimizer::Optimizer(const ActionOptions&ao):
 }
 
 
-Optimizer::~Optimizer() {  
+Optimizer::~Optimizer() {
   //
   if(!isTargetDistOutputActive()) {
     for(unsigned int i=0; i<nbiases_; i++) {
