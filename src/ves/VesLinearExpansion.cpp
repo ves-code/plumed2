@@ -129,7 +129,7 @@ with an added suffix indicating the iteration number (iter-#).
 Furthermore is it possible to output the target distribution, and its projections
 (i.e. marginal distributions). The filenames of these files are specified with
 the TARGETDIST_FILE, but by default is it targetdist.LABEL.data. The
-logarithm of the target distribution will also be outputted to file that has the 
+logarithm of the target distribution will also be outputted to file that has the
 added suffix log. For static target distribution these files will be outputted in
 the beginning of the
 simulation while for dynamic ones you will need to specify the frequency
