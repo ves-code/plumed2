@@ -14,7 +14,8 @@ see the [homepage of the VES code](http://www.ves-code.org) for further informat
 The theory of VES is briefly explained \subpage ves_theory "here".
 
 The VES code is an optional module that needes to be enabled when configuring the
-compilation of PLUMED by using the --enable-modules=all or --enable-modules=ves flag in the configure script.
+compilation of PLUMED by using the '\-\-enable-modules=ves' 
+(or '\-\-enable-modules=all') flag when running the 'configure' script. 
 
 The various components of the VES code module are listed and described in the following sections 
 
