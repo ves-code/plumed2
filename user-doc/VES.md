@@ -1,7 +1,7 @@
 \page VES VES code
 
 <!-- 
-description: PLUMED module that implements enhanced sampling methods based on Variationally Enhanced Sampling
+description: Module that implements enhanced sampling methods based on Variationally Enhanced Sampling
 authors: Omar Valsson
 reference: \cite Valsson-PRL-2014
 -->
@@ -14,17 +14,15 @@ see the [homepage of the VES code](http://www.ves-code.org) for further informat
 The theory of VES is briefly explained \subpage ves_theory "here".
 
 The VES code is an optional module that needes to enabled when configuring the
-compilation of PLUMED (e.g. ./configure --enable-modules=all).
+compilation of PLUMED (e.g. by using the --enable-modules=all or --enable-modules=ves flag with the configure script).
 
 The various components of the VES code module are listed and described in the following sections 
 
-- \subpage ves_tutorial_lugano_2017
 - \subpage ves_tutorials
 - \subpage ves_biases
 - \subpage ves_basisf
 - \subpage ves_targetdist
 - \subpage ves_optimizer
-- \subpage ves_colvar
 - \subpage ves_utils
 - \subpage ves_cltools
 
@@ -138,13 +136,6 @@ The following list contains the optimizers available in the VES code.
 @VES_OPTIMIZER@
 
 
-\page ves_colvar Collective Variables
-
-The following list contains the CV available in the VES code.
-
-@VES_COLVAR@
-
-
 \page ves_utils Utilities
 
 The following list contains various utilities available in the VES code. 
@@ -163,9 +154,13 @@ The following list contains the command line tools available in the VES code.
 
 \page ves_tutorials Tutorials
 
-The following tutorials are available for the VES code
+The following tutorials are available for the VES code. 
+
+\subpage ves_tutorial_lugano_2017
 
 @VES_TUTORIALS@
+
+
 
 
 \page ves_tutorial_lugano_2017 MARVEL-VES School February 2017
