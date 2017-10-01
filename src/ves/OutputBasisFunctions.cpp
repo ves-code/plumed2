@@ -43,7 +43,7 @@ Output basis functions to file.
 This action can be used to write out to a grid file the values and derivatives of
 given basis functions. This is normally used for debugging when programing new
 types of basis functions. For example, it is possible to calculate the
-derivatives numerically and compare that to the analytically calculated
+derivatives numerically and compare to the analytically calculated
 derivatives.
 
 This action is normally used through the \ref driver.

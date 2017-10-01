@@ -38,6 +38,7 @@ coefficients but can be used to monitor the gradient and Hessian for a given
 VES bias.
 
 \par Examples
+
 In the following input we use the OPT_DUMMY to monitor the gradient and
 Hessian for a given VES bias every 1 iteration.
 \plumedfile

@@ -92,18 +92,13 @@ in the beginning of the input files (or some MD codes the PLUMED should automati
 detect if it is a restart run) and keep the same input as before The restarting of
 the optimization should be automatic as the optimizer will then read in the
 coefficients from the file given in COEFFS_FILE. For dynamic target
-distribution the code will also read in the final target distribution from the
-previous run.
-
-
-\par Multiple walkers
+distribution the code will also read in the final target distribution from the 
+previous run (which is always outputted even if the TARGETDIST_OUTPUT keyword 
+is not used).
 
 This optimizer supports the usage of multiple walkers where different copies of the system share the same bias potential (i.e. coefficients) and cooperatively sample the averages needed for the gradient and Hessian. This can significantly help with convergence in difficult cases. It is of course best to start the different copies from different positions in CV space. To activate this option you just need to add the MULTIPLE_WALKERS flag. Note that this is only supported if the MD code support running multiple replicas connected via MPI.
 
-\par Mask file
-
 The optimizer supports the usage of a so-called mask file that can be used to employ different step sizes for different coefficents and/or deactive the optimization of certain coefficients (by putting values of 0.0). The mask file is read in by using the MASK_FILE keyword and should be in the same format as the coefficent file. It is possible to generate a template mask file by using the OUTPUT_MASK_FILE keyword.
-
 
 \par Examples
 
