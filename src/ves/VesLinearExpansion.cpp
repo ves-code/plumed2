@@ -73,8 +73,6 @@ To use basis functions within VES_LINEAR_EXPANSION you first need to
 define them in the input file before the VES_LINEAR_EXPANSION action and
 then give their labels using the BASIS_FUNCTIONS keyword.
 
-The interval on which the basis functions are defined should be
-
 
 \par Target Distributions
 
@@ -131,8 +129,8 @@ with an added suffix indicating the iteration number (iter-#).
 Furthermore is it possible to output the target distribution, and its projections
 (i.e. marginal distributions). The filenames of these files are specified with
 the TARGETDIST_FILE, but by default is it targetdist.LABEL.data. The
-logarithm of the target distribution will also be outputted to file that has a
-suffix log. For static target distribution these files will be outputted in
+logarithm of the target distribution will also be outputted to file that has the 
+added suffix log. For static target distribution these files will be outputted in
 the beginning of the
 simulation while for dynamic ones you will need to specify the frequency
 of the output by using the TARGETDIST_OUTPUT and TARGETDIST_PROJ_OUTPUT
@@ -151,7 +149,7 @@ read in from the coefficent file given in the COEFFS keyword.
 \par Bias Cutoff
 
 It is possible to impose a cutoff on the bias potential using the procedure
-introduced in Ref \cite McCarty-PRL-2015 such that the free energy surface
+introduced in \cite McCarty-PRL-2015 such that the free energy surface
 is only flooded up to a certain value. The bias that results from this procedure
 can then be used as a static bias for obtaining kinetic rates.
 The value of the cutoff is given by the BIAS_CUTOFF keyword.
@@ -206,7 +204,7 @@ using the TARGETDIST_STRIDE within the optimizer.
 bf1: BF_FOURIER  ORDER=__ MINIMUM=__ MAXIMUM=__
 bf2: BF_LEGENDRE ORDER=__ MINIMUM=__ MAXIMUM=__
 
-td_wt: TD_WELLTEMPERED BIASFACTOR=10.
+td_wt: TD_WELLTEMPERED BIASFACTOR=10.0
 
 VES_LINEAR_EXPANSION ...
  ARG=cv1,cv2
@@ -327,7 +325,7 @@ void VesLinearExpansion::registerKeywords( Keywords& keys ) {
   VesBias::useProjectionArgKeywords(keys);
   //
   keys.use("ARG");
-  keys.add("compulsory","BASIS_FUNCTIONS","the label of the basis sets that you want to use");
+  keys.add("compulsory","BASIS_FUNCTIONS","the label of the one dimensional basis functions that should be used.");
   keys.addOutputComponent("force2","default","the instantaneous value of the squared force due to this bias potential.");
 }
 
