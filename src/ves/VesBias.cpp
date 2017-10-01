@@ -252,7 +252,7 @@ void VesBias::registerKeywords( Keywords& keys ) {
   Bias::registerKeywords(keys);
   keys.add("optional","TEMP","the system temperature - this is needed if the MD code does not pass the temperature to PLUMED.");
   //
-  keys.reserve("optional","COEFFS","read-in the coefficents from files.");
+  keys.reserve("optional","COEFFS","read in the coefficents from files.");
   //
   keys.reserve("optional","TARGET_DISTRIBUTION","the label of the target distribution to be used.");
   keys.reserve("optional","TARGET_DISTRIBUTIONS","the label of the target distribution to be used. Here you are allows to use multiple labels.");

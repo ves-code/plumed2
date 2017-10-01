@@ -42,7 +42,7 @@ Target distribution from an external grid file (static).
 Using this keyword you can use a target distribution that is read from an
 external grid file that is in the proper PLUMED file format. You do not to
 give any information about the external grid file as all relevant information
-should be automatically detected. It is assumed that the distribution read-in
+should be automatically detected. It is assumed that the distribution read in
 from the grid is a proper probability distribution, i.e. always non-negative
 and can be normalized.
 
@@ -103,7 +103,7 @@ PLUMED_REGISTER_ACTION(TD_Grid,"TD_GRID")
 void TD_Grid::registerKeywords(Keywords& keys) {
   TargetDistribution::registerKeywords(keys);
   keys.add("compulsory","FILE","The name of the external grid file to be used as a target distribution.");
-  keys.add("optional","SHIFT","Shift the grid read-in by some constant value. Due to normalization the final shift in the target distribution will generally not be the same as the value given here");
+  keys.add("optional","SHIFT","Shift the grid read in by some constant value. Due to normalization the final shift in the target distribution will generally not be the same as the value given here");
   keys.addFlag("ZERO_OUTSIDE",false,"By default the target distribution is continuous such that values outside the boundary of the external grid file are the same as at the boundary. This can be changed by using this flag which will make values outside to be taken as zero.");
   keys.addFlag("DO_NOT_NORMALIZE",false,"By default the target distribution from the external grid is always normalized inside the code. You can use this flag to disable this normalization. However, be warned that this will generally lead to the wrong behavior if the distribution from the external grid is not properly normalized to 1.");
   keys.use("WELLTEMPERED_FACTOR");

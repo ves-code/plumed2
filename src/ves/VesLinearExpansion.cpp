@@ -146,7 +146,7 @@ does does not support dynamic target distribution (e.g. well-tempered).
 
 It is also possible to use VES_LINEAR_EXPANSION as a static bias that uses
 previously obtained coefficents. In this case the coefficents should be
-read-in from the coefficent file given in the COEFFS keyword.
+read in from the coefficent file given in the COEFFS keyword.
 
 \par Bias Cutoff
 

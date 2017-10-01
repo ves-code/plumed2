@@ -102,7 +102,7 @@ This optimizer supports the usage of multiple walkers where different copies of 
 
 \par Mask file
 
-The optimizer supports the usage of a so-called mask file that can be used to employ different step sizes for different coefficents and/or deactive the optimization of certain coefficients (by putting values of 0.0). The mask file is read-in by using the MASK_FILE keyword and should be in the same format as the coefficent file. It is possible to generate a template mask file by using the OUTPUT_MASK_FILE keyword.
+The optimizer supports the usage of a so-called mask file that can be used to employ different step sizes for different coefficents and/or deactive the optimization of certain coefficients (by putting values of 0.0). The mask file is read in by using the MASK_FILE keyword and should be in the same format as the coefficent file. It is possible to generate a template mask file by using the OUTPUT_MASK_FILE keyword.
 
 
 \par Examples
