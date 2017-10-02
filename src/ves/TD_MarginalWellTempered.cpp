@@ -60,7 +60,7 @@ PLUMED_REGISTER_ACTION(TD_MarginalWellTempered,"TD_MARGINAL_WELLTEMPERED")
 void TD_MarginalWellTempered::registerKeywords(Keywords& keys) {
   TargetDistribution::registerKeywords(keys);
   keys.add("compulsory","BIASFACTOR","The bias factor to be used for the well tempered distribution");
-  keys.add("compulsory","PROJ_ARGS","The argument to be used for the marginal.");
+  keys.add("compulsory","MARGINAL_ARG","The argument to be used for the marginal.");
 }
 
 
