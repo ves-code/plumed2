@@ -59,7 +59,7 @@ PLUMED_REGISTER_ACTION(TD_MarginalWellTempered,"TD_MARGINAL_WELLTEMPERED")
 
 void TD_MarginalWellTempered::registerKeywords(Keywords& keys) {
   TargetDistribution::registerKeywords(keys);
-  keys.add("compulsory","BIAS_FACTOR","The bias factor to be used for the well tempered distribution");
+  keys.add("compulsory","BIASFACTOR","The bias factor to be used for the well tempered distribution");
   keys.add("compulsory","PROJ_ARGS","The argument to be used for the marginal.");
 }
 
@@ -69,7 +69,7 @@ TD_MarginalWellTempered::TD_MarginalWellTempered(const ActionOptions& ao):
   bias_factor_(0.0),
   proj_args(0)
 {
-  parse("BIAS_FACTOR",bias_factor_);
+  parse("BIASFACTOR",bias_factor_);
   if(bias_factor_<=1.0) {
     plumed_merror(getName()+" target distribution: the value of the bias factor doesn't make sense, it should be larger than 1.0");
   }
