@@ -418,21 +418,21 @@ std::vector<std::vector<double> > BasisFunctions::getAllInnerProducts() const {
     grid->setValue(l,1.0);
   }
   //
-  std::vector<std::vector<double> > inner_products = getAllInnerProducts(grid); 
+  std::vector<std::vector<double> > inner_products = getAllInnerProducts(grid);
   delete grid;
   return inner_products;
-  //  
+  //
 }
 
 
 std::vector<std::vector<double> > BasisFunctions::getAllInnerProducts(const Grid* grid_pntr) const {
-  
+
   std::vector<std::vector<double> > inner_products(numberOfBasisFunctions(), std::vector<double>(numberOfBasisFunctions()));
   for(unsigned int i=0; i<numberOfBasisFunctions(); i++) {
     for(unsigned int j=i; j<numberOfBasisFunctions(); j++) {
       inner_products[i][j] = inner_products[j][i] = getInnerProduct(i,j,grid_pntr);
     }
-  } 
+  }
   return inner_products;
 }
 
@@ -450,17 +450,17 @@ double BasisFunctions::getInnerProduct(const unsigned int n, const unsigned int 
     plumed_massert(inside_range,"the basis functions values must be inside the range of the defined interval!");
     //
     sum += integration_weights[k]*values[n]*values[m];
-    //    
+    //
   }
-  return sum;  
+  return sum;
 }
 
 
 void BasisFunctions::writeInnerProductsToFiles(OFile& ofile, const std::string& output_fmt) const {
-  
+
   std::string int_fmt = "%8d";
   ofile.fmtField(output_fmt);
-  
+
   std::vector<std::vector<double> > inner_products = getAllInnerProducts();
   char* s1 = new char[20];
   for(unsigned int i=0; i<numberOfBasisFunctions(); i++) {
@@ -472,7 +472,7 @@ void BasisFunctions::writeInnerProductsToFiles(OFile& ofile, const std::string& 
     }
   }
 }
-  
+
 
 
 }

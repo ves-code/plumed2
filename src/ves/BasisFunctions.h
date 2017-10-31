@@ -188,12 +188,12 @@ public:
   //
   void getMultipleValue(const std::vector<double>&, std::vector<double>&, std::vector<std::vector<double> >&, std::vector<std::vector<double> >&, const bool numerical_deriv=false) const;
   void writeBasisFunctionsToFile(OFile&, OFile&, const std::string& min_in, const std::string& max_in, unsigned int nbins=1000, const bool ignore_periodicity=false, const std::string& output_fmt="%15.8f", const bool numerical_deriv=false) const;
-  
+
   std::vector<std::vector<double> > getAllInnerProducts() const;
   std::vector<std::vector<double> > getAllInnerProducts(const Grid*) const;
   double getInnerProduct(const unsigned int n, const unsigned int m, const Grid*) const;
   void writeInnerProductsToFiles(OFile& ofile, const std::string& output_fmt="%30.16e") const;
-  
+
 };
 
 
