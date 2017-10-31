@@ -175,6 +175,13 @@ OutputBasisFunctions::OutputBasisFunctions(const ActionOptions&ao):
   ofile_values.close();
   ofile_derivs.close();
   //
+  OFile ofile_innerproducts;
+  ofile_innerproducts.link(*this);
+  ofile_innerproducts.enforceBackup();
+  ofile_innerproducts.open("inner_product.data");
+  bf_pntrs[0]->writeInnerProductsToFiles(ofile_innerproducts);
+  ofile_innerproducts.close();
+  //
   std::vector<std::string> grid_min(1); grid_min[0]=bf_pntrs[0]->intervalMinStr();
   std::vector<std::string> grid_max(1); grid_max[0]=bf_pntrs[0]->intervalMaxStr();
   std::vector<unsigned int> grid_bins(1); grid_bins[0]=nbins;
