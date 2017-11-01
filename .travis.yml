@@ -79,7 +79,7 @@ matrix:
       - $HOME/.macports-ci-ccache
 # osx serial macports debug variant
   - os: osx
-    osx_image: xcode8.2
+    osx_image: xcode8.3
     env: PLUMED_MACPORTS="plumed +allmodules"
     cache:
       directories:
@@ -106,6 +106,7 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && test -z "$PLUMED_MACPORTS" ; then
       brew update > /dev/null ;
       brew install ccache ;
+      export PLUMED_MPIRUN="mpirun --oversubscribe" ;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq ; fi
 # install some package - these are fast, we install them anyway
