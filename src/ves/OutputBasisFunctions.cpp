@@ -105,8 +105,10 @@ void OutputBasisFunctions::registerKeywords(Keywords& keys) {
   keys.add("optional","FORMAT_VALUES_DERIVS","the numerical format of the basis function values and derivatives written to file. By default it is %15.8f.\n");
   keys.add("optional","FILE_TARGETDIST_AVERAGES","filename of the file on which the averages over the target distributions are written. By default it is BF_LABEL.targetdist-averages.data.");
   keys.add("optional","FORMAT_TARGETDIST_AVERAGES","the numerical format of the target distribution averages written to file. By default it is %15.8f.\n");
+  keys.add("optional","FILE_INNER_PRODUCTS","filename of the file on which the inner products of the basis functions are written. By default it is BF_LABEL.inner-products.data.");
+  keys.add("optional","FORMAT_INNER_PRODUCTS","the numerical format of the inner products of the basis functions written to file. By default it is %15.8f.\n");
   keys.add("optional","FILE_TARGETDIST","filename of the files on which the target distributions are written. By default it is BF_LABEL.targetdist-#.data.");
-  keys.add("numbered","TARGET_DISTRIBUTION","the target distribution to be used.");
+  keys.add("numbered","TARGET_DISTRIBUTION","the target distribution to be used.");  
   keys.addFlag("IGNORE_PERIODICITY",false,"if the periodicity of the basis functions should be ignored.");
   keys.addFlag("NUMERICAL_DERIVATIES",false,"if the derivatives of the basis functions should be calculated numerically.");
 }
@@ -139,11 +141,17 @@ OutputBasisFunctions::OutputBasisFunctions(const ActionOptions&ao):
   parse("FILE_TARGETDIST_AVERAGES",fname_targetdist_aver);
   std::string fname_targetdist = bf_pntrs[0]->getLabel()+".targetdist-.data";
   parse("FILE_TARGETDIST",fname_targetdist);
-
+  std::string fname_innerproducts = bf_pntrs[0]->getLabel()+".inner-products.data";
+  parse("FILE_INNER_PRODUCTS",fname_innerproducts);  
+  
   std::string fmt_values_derivs = "%15.8f";
   parse("FORMAT_VALUES_DERIVS",fmt_values_derivs);
   std::string fmt_targetdist_aver = "%15.8f";
   parse("FORMAT_TARGETDIST_AVERAGES",fmt_targetdist_aver);
+  std::string fmt_innerproducts = "%15.8f";
+  parse("FORMAT_INNER_PRODUCTS",fmt_innerproducts);
+
+  
 
   bool ignore_periodicity = false;
   parseFlag("IGNORE_PERIODICITY",ignore_periodicity);
@@ -178,8 +186,8 @@ OutputBasisFunctions::OutputBasisFunctions(const ActionOptions&ao):
   OFile ofile_innerproducts;
   ofile_innerproducts.link(*this);
   ofile_innerproducts.enforceBackup();
-  ofile_innerproducts.open("inner_product.data");
-  bf_pntrs[0]->writeInnerProductsToFiles(ofile_innerproducts);
+  ofile_innerproducts.open(fname_innerproducts);
+  bf_pntrs[0]->writeInnerProductsToFiles(ofile_innerproducts,fmt_innerproducts);
   ofile_innerproducts.close();
   //
   std::vector<std::string> grid_min(1); grid_min[0]=bf_pntrs[0]->intervalMinStr();
