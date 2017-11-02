@@ -463,10 +463,10 @@ void BasisFunctions::writeInnerProductsToFiles(OFile& ofile, const std::string& 
 
   std::vector<std::vector<double> > inner_products = getAllInnerProducts();
   char* s1 = new char[20];
-  
+
   ofile.addConstantField("weight").printField("weight","1.0");
-  
-    
+
+
   // diagonal part
   ofile.printf("#! Diagonal Part\n");
   for(unsigned int i=0; i<numberOfBasisFunctions(); i++) {
@@ -475,8 +475,8 @@ void BasisFunctions::writeInnerProductsToFiles(OFile& ofile, const std::string& 
     ofile.printField("inner_product",inner_products[i][i]);
     ofile.printField();
   }
-  
-  
+
+
   // off-diagonal part
   ofile.printf("#! Off-Diagonal Part\n");
   for(unsigned int i=0; i<numberOfBasisFunctions(); i++) {
