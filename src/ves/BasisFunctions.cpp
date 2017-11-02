@@ -405,5 +405,91 @@ void BasisFunctions::writeBasisFunctionsToFile(OFile& ofile_values, OFile& ofile
 }
 
 
+std::vector<std::vector<double> > BasisFunctions::getAllInnerProducts() const {
+  // setup temp grid
+  std::vector<std::string> grid_min(1); grid_min[0]=intervalMinStr();
+  std::vector<std::string> grid_max(1); grid_max[0]=intervalMaxStr();
+  std::vector<unsigned int> grid_bins(1); grid_bins[0]=nbins_;
+  std::vector<Value*> arguments(1); arguments[0]= new Value(NULL,"arg",false);
+  if(arePeriodic()) {arguments[0]->setDomain(intervalMinStr(),intervalMaxStr());}
+  else {arguments[0]->setNotPeriodic();}
+  Grid* grid = new Grid("uniform",arguments,grid_min,grid_max,grid_bins,false,false);
+  for(Grid::index_t l=0; l<grid->getSize(); l++) {
+    grid->setValue(l,1.0);
+  }
+  //
+  std::vector<std::vector<double> > inner_products = getAllInnerProducts(grid);
+  delete grid;
+  return inner_products;
+  //
+}
+
+
+std::vector<std::vector<double> > BasisFunctions::getAllInnerProducts(const Grid* grid_pntr) const {
+
+  std::vector<std::vector<double> > inner_products(numberOfBasisFunctions(), std::vector<double>(numberOfBasisFunctions()));
+  for(unsigned int i=0; i<numberOfBasisFunctions(); i++) {
+    for(unsigned int j=i; j<numberOfBasisFunctions(); j++) {
+      inner_products[i][j] = inner_products[j][i] = getInnerProduct(i,j,grid_pntr);
+    }
+  }
+  return inner_products;
+}
+
+
+double BasisFunctions::getInnerProduct(const unsigned int n, const unsigned int m, const Grid* grid_pntr) const {
+  std::vector<double> integration_weights = GridIntegrationWeights::getIntegrationWeights(grid_pntr);
+  double sum = 0.0;
+  for(Grid::index_t k=0; k < grid_pntr->getSize(); k++) {
+    double arg = grid_pntr->getPoint(k)[0];
+    double argT;
+    bool inside_range=true;
+    std::vector<double> values(numberOfBasisFunctions());
+    std::vector<double> derivs(numberOfBasisFunctions());
+    getAllValues(arg, argT, inside_range, values, derivs);
+    plumed_massert(inside_range,"the basis functions values must be inside the range of the defined interval!");
+    //
+    sum += integration_weights[k]*values[n]*values[m];
+    //
+  }
+  return sum;
+}
+
+
+void BasisFunctions::writeInnerProductsToFiles(OFile& ofile, const std::string& output_fmt) const {
+
+  std::string int_fmt = "%8d";
+  ofile.fmtField(output_fmt);
+
+  std::vector<std::vector<double> > inner_products = getAllInnerProducts();
+  char* s1 = new char[20];
+  
+  ofile.addConstantField("weight").printField("weight","1.0");
+  
+    
+  // diagonal part
+  ofile.printf("#! Diagonal Part\n");
+  for(unsigned int i=0; i<numberOfBasisFunctions(); i++) {
+    sprintf(s1,int_fmt.c_str(),i); ofile.printField("i",s1);
+    sprintf(s1,int_fmt.c_str(),i); ofile.printField("j",s1);
+    ofile.printField("inner_product",inner_products[i][i]);
+    ofile.printField();
+  }
+  
+  
+  // off-diagonal part
+  ofile.printf("#! Off-Diagonal Part\n");
+  for(unsigned int i=0; i<numberOfBasisFunctions(); i++) {
+    for(unsigned int j=i+1; j<numberOfBasisFunctions(); j++) {
+      sprintf(s1,int_fmt.c_str(),i); ofile.printField("i",s1);
+      sprintf(s1,int_fmt.c_str(),j); ofile.printField("j",s1);
+      ofile.printField("inner_product[i][j]",inner_products[i][j]);
+      ofile.printField();
+    }
+  }
+}
+
+
+
 }
 }
