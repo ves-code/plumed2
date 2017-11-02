@@ -460,7 +460,7 @@ void BasisFunctions::writeInnerProductsToFiles(OFile& ofile, const std::string& 
 
   std::string int_fmt = "%8d";
   ofile.fmtField(output_fmt);
-  
+
   std::string weight = "1.0";
 
   std::vector<std::vector<double> > inner_products = getAllInnerProducts();
