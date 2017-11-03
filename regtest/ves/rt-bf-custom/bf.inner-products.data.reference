@@ -1,6 +1,6 @@
 #! Diagonal Part
 #! FIELDS i j inner_product
-#! SET weight 1.0
+#! SET weight 1
        0       0     8.000000
        1       1    42.666752
        2       2   409.602725
@@ -8,7 +8,7 @@
        4       4 58255.617528
 #! Off-Diagonal Part
 #! FIELDS i j inner_product
-#! SET weight 1.0
+#! SET weight 1
        0       1    -0.000000
        0       2    42.666752
        0       3    -0.000000

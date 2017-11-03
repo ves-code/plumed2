@@ -438,6 +438,7 @@ std::vector<std::vector<double> > BasisFunctions::getAllInnerProducts(const Grid
 
 
 double BasisFunctions::getInnerProduct(const unsigned int n, const unsigned int m, const Grid* grid_pntr) const {
+  plumed_massert(grid_pntr->getDimension()==1,"the grid must be one-dimensional");
   std::vector<double> integration_weights = GridIntegrationWeights::getIntegrationWeights(grid_pntr);
   double sum = 0.0;
   for(Grid::index_t k=0; k < grid_pntr->getSize(); k++) {
@@ -449,7 +450,7 @@ double BasisFunctions::getInnerProduct(const unsigned int n, const unsigned int 
     getAllValues(arg, argT, inside_range, values, derivs);
     plumed_massert(inside_range,"the basis functions values must be inside the range of the defined interval!");
     //
-    sum += integration_weights[k]*values[n]*values[m];
+    sum += integration_weights[k]*values[n]*values[m]*getInnerProductWeight(arg);
     //
   }
   return sum;
@@ -461,7 +462,7 @@ void BasisFunctions::writeInnerProductsToFiles(OFile& ofile, const std::string& 
   std::string int_fmt = "%8d";
   ofile.fmtField(output_fmt);
 
-  std::string weight = "1.0";
+  std::string weight = getInnerProductWeightStr();
 
   std::vector<std::vector<double> > inner_products = getAllInnerProducts();
   char* s1 = new char[20];
