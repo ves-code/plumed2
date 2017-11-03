@@ -193,7 +193,7 @@ public:
   std::vector<std::vector<double> > getAllInnerProducts(const Grid*) const;
   double getInnerProduct(const unsigned int n, const unsigned int m, const Grid*) const;
   void writeInnerProductsToFiles(OFile& ofile, const std::string& output_fmt="%15.8f") const;
-  
+
   virtual double getInnerProductWeight(const double arg) const {return 1.0;}
   virtual std::string getInnerProductWeightStr() const {return "1";}
 
