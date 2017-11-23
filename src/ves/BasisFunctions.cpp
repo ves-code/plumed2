@@ -462,7 +462,9 @@ double BasisFunctions::getInnerProduct(const unsigned int n, const unsigned int 
     getAllValues(arg, argT, inside_range, values, derivs);
     plumed_massert(inside_range,"the basis functions values must be inside the range of the defined interval!");
     //
-    sum += integration_weights[k]*values[n]*values[m]*getInnerProductWeight(arg);
+    sum += integration_weights[k]*values[n]*values[m];
+    // disable weight for the moment
+    // sum += integration_weights[k]*values[n]*values[m]*getInnerProductWeight(arg);
     //
   }
   return sum;
