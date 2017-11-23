@@ -204,14 +204,14 @@ void BasisFunctions::printInfo() const {
   if(periodic_) {log.printf("   The basis functions are periodic\n");}
   if(orthogonal_) {
     if(getInnerProductWeightStr()=="1") {
-      log.printf("   The basis functions are orthogonal\n");      
+      log.printf("   The basis functions are orthogonal\n");
     }
     else {
-      log.printf("   The basis functions are orthogonal with respect to the weight %s\n",getInnerProductWeightStr().c_str());      
-    }    
+      log.printf("   The basis functions are orthogonal with respect to the weight %s\n",getInnerProductWeightStr().c_str());
+    }
   }
   else {
-    log.printf("   The basis functions are not orthogonal\n");      
+    log.printf("   The basis functions are not orthogonal\n");
   }
   log.printf("   Order of basis set: %u\n",norder_);
   log.printf("   Number of basis functions: %u\n",nbasis_);
