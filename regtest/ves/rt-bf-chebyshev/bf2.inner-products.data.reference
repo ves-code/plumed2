@@ -1,6 +1,6 @@
 #! Diagonal Part
 #! FIELDS i j inner_product
-#! SET weight 1
+#! SET weight 1/sqrt(1-x^2)
        0       0     8.000000
        1       1     2.666672
        2       2     3.733355
@@ -24,7 +24,7 @@
       20      20     3.999604
 #! Off-Diagonal Part
 #! FIELDS i j inner_product
-#! SET weight 1
+#! SET weight 1/sqrt(1-x^2)
        0       1    -0.000000
        0       2    -2.666656
        0       3     0.000000
