@@ -83,6 +83,7 @@ BF_Hermite::BF_Hermite(const ActionOptions&ao):
   }
   //
   setNonPeriodic();
+  setOrthogonal();
   setIntervalBounded();
   setType("Hermite");
   setDescription("Hermite functions");

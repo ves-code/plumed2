@@ -119,6 +119,7 @@ BF_Legendre::BF_Legendre(const ActionOptions&ao):
   setNumberOfBasisFunctions(getOrder()+1);
   setIntrinsicInterval("-1.0","+1.0");
   setNonPeriodic();
+  setOrthogonal();
   setIntervalBounded();
   setType("Legendre");
   setDescription("Legendre polynomials");

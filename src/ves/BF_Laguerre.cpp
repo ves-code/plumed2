@@ -66,6 +66,7 @@ BF_Laguerre::BF_Laguerre(const ActionOptions&ao):
   parse("SCALING_FACTOR",scalingf_);
   if(scalingf_!=1.0) {addKeywordToList("SCALING_FACTOR",scalingf_);}
   setNonPeriodic();
+  setOrthogonal();
   setIntervalBounded();
   setType("Laguerre");
   setDescription("Laguerre functions");

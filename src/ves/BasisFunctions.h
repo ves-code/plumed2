@@ -70,6 +70,8 @@ private:
   std::vector<std::string> bf_labels_;
   // if the basis functions are periodic or not
   bool periodic_;
+  // if the basis functions are orthogonal or not
+  bool orthogonal_;
   // if the basis functions are defined on a bounded interval or not
   bool interval_bounded_;
   // the intrinsic interval of the basis functions
@@ -116,6 +118,8 @@ protected:
   //
   void setPeriodic() {periodic_=true;}
   void setNonPeriodic() {periodic_=false;}
+  void setOrthogonal() {orthogonal_=true;}
+  void setNonOrthogonal() {orthogonal_=false;}
   void setIntervalBounded() {interval_bounded_=true;}
   void setIntervalNonBounded() {interval_bounded_=false;}
   void setType(const std::string& type_in) {type_=type_in;}
@@ -152,6 +156,7 @@ public:
   unsigned int numberOfBasisFunctions() const {return nbasis_;}
   unsigned int getSize() const {return nbasis_;}
   bool arePeriodic() const {return periodic_;}
+  bool areOrthogonal() const {return orthogonal_;}
   bool intervalBounded() const {return interval_bounded_;}
   double intervalMin() const {return interval_min_;}
   double intervalMax() const {return interval_max_;}

@@ -55,6 +55,7 @@ BasisFunctions::BasisFunctions(const ActionOptions&ao):
   bf_label_prefix_("f"),
   bf_labels_(nbasis_,"f0"),
   periodic_(false),
+  orthogonal_(false),
   interval_bounded_(true),
   interval_intrinsic_min_str_("1.0"),
   interval_intrinsic_max_str_("-1.0"),
@@ -201,6 +202,17 @@ void BasisFunctions::printInfo() const {
   log.printf("   Description: %s\n",description_.c_str());
   log.printf("   Type: %s\n",type_.c_str());
   if(periodic_) {log.printf("   The basis functions are periodic\n");}
+  if(orthogonal_) {
+    if(getInnerProductWeightStr()=="1") {
+      log.printf("   The basis functions are orthogonal\n");      
+    }
+    else {
+      log.printf("   The basis functions are orthogonal with respect to the weight %s\n",getInnerProductWeightStr().c_str());      
+    }    
+  }
+  else {
+    log.printf("   The basis functions are not orthogonal\n");      
+  }
   log.printf("   Order of basis set: %u\n",norder_);
   log.printf("   Number of basis functions: %u\n",nbasis_);
   // log.printf("   Interval of basis set: %f to %f\n",interval_min_,interval_max_);

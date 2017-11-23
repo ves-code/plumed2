@@ -93,6 +93,8 @@ public:
   static void registerKeywords(Keywords&);
   explicit BF_Chebyshev(const ActionOptions&);
   void getAllValues(const double, double&, bool&, std::vector<double>&, std::vector<double>&) const;
+  double getInnerProductWeight(const double arg) const;
+  std::string getInnerProductWeightStr() const {return "1/sqrt(1-x^2)";}
 };
 
 
@@ -109,6 +111,7 @@ BF_Chebyshev::BF_Chebyshev(const ActionOptions&ao):
   setNumberOfBasisFunctions(getOrder()+1);
   setIntrinsicInterval("-1.0","+1.0");
   setNonPeriodic();
+  setOrthogonal();
   setIntervalBounded();
   setType("chebyshev-1st-kind");
   setDescription("Chebyshev polynomials of the first kind");
@@ -149,6 +152,15 @@ void BF_Chebyshev::setupUniformIntegrals() {
     }
     setUniformIntegral(i,value);
   }
+}
+
+
+double BF_Chebyshev::getInnerProductWeight(const double arg) const {
+  bool inside_range=true;
+  double argT=translateArgument(arg, inside_range);
+  double value = 1/sqrt(1-argT*argT);
+  if(!inside_range) {value = 0.0;}
+  return value;
 }
 
 

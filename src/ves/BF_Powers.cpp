@@ -107,6 +107,7 @@ BF_Powers::BF_Powers(const ActionOptions&ao):
   if(normfactor_!=1.0) {addKeywordToList("NORMALIZATION",normfactor_);}
   inv_normfactor_=1.0/normfactor_;
   setNonPeriodic();
+  setNonOrthogonal();
   setIntervalBounded();
   setType("polynom_powers");
   setDescription("Polynomial Powers");

@@ -104,6 +104,7 @@ BF_Sine::BF_Sine(const ActionOptions&ao):
   setNumberOfBasisFunctions(getOrder()+1);
   setIntrinsicInterval("-pi","+pi");
   setPeriodic();
+  setOrthogonal();
   setIntervalBounded();
   setType("trigonometric_sin");
   setDescription("Sine");

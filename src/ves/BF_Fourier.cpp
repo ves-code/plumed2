@@ -106,6 +106,7 @@ BF_Fourier::BF_Fourier(const ActionOptions&ao):
   setNumberOfBasisFunctions(2*getOrder()+1);
   setIntrinsicInterval("-pi","+pi");
   setPeriodic();
+  setOrthogonal();
   setIntervalBounded();
   setType("trigonometric_cos-sin");
   setDescription("Trigonometric (cos/sin)");

@@ -105,6 +105,7 @@ BF_Cosine::BF_Cosine(const ActionOptions&ao):
   setNumberOfBasisFunctions(getOrder()+1);
   setIntrinsicInterval("-pi","+pi");
   setPeriodic();
+  setOrthogonal();
   setIntervalBounded();
   setType("trigonometric_cos");
   setDescription("Cosine");

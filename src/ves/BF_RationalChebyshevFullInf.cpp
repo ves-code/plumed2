@@ -72,6 +72,7 @@ BF_RationalChebyshevFullInf::BF_RationalChebyshevFullInf(const ActionOptions&ao)
   if(center_!=0.0) {addKeywordToList("CENTER",center_);}
   //
   setNonPeriodic();
+  setOrthogonal();
   setIntervalBounded();
   setType("rational-chebyshev-full-inf");
   setDescription("Rational Chebyshev basis functions on an infinite interval");

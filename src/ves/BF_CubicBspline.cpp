@@ -74,6 +74,7 @@ BF_CubicBspline::BF_CubicBspline(const ActionOptions&ao):
   if(normfactor_!=2.0) {addKeywordToList("NORMALIZATION",normfactor_);}
   inv_normfactor_=1.0/normfactor_;
   setNonPeriodic();
+  setNonOrthogonal();
   setIntervalBounded();
   setType("splines_2nd-order");
   setDescription("Cubic B-splines (2nd order splines)");

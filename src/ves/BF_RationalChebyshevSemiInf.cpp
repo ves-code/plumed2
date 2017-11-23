@@ -66,6 +66,7 @@ BF_RationalChebyshevSemiInf::BF_RationalChebyshevSemiInf(const ActionOptions&ao)
   if(mapf_ <= 0.0) {plumed_merror("MAP_PARAMETER should be larger than 0");}
   //
   setNonPeriodic();
+  setOrthogonal();
   setIntervalBounded();
   setType("rational-chebyshev-semi-inf");
   setDescription("Rational Chebyshev basis functions on a semi-infinite interval");
