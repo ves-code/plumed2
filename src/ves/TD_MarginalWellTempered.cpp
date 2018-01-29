@@ -36,6 +36,24 @@ namespace ves {
 /*
 One-dimensional marginal well-tempered target distribution (dynamic).
 
+One-dimensional  marginal well-tempered distribution \cite Barducci:2008
+given by
+\f[
+p(s_{k}) =
+\frac{e^{-(\beta/\gamma) F(s_{k})}}
+{\int ds_{k}\, e^{-(\beta/\gamma) F(s_{k})}} =
+\frac{[P_{0}(s_{k})]^{1/\gamma}}
+{\int ds_{k}\, [P_{0}(s_{k})]^{1/\gamma}}
+\f]
+where \f$\gamma\f$ is a so-called bias factor and \f$P_{0}(\mathbf{s})\f$ is the
+unbiased canonical distribution of the CVs. This target distribution thus
+correponds to a biased ensemble where, as compared to the unbiased one,
+the probability peaks have been broaden and the fluctations of the CVs are
+enhanced.
+The value of the bias factor \f$\gamma\f$ determines by how much the fluctations
+are enhanced.
+
+
 \par Examples
 
 */
