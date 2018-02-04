@@ -229,7 +229,12 @@ endif
 # also copy .h files into include/ dir
 	cd ../../src ; tar cf - */*.h */*/*.h | tar xf - -C "$(DESTDIR)$(includedir)/$(program_name)/"
 # install executable
+# for OSX we can use the dynamically linked executable
+ifeq ($(SOEXT),dylib)
+	cp install/plumed-shared "$(DESTDIR)$(bindir)/$(program_name)"
+else
 	cp install/plumed "$(DESTDIR)$(bindir)/$(program_name)"
+endif
 # patch file for cross compiling
 	cp install/plumed-patch "$(DESTDIR)$(bindir)/$(program_name)-patch"
 # config file for cross compiling
@@ -243,11 +248,6 @@ endif
 ifdef SOEXT
 	cp install/libplumed.$(SOEXT) "$(DESTDIR)$(libdir)/lib$(program_name).$(SOEXT)"
 	cp install/libplumedKernel.$(SOEXT) "$(DESTDIR)$(libdir)/lib$(program_name)Kernel.$(SOEXT)"
-ifeq ($(SOEXT),dylib)
-	install_name_tool -id "$(libdir)/lib$(program_name).$(SOEXT)" "$(DESTDIR)$(libdir)/lib$(program_name).$(SOEXT)"
-	install_name_tool -change libplumedKernel.dylib "$(libdir)/lib$(program_name)Kernel.dylib" "$(DESTDIR)$(libdir)/lib$(program_name).$(SOEXT)"
-	install_name_tool -id "$(libdir)/lib$(program_name)Kernel.$(SOEXT)" "$(DESTDIR)$(libdir)/lib$(program_name)Kernel.$(SOEXT)"
-endif
 endif
 ifdef AR_CR
 	cp install/libplumedWrapper.a "$(DESTDIR)$(libdir)/lib$(program_name)Wrapper.a"
@@ -406,10 +406,13 @@ $(PLUMED_KERNEL):$(OBJ_KERNEL)
 ifeq ($(PLUMED_INSTALL),Install)
 	mkdir -p install
 	cd install && $(LDSHARED) -o libplumedKernel.$(SOEXT) $(addprefix ../,$(OBJ_KERNEL)) $(DYNAMIC_LIBS)
+ifeq ($(SOEXT),dylib)
+	install_name_tool -id "$(libdir)/lib$(program_name)Kernel.$(SOEXT)" $@
+endif
 else
 	$(LDSHARED) -o $@ $^ $(DYNAMIC_LIBS)
 ifeq ($(SOEXT),dylib)
-	install_name_tool -id "$(realpath .)/libplumedKernel.$(SOEXT)" libplumedKernel.$(SOEXT)
+	install_name_tool -id "$(realpath .)/libplumedKernel.$(SOEXT)" $@
 endif
 endif
 
@@ -419,6 +422,7 @@ ifeq ($(PLUMED_INSTALL),Install)
 	mkdir -p install
 ifeq ($(SOEXT),dylib)
 	cd install && $(LDSHARED) -o libplumed.$(SOEXT) libplumedKernel.dylib $(addprefix ../,$(OBJ_WRAPPER)) $(LIBS)
+	install_name_tool -id "$(libdir)/lib$(program_name).$(SOEXT)" $@
 else
 	cd install && $(LDSHARED) -o libplumed.$(SOEXT) $(addprefix ../,$(OBJ_KERNEL)) $(addprefix ../,$(OBJ_WRAPPER)) $(DYNAMIC_LIBS)
 endif
