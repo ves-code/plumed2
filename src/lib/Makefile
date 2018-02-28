@@ -85,6 +85,10 @@ ifneq ($(PLUMED_INSTALL),Install)
 	$(MAKE) install-build
 endif
 
+# on Mac, for pkgconfigInternals should also link -lplumedKernel
+ifeq ($(SOEXT),dylib)
+  LIBS_PLUMED_KERNEL=-l$(program_name)Kernel
+endif
 
 dirs:
 	@echo "*** Compiling all directories ***"
@@ -111,8 +115,8 @@ endif
            sed "s|@_SOEXT_@|$(SOEXT)|" | \
            sed "s|@_program_name_@|$(program_name)|" | \
            sed "s|@_libdir_@|$(libdir)|" | \
-           sed "s|@_libs_@|$(LIBS) $(DYNAMIC_LIBS)|" | \
-           sed "s|@_private_libs_@||" | \
+           sed "s|@_libs_@||" | \
+           sed "s|@_private_libs_@|$(LIBS) $(DYNAMIC_LIBS)|" | \
            sed "s|@_bindir_@|$(bindir)|" | \
            sed "s|@_includedir_@|$(includedir)|" | \
            sed "s|@_prefix_@|$(prefix)|" | \
@@ -126,7 +130,7 @@ endif
            sed "s|@_SOEXT_@|$(SOEXT)|" | \
            sed "s|@_program_name_@|$(program_name)|" | \
            sed "s|@_libdir_@|$(libdir)|" | \
-           sed "s|@_libs_@||" | \
+           sed "s|@_libs_@|$(LIBS_PLUMED_KERNEL)|" | \
            sed "s|@_private_libs_@|$(LIBS) $(DYNAMIC_LIBS)|" | \
            sed "s|@_bindir_@|$(bindir)|" | \
            sed "s|@_includedir_@|$(includedir)|" | \
@@ -191,19 +195,19 @@ ifdef PLUMED_LIBSUFFIX
 	@echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 endif
 ifndef program_name
-	$(error "it seems Makefile.conf does not defined program_name - please configure again!")
+	$(error "it seems Makefile.conf does not define program_name - please configure again!")
 endif
 ifndef bindir
-	$(error "it seems Makefile.conf does not defined bindir - please configure again!")
+	$(error "it seems Makefile.conf does not define bindir - please configure again!")
 endif
 ifndef libdir
-	$(error "it seems Makefile.conf does not defined libdir - please configure again!")
+	$(error "it seems Makefile.conf does not define libdir - please configure again!")
 endif
 ifndef includedir
-	$(error "it seems Makefile.conf does not defined includedir - please configure again!")
+	$(error "it seems Makefile.conf does not define includedir - please configure again!")
 endif
 ifndef htmldir
-	$(error "it seems Makefile.conf does not defined htmldir - please configure again!")
+	$(error "it seems Makefile.conf does not define htmldir - please configure again!")
 endif
 	cd ../config ; $(MAKE)
 # in principle we should uninstall before install
@@ -347,18 +351,20 @@ endif
 	@if test -d ../../python/build ; then echo "Plumed can be loaded in a python script using the command import plumed" ; fi
 ifeq ($(program_can_run),no)
 	@echo "WARNING: $(program_name) executable will not run on this machine"
-	@echo "WARNING: to patch an MD code use 'plumed-patch'"
-	@echo "WARNING: to verify configuration use 'plumed-config'"
-	@echo "WARNING: a few other command line tools are avalable as $(libdir)/$(program_name)/plumed-*"
+	@echo "WARNING: This is normal if you are cross compiling."
+	@echo "WARNING: - to patch an MD code use '$(program_name)-patch'"
+	@echo "WARNING: - to verify configuration use '$(program_name)-config'"
+	@echo "WARNING: - a few other command line tools are avalable as $(libdir)/$(program_name)/plumed-*"
 else ifeq ($(program_can_run_mpi),no)
 	@echo "WARNING: $(program_name) executable will not run on this machine"
 	@echo "WARNING: unless you invoke it as '$(program_name) --no-mpi'"
-	@echo "WARNING: to patch an MD code now use '$(program_name) --no-mpi patch'"
-	@echo "WARNING: (notice that MPI will be available anyway in the patched code)"
-	@echo "WARNING: all command line tools are available as '$(program_name) --no-mpi name-of-the-tool'"
-	@echo "WARNING: e.g. '$(program_name) --no-mpi driver'"
+	@echo "WARNING: This is normal if this is the login node of a cluster."
+	@echo "WARNING: - to patch an MD code now use '$(program_name) --no-mpi patch'"
+	@echo "WARNING:   (notice that MPI will be available anyway in the patched code)"
+	@echo "WARNING: - all command line tools are available as '$(program_name) --no-mpi name-of-the-tool'"
+	@echo "WARNING:   e.g. '$(program_name) --no-mpi driver'"
+	@echo "WARNING:   (MPI will be disabled in this case)"
 endif
-
 
 uninstall:
 	@echo WARNING

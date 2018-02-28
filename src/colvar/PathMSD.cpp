@@ -37,6 +37,17 @@ This variable computes the progress along a given set of frames that is provided
 in input ("sss" component) and the distance from them ("zzz" component).
 (see below).
 
+When running with periodic boundary conditions, the atoms should be
+in the proper periodic image. This is done automatically since PLUMED 2.5,
+by considering the ordered list of atoms and rebuilding PBCs with a procedure
+that is equivalent to that done in \ref WHOLEMOLECULES . Notice that
+rebuilding is local to this action. This is different from \ref WHOLEMOLECULES
+which actually modifies the coordinates stored in PLUMED.
+
+In case you want to recover the old behavior you should use the NOPBC flag.
+In that case you need to take care that atoms are in the correct
+periodic image.
+
 \par Examples
 
 Here below is a case where you have defined three frames and you want to
