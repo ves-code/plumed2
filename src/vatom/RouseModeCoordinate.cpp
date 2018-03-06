@@ -31,32 +31,32 @@ namespace vatom {
 
 //+PLUMEDOC VATOM ROUSE_MODE_COORDINATE
 /*
-Calculate the Rouse mode coordinate for a group of atoms. 
+Calculate the Rouse mode coordinate for a group of atoms.
 
-This is done by using the formula 
+This is done by using the formula
 \f[
-\mathbf{X}_p = \sqrt{ \frac{c_{p}}{2} } 
-\sum_{i=0}^{N-1} 
-\mathbf{R}_i 
-\cos 
-\left[ 
+\mathbf{X}_p = \sqrt{ \frac{c_{p}}{2} }
+\sum_{i=0}^{N-1}
+\mathbf{R}_i
+\cos
+\left[
 \frac{p \pi}{N}
 \left(
 i+\frac{1}{2}
 \right)
 \right]
 \f]
-where \f$N\f$ is the number of atoms considered, \f$p=0,\ldots,N-1\f$ is the 
-Rouse mode index, \f$\mathbf{R}_i\f$ is the position of the \f$i\f$-th atom, 
-and \f$c_{p}\f$ is a constant equal 1 for \f$p=0\f$ and 2 otherwise. 
+where \f$N\f$ is the number of atoms considered, \f$p=0,\ldots,N-1\f$ is the
+Rouse mode index, \f$\mathbf{R}_i\f$ is the position of the \f$i\f$-th atom,
+and \f$c_{p}\f$ is a constant equal 1 for \f$p=0\f$ and 2 otherwise.
 
-It is assumed that the atoms given in ATOMS are in the right order. 
+It is assumed that the atoms given in ATOMS are in the right order.
 
 The computed Rouse mode coordinate is stored as a virtual atom that can be accessed in
 an atom list through the label for the ROUSE_MODE_COORDINATE action that creates it.
 
 When running with periodic boundary conditions, the atoms should be
-in the proper periodic image. This is done automatically 
+in the proper periodic image. This is done automatically
 by considering the ordered list of atoms and rebuilding PBCs with a procedure
 that is equivalent to that done in \ref WHOLEMOLECULES. Notice that
 rebuilding is local to this action. This is different from \ref WHOLEMOLECULES
@@ -122,14 +122,14 @@ RouseModeCoordinate::RouseModeCoordinate(const ActionOptions&ao):
   unsigned int rouse_mode = 1;
   parse("MODE",rouse_mode);
   checkRead();
-  
+
   unsigned int N = atoms.size();
-  if(rouse_mode>N-1){plumed_merror("the Rouse mode index cannot be larger than N-1 where N is the number of atoms considered");}
-  cosine_factor_ = (rouse_mode*pi) / N;  
-  if(rouse_mode==0){
+  if(rouse_mode>N-1) {plumed_merror("the Rouse mode index cannot be larger than N-1 where N is the number of atoms considered");}
+  cosine_factor_ = (rouse_mode*pi) / N;
+  if(rouse_mode==0) {
     prefactor_ = sqrt(0.5);
   }
-  
+
   log.printf("  Rouse mode %u calculated for atoms",rouse_mode);
   for(unsigned i=0; i<atoms.size(); ++i) {
     if(i%25==0) log<<"\n";
@@ -147,9 +147,9 @@ RouseModeCoordinate::RouseModeCoordinate(const ActionOptions&ao):
 void RouseModeCoordinate::calculate() {
   Vector coord;
   if(!nopbc) makeWhole();
-  
+
   vector<Tensor> deriv(getNumberOfAtoms());
-  
+
   for(unsigned i=0; i<getNumberOfAtoms(); i++) {
     double cos_tmp = cos(cosine_factor_*(i+0.5));
     coord += prefactor_*cos_tmp*getPosition(i);
@@ -157,8 +157,8 @@ void RouseModeCoordinate::calculate() {
   }
   setPosition(coord);
   setAtomsDerivatives(deriv);
-  
-  setMass(1.0);  
+
+  setMass(1.0);
   setCharge(0.0);
 }
 
