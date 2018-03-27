@@ -179,11 +179,9 @@ install:
 ifdef PLUMED_PREFIX
 	@echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 	@echo "WARNING: using PLUMED_PREFIX variable is not allowed anymore"
-	@echo "         please use one of the following choices:"
-	@echo "         (1) at configure time:"
-	@echo "           ./configure --prefix=$(PLUMED_PREFIX)"
-	@echo "         (2) or later, at install time:"
-	@echo "           make install prefix=$(PLUMED_PREFIX)"
+	@echo "         please use the following option at configure time"
+	@echo "         ./configure --prefix='$(PLUMED_PREFIX)'"
+	@echo "         there is no way to change the suffix at install time"
 	@echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 endif
 ifdef PLUMED_LIBSUFFIX
@@ -208,6 +206,9 @@ ifndef includedir
 endif
 ifndef htmldir
 	$(error "it seems Makefile.conf does not define htmldir - please configure again!")
+endif
+ifneq ($(prefix),$(prefix_double_check))
+	$(error "with PLUMED 2.5 you cannot change anymore prefix during make install - please configure again!")
 endif
 	cd ../config ; $(MAKE)
 # in principle we should uninstall before install
@@ -299,6 +300,10 @@ ifdef python_bin
           $(python_bin) buildPythonInterface.py build_ext -i
 	cp -pr install/python "$(DESTDIR)$(libdir)/$(program_name)/" 
 endif
+ifdef BASH_COMPLETION_DIR
+	mkdir -p "$(DESTDIR)$(BASH_COMPLETION_DIR)"
+	cp bash.completion "$(DESTDIR)$(BASH_COMPLETION_DIR)/$(program_name)"
+endif
 # making everything visible:
 	chmod -R go+rX,go-w "$(DESTDIR)$(libdir)/$(program_name)"
 	chmod -R go+rX,go-w "$(DESTDIR)$(includedir)/$(program_name)"
@@ -337,6 +342,9 @@ endif
 ifdef SOEXT
 	@echo $(libdir)/lib$(program_name).$(SOEXT)
 	@echo $(libdir)/lib$(program_name)Kernel.$(SOEXT)
+endif
+ifdef BASH_COMPLETION_DIR
+	@echo $(BASH_COMPLETION_DIR)/$(program_name)
 endif
 	@if test -d ../../vim/help ; then echo "A vim plugin can be found here: $(libdir)/$(program_name)/vim/" ; fi
 	@if test -d ../../vim/help ; then echo "Copy it to $(HOME)/.vim/ directory" ; fi
