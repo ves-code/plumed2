@@ -425,10 +425,14 @@ void VesBias::updateGradientAndHessian(const bool use_mwalkers_mpi) {
     //
     comm.Sum(sampled_averages[k]);
     comm.Sum(sampled_cross_averages[k]);
+    unsigned int total_samples = aver_counters[k];
+    //
     if(use_mwalkers_mpi) {
       double walker_weight=1.0;
       if(aver_counters[k]==0) {walker_weight=0.0;}
       multiSimSumAverages(k,walker_weight);
+      if(comm.Get_rank()==0) {multi_sim_comm.Sum(total_samples);}
+      comm.Bcast(total_samples,0);
     }
     // NOTE: this assumes that all walkers have the same TargetDist, might change later on!!
     Gradient(k).setValues( TargetDistAverages(k) - sampled_averages[k] );
@@ -440,11 +444,6 @@ void VesBias::updateGradientAndHessian(const bool use_mwalkers_mpi) {
     //
     // Check the total number of samples (from all walkers) and deactivate the Gradient and Hessian if it
     // is zero
-    unsigned int total_samples = aver_counters[k];
-    if(use_mwalkers_mpi) {
-      if(comm.Get_rank()==0) {multi_sim_comm.Sum(total_samples);}
-      comm.Bcast(total_samples,0);
-    }
     if(total_samples==0) {
       Gradient(k).deactivate();
       Gradient(k).clear();
