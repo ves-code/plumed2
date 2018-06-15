@@ -160,6 +160,10 @@ public:
   static void useProjectionArgKeywords(Keywords&);
   static void useReweightFactorKeywords(Keywords&);
   //
+  std::vector<std::vector<double> >& sampledAverages() {return sampled_averages;};
+  std::vector<std::vector<double> >& sampledCrossAverages() {return sampled_cross_averages;};
+
+  //
   std::vector<CoeffsVector*> getCoeffsPntrs() const {return coeffs_pntrs_;}
   std::vector<CoeffsVector*> getTargetDistAveragesPntrs() const {return targetdist_averages_pntrs_;}
   std::vector<CoeffsVector*> getGradientPntrs()const {return gradient_pntrs_;}
