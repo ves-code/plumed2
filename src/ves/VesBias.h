@@ -60,6 +60,10 @@ class VesBias:
   public bias::Bias
 {
 private:
+  unsigned int nargssets_;
+  unsigned int nargs_tot_;
+  unsigned int nargs_per_argsset_;
+  //
   unsigned int ncoeffssets_;
   std::vector<CoeffsVector*> coeffs_pntrs_;
   std::vector<CoeffsVector*> targetdist_averages_pntrs_;
@@ -151,6 +155,11 @@ public:
   //
   void apply();
   //
+  unsigned int getNumberOfArgumentsSets() const {return nargssets_;};
+  unsigned int getTotalNumberOfArguments()const  {return nargs_tot_;};
+  unsigned int getNumberOfArgumentsPerSet() const {return nargs_per_argsset_;}
+  //
+  static void useArgsSetKeywords(Keywords&);
   static void useInitialCoeffsKeywords(Keywords&);
   static void useTargetDistributionKeywords(Keywords&);
   static void useMultipleTargetDistributionKeywords(Keywords&);

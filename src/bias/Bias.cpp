@@ -88,7 +88,16 @@ void Bias::apply() {
 
 }
 
-}
+void Bias::setupOutputForces() {
+  outputForces.assign(getNumberOfArguments(),0.0);
+  for(unsigned i=0; i<getNumberOfArguments(); ++i) {
+    (getPntrToArgument(i)->getPntrToAction())->turnOnDerivatives();
+  }
+  turnOnDerivatives();
 }
 
 
+
+
+}
+}

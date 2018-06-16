@@ -42,6 +42,9 @@ namespace ves {
 VesBias::VesBias(const ActionOptions&ao):
   Action(ao),
   Bias(ao),
+  nargssets_(0),
+  nargs_tot_(0),
+  nargs_per_argsset_(0),
   ncoeffssets_(0),
   coeffs_pntrs_(0),
   targetdist_averages_pntrs_(0),
@@ -104,13 +107,56 @@ VesBias::VesBias(const ActionOptions&ao):
     parseVector("COEFFS",coeffs_fnames);
   }
 
+
+  if(keywords.exists("ARG_SET") && !keywords.exists("ARG")) {
+    std::vector<Value*> arg;
+    int prevsize = -1;
+    for(unsigned int i=1;; i++) {
+      std::vector<Value*> larg_tmp;
+      if(!parseArgumentList("ARG_SET",i,larg_tmp)) {break;}
+      if(prevsize!=-1 && prevsize!=static_cast<int>(larg_tmp.size())) {plumed_merror("All of the ARG_SET keywords must have the same size");}
+      for(unsigned int k=0; k<larg_tmp.size(); k++) {arg.push_back(larg_tmp[k]);}
+      prevsize = larg_tmp.size();
+      nargssets_++;
+    }
+    //
+    if(arg.size()==0) {
+      plumed_merror("No CVs have been given in the ARG_SET keywords");
+    }
+    if(nargssets_==1) {
+      plumed_merror("It does not make sense to use " + getName() + " with only one CV set");
+    }
+
+    nargs_tot_ = arg.size();
+    nargs_per_argsset_ = nargs_tot_ / nargssets_;
+    log.printf("  using %u CV sets with %u CVs in each set\n",nargssets_,nargs_per_argsset_);
+
+    for(unsigned int i=0; i<getNumberOfArgumentsSets(); i++) {
+      const unsigned int argindex_offset = i*getNumberOfArgumentsPerSet();
+      log.printf("  set %u:",i+1);
+      for(unsigned int k=0; k<getNumberOfArgumentsPerSet(); k++) {
+        log.printf(" %s",arg[argindex_offset+k]->getName().c_str());
+      }
+      log.printf("\n");
+    }
+    log.printf("  total number of CVs is %u\n",nargs_tot_);
+    requestArguments(arg);
+    setupOutputForces();
+  } else {
+    nargssets_ = 1;
+    nargs_tot_ = getNumberOfArguments();
+    nargs_per_argsset_ = getNumberOfArguments();
+  }
+
+
+
   if(keywords.exists("GRID_BINS")) {
-    parseMultipleValues<unsigned int>("GRID_BINS",grid_bins_,getNumberOfArguments(),100);
+    parseMultipleValues<unsigned int>("GRID_BINS",grid_bins_,getNumberOfArgumentsPerSet(),100);
   }
 
   if(keywords.exists("GRID_MIN") && keywords.exists("GRID_MAX")) {
-    parseMultipleValues("GRID_MIN",grid_min_,getNumberOfArguments());
-    parseMultipleValues("GRID_MAX",grid_max_,getNumberOfArguments());
+    parseMultipleValues("GRID_MIN",grid_min_,getNumberOfArgumentsPerSet());
+    parseMultipleValues("GRID_MAX",grid_max_,getNumberOfArgumentsPerSet());
   }
 
   std::vector<std::string> targetdist_labels;
@@ -133,7 +179,7 @@ VesBias::VesBias(const ActionOptions&ao):
   }
 
 
-  if(getNumberOfArguments()>2) {
+  if(getNumberOfArgumentsPerSet()>2) {
     disableStaticTargetDistFileOutput();
   }
 
@@ -194,13 +240,13 @@ VesBias::VesBias(const ActionOptions&ao):
     for(int i=1;; i++) {
       if(!parseNumberedVector("PROJ_ARG",i,proj_arg)) {break;}
       // checks
-      if(proj_arg.size() > (getNumberOfArguments()-1) ) {
+      if(proj_arg.size() > (getNumberOfArgumentsPerSet()-1) ) {
         plumed_merror("PROJ_ARG must be a subset of ARG");
       }
       //
       for(unsigned int k=0; k<proj_arg.size(); k++) {
         bool found = false;
-        for(unsigned int l=0; l<getNumberOfArguments(); l++) {
+        for(unsigned int l=0; l<getNumberOfArgumentsPerSet(); l++) {
           if(proj_arg[k]==getPntrToArgument(l)->getName()) {
             found = true;
             break;
@@ -250,6 +296,7 @@ VesBias::~VesBias() {
 
 void VesBias::registerKeywords( Keywords& keys ) {
   Bias::registerKeywords(keys);
+  keys.reserve("numbered","ARG_SET","similar as ARG for other biases but allows to define different argument sets that will be used");
   keys.add("optional","TEMP","the system temperature - this is needed if the MD code does not pass the temperature to PLUMED.");
   //
   keys.reserve("optional","COEFFS","read in the coefficents from files.");
@@ -277,6 +324,12 @@ void VesBias::registerKeywords( Keywords& keys ) {
   //
   keys.reserveFlag("CALC_REWEIGHT_FACTOR",false,"enable the calculation of the reweight factor c(t). You should also give a stride for updating the reweight factor in the optimizer by using the REWEIGHT_FACTOR_STRIDE keyword if the coefficients are updated.");
 
+}
+
+
+void VesBias::useArgsSetKeywords(Keywords& keys) {
+  keys.remove("ARG");
+  keys.use("ARG_SET");
 }
 
 
@@ -639,25 +692,25 @@ OFile* VesBias::getOFile(const std::string& filepath, const bool multi_sim_singl
 
 
 void VesBias::setGridBins(const std::vector<unsigned int>& grid_bins_in) {
-  plumed_massert(grid_bins_in.size()==getNumberOfArguments(),"the number of grid bins given doesn't match the number of arguments");
+  plumed_massert(grid_bins_in.size()==getNumberOfArgumentsPerSet(),"the number of grid bins given doesn't match the number of arguments");
   grid_bins_=grid_bins_in;
 }
 
 
 void VesBias::setGridBins(const unsigned int nbins) {
-  std::vector<unsigned int> grid_bins_in(getNumberOfArguments(),nbins);
+  std::vector<unsigned int> grid_bins_in(getNumberOfArgumentsPerSet(),nbins);
   grid_bins_=grid_bins_in;
 }
 
 
 void VesBias::setGridMin(const std::vector<double>& grid_min_in) {
-  plumed_massert(grid_min_in.size()==getNumberOfArguments(),"the number of lower bounds given for the grid doesn't match the number of arguments");
+  plumed_massert(grid_min_in.size()==getNumberOfArgumentsPerSet(),"the number of lower bounds given for the grid doesn't match the number of arguments");
   grid_min_=grid_min_in;
 }
 
 
 void VesBias::setGridMax(const std::vector<double>& grid_max_in) {
-  plumed_massert(grid_max_in.size()==getNumberOfArguments(),"the number of upper bounds given for the grid doesn't match the number of arguments");
+  plumed_massert(grid_max_in.size()==getNumberOfArgumentsPerSet(),"the number of upper bounds given for the grid doesn't match the number of arguments");
   grid_max_=grid_max_in;
 }
 

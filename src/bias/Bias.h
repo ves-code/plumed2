@@ -51,6 +51,8 @@ protected:
   void setOutputForce(int i,double f);
 /// set the value of the bias
   void setBias(double bias);
+/// setup the OutputForce vector - this is needed if the bias does not use a normal ARG keyword
+  void setupOutputForces();
 public:
   static void registerKeywords(Keywords&);
   explicit Bias(const ActionOptions&ao);
@@ -78,4 +80,3 @@ unsigned Bias::getNumberOfDerivatives() {
 }
 
 #endif
-
