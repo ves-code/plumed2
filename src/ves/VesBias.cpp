@@ -548,17 +548,14 @@ void VesBias::addToSampledAverages(const std::vector<double>& values, const unsi
   */
   double counter_dbl = static_cast<double>(aver_counters[c_id]);
   size_t ncoeffs = numberOfCoeffs(c_id);
-  std::vector<double> deltas(ncoeffs,0.0);
   size_t stride = comm.Get_size();
   size_t rank = comm.Get_rank();
   // update average and diagonal part of Hessian
   for(size_t i=rank; i<ncoeffs; i+=stride) {
     size_t midx = getHessianIndex(i,i,c_id);
-    deltas[i] = (values[i]-sampled_averages[c_id][i])/(counter_dbl+1); // (x[n+1]-xm[n])/(n+1)
-    sampled_averages[c_id][i] += deltas[i];
+    sampled_averages[c_id][i] += (values[i]-sampled_averages[c_id][i])/(counter_dbl+1); // (x[n+1]-xm[n])/(n+1)
     sampled_cross_averages[c_id][midx] += (values[i]*values[i]-sampled_cross_averages[c_id][midx])/(counter_dbl+1);
   }
-  comm.Sum(deltas);
   // update off-diagonal part of the Hessian
   if(!diagonal_hessian_) {
     for(size_t i=rank; i<ncoeffs; i+=stride) {
