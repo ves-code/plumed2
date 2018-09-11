@@ -71,6 +71,7 @@ private:
   std::vector<CoeffsMatrix*> hessian_pntrs_;
   std::vector<std::vector<double> > sampled_averages;
   std::vector<std::vector<double> > sampled_cross_averages;
+  std::vector<double> sampled_weights;
   bool use_multiple_coeffssets_;
   //
   std::vector<std::string> coeffs_fnames;
@@ -136,7 +137,8 @@ protected:
   //
   std::string getCoeffsSetLabelString(const std::string&, const unsigned int coeffs_id = 0) const;
   void clearCoeffsPntrsVector() {coeffs_pntrs_.clear();}
-  void addToSampledAverages(const std::vector<double>&, const unsigned int c_id = 0);
+  void addToSampledAverages(const std::vector<double>&, const unsigned int c_id, const double weight=1.0);
+  void addToSampledAverages(const std::vector<double>&, const double weight=1.0);
   void setTargetDistAverages(const std::vector<double>&, const unsigned int coeffs_id = 0);
   void setTargetDistAverages(const CoeffsVector&, const unsigned int coeffs_id= 0);
   void setTargetDistAveragesToZero(const unsigned int coeffs_id= 0);
@@ -390,6 +392,13 @@ std::vector<double> VesBias::computeCovarianceFromAverages(const unsigned int c_
   }
   return covariance;
 }
+
+
+inline 
+void VesBias::addToSampledAverages(const std::vector<double>& values, const double weight) {
+  addToSampledAverages(values,0,weight);
+}
+
 
 
 template<class T>

@@ -52,6 +52,7 @@ VesBias::VesBias(const ActionOptions&ao):
   hessian_pntrs_(0),
   sampled_averages(0),
   sampled_cross_averages(0),
+  sampled_weights(0),
   use_multiple_coeffssets_(false),
   coeffs_fnames(0),
   ncoeffs_total_(0),
@@ -432,6 +433,7 @@ void VesBias::initializeCoeffs(CoeffsVector* coeffs_pntr_in) {
   sampled_cross_averages.push_back(cross_aver_sampled_tmp);
   //
   aver_counters.push_back(0);
+  sampled_weights.push_back(1.0);
   //
   ncoeffssets_++;
 }
@@ -479,6 +481,14 @@ void VesBias::updateGradientAndHessian(const bool use_mwalkers_mpi) {
     comm.Sum(sampled_averages[k]);
     comm.Sum(sampled_cross_averages[k]);
     unsigned int total_samples = aver_counters[k];
+    if(sampled_weights[k]!=1.0) {
+      for(size_t i=0; i<sampled_averages[k].size(); i++) {
+        sampled_averages[k][i] *= sampled_weights[k];        
+      }
+      for(size_t i=0; i<sampled_cross_averages[k].size(); i++) {
+        sampled_cross_averages[k][i] *= sampled_weights[k];        
+      }
+    }
     //
     if(use_mwalkers_mpi) {
       double walker_weight=1.0;
@@ -507,6 +517,7 @@ void VesBias::updateGradientAndHessian(const bool use_mwalkers_mpi) {
     std::fill(sampled_averages[k].begin(), sampled_averages[k].end(), 0.0);
     std::fill(sampled_cross_averages[k].begin(), sampled_cross_averages[k].end(), 0.0);
     aver_counters[k]=0;
+    sampled_weights[k]=1.0;
   }
 }
 
@@ -540,7 +551,7 @@ void VesBias::multiSimSumAverages(const unsigned int c_id, const double walker_w
 }
 
 
-void VesBias::addToSampledAverages(const std::vector<double>& values, const unsigned int c_id) {
+void VesBias::addToSampledAverages(const std::vector<double>& values, const unsigned int c_id, const double weight) {
   /*
   use the following online equation to calculate the average and covariance
   (see https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Covariance)
@@ -566,7 +577,9 @@ void VesBias::addToSampledAverages(const std::vector<double>& values, const unsi
     }
   }
   // NOTE: the MPI sum for sampled_averages and sampled_cross_averages is done later
+  sampled_weights[c_id] += (weight-sampled_weights[c_id])/(counter_dbl+1.0);
   aver_counters[c_id] += 1;
+  
 }
 
 
