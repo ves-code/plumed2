@@ -394,7 +394,7 @@ std::vector<double> VesBias::computeCovarianceFromAverages(const unsigned int c_
 }
 
 
-inline 
+inline
 void VesBias::addToSampledAverages(const std::vector<double>& values, const double weight) {
   addToSampledAverages(values,0,weight);
 }

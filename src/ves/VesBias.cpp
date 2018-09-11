@@ -483,10 +483,10 @@ void VesBias::updateGradientAndHessian(const bool use_mwalkers_mpi) {
     unsigned int total_samples = aver_counters[k];
     if(sampled_weights[k]!=1.0) {
       for(size_t i=0; i<sampled_averages[k].size(); i++) {
-        sampled_averages[k][i] *= sampled_weights[k];        
+        sampled_averages[k][i] *= sampled_weights[k];
       }
       for(size_t i=0; i<sampled_cross_averages[k].size(); i++) {
-        sampled_cross_averages[k][i] *= sampled_weights[k];        
+        sampled_cross_averages[k][i] *= sampled_weights[k];
       }
     }
     //
@@ -579,7 +579,7 @@ void VesBias::addToSampledAverages(const std::vector<double>& values, const unsi
   // NOTE: the MPI sum for sampled_averages and sampled_cross_averages is done later
   sampled_weights[c_id] += (weight-sampled_weights[c_id])/(counter_dbl+1.0);
   aver_counters[c_id] += 1;
-  
+
 }
 
 
