@@ -30,11 +30,11 @@ using namespace std;
 namespace PLMD {
 namespace isdb {
 
-//+PLUMEDOC BIAS CALIBER
+//+PLUMEDOC ISDB_BIAS CALIBER
 /*
 Add a time-dependent, harmonic restraint on one or more variables.
 This allows implementing a maximum caliber restraint on one or more experimental time serie by replica-averaged restrained simulations.
-See \cite{}.
+See \cite Capelli:2018jt .
 
 The time resolved experiments are read from a text file and intermediate values are obtained by splines.
 
@@ -42,6 +42,7 @@ The time resolved experiments are read from a text file and intermediate values 
 
 In the following example a restraint is applied on the time evolution of a saxs spectrum
 
+\plumedfile
 MOLINFO STRUCTURE=first.pdb
 
 # Define saxs variable
@@ -77,10 +78,11 @@ CALIBER ...
   REGRES_ZERO=200
   AVERAGING=200
 ... CALIBER
+\endplumedfile
 
 In particular the file expsaxs.dat contains the time traces for the 15 intensities at the selected scattering lengths, organised as time, q_1, etc.
 The strenght of the bias is automatically evaluated from the standard error of the mean over AVERAGING steps and multiplied by KAPPA. This is usefull when working with multiple experimental data
-Because SAXS is usually defined irrespectively of a scaling factor the scaling is evaluated from a linear fit every REGRES_ZERO step. Alternatively it can be given as a fixed constant as SCALE.
+Because \ref SAXS is usually defined irrespectively of a scaling factor the scaling is evaluated from a linear fit every REGRES_ZERO step. Alternatively it can be given as a fixed constant as SCALE.
 The bias is here applied every 10th steps.
 
 */
@@ -226,6 +228,8 @@ Caliber::Caliber(const ActionOptions&ao):
     componentIsNotPeriodic("scale");
     valueScale=getPntrToComponent("scale");
   }
+
+  log<<"  Bibliography "<<plumed.cite("Capelli, Tiana, Camilloni, J Chem Phys, 148, 184114");
 }
 
 void Caliber::get_sigma_mean(const double fact, const vector<double> &mean)
