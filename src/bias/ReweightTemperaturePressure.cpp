@@ -1,5 +1,5 @@
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-   Copyright (c) 2016-2018 The plumed team
+   Copyright (c) 2019 The plumed team
    (see the PEOPLE file at the root of the distribution for a list of names)
 
    See http://www.plumed.org for more information.
@@ -239,8 +239,8 @@ ReweightTemperaturePressure::ReweightTemperaturePressure(const ActionOptions&ao)
 }
 
 double ReweightTemperaturePressure::getLogWeight() {
-  double energy=0;
-  double volume=0;
+  double energy=0.0; for(unsigned i=0; i<myenergy.size(); ++i) energy+=getArgument(i);
+  double volume=0.0; for(unsigned i=0; i<myvol.size(); ++i) volume+=getArgument(myenergy.size()+i);
   // 4 possible cases
   // Case 1) Reweight from T to T' with V=const (canonical)
   if (rtemp_>=0 && press_<0 && rpress_<0) return ((1.0/simtemp)- (1.0/rtemp_) )*energy;
