@@ -60,6 +60,7 @@ looking through the example given below.
 In this example I will explain in detail what the following input is computing:
 
 \plumedfile
+#SETTINGS MOLFILE=regtest/basic/rt32/helix.pdb
 MOLINFO MOLTYPE=protein STRUCTURE=M1d.pdb
 psi: TORSIONS ATOMS1=@psi-2 ATOMS2=@psi-3 ATOMS3=@psi-4
 phi: TORSIONS ATOMS1=@phi-2 ATOMS2=@phi-3 ATOMS3=@phi-4
@@ -116,15 +117,16 @@ public:
   static void registerKeywords( Keywords& keys );
   explicit PAMM(const ActionOptions&);
 /// We have to overwrite this here
-  unsigned getNumberOfQuantities() const ;
+  unsigned getNumberOfQuantities() const override;
 /// Calculate the weight of this object ( average of input weights )
+  using PLMD::multicolvar::MultiColvarBase::calculateWeight;
   void calculateWeight( multicolvar::AtomValuePack& myatoms );
 /// Actually do the calculation
-  double compute( const unsigned& tindex, multicolvar::AtomValuePack& myatoms ) const ;
+  double compute( const unsigned& tindex, multicolvar::AtomValuePack& myatoms ) const override;
 /// This returns the position of the central atom
   Vector getCentralAtom();
 /// Is the variable periodic
-  bool isPeriodic() { return false; }
+  bool isPeriodic() override { return false; }
 };
 
 PLUMED_REGISTER_ACTION(PAMM,"PAMM")

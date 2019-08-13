@@ -104,8 +104,8 @@ class ResetCell:
 public:
   explicit ResetCell(const ActionOptions&ao);
   static void registerKeywords( Keywords& keys );
-  void calculate();
-  void apply();
+  void calculate() override;
+  void apply() override;
 };
 
 PLUMED_REGISTER_ACTION(ResetCell,"RESET_CELL")
@@ -126,8 +126,7 @@ ResetCell::ResetCell(const ActionOptions&ao):
   parse("TYPE",type);
 
   log<<"  type: "<<type<<"\n";
-  if(type=="TRIANGULAR") {
-  } else error("undefined type "+type);
+  if(type!="TRIANGULAR") error("undefined type "+type);
 
   checkRead();
 }
