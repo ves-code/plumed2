@@ -1,7 +1,7 @@
-irtg-school-mainz-2020-metad.txt /**
-\page irtg-school-mainz-2020-metad TRR 146 IRTG Metadynamics Tutorial (Mainz Dec 2020)
+ves-irtg-school-mainz-2020-metad.txt /**
+\page ves-irtg-school-mainz-2020-metad TRR 146 IRTG Metadynamics Tutorial (Mainz Dec 2020)
 
-\section irtg-school-mainz-2020-metad-lo Learning Outcomes
+\section ves-irtg-school-mainz-2020-metad-lo Learning Outcomes
 
 Once this tutorial is completed students will learn to:
 
@@ -11,7 +11,7 @@ Once this tutorial is completed students will learn to:
 - Distinguish between good and bad CVs
 - Reweight with more than one bias potential
 
-\section irtg-school-mainz-2020-metad-resources Resources
+\section ves-irtg-school-mainz-2020-metad-resources Resources
 
 The <a href="tutorial-resources/irtg-school-mainz-2020-metad.tar.gz"
 download="irtg-school-mainz-2020-metad.tar.gz"> tarball </a> for this project contains
@@ -21,9 +21,9 @@ the following folders:
 - Example2 : Contains the input files for one of the biased simulations.
   The rest of the biased simulations inputs should be created by modifying this one.
 
-\section irtg-school-mainz-2020-metad-somesection Instructions
+\section ves-irtg-school-mainz-2020-metad-somesection Instructions
 
-\subsection irtg-school-mainz-2020-metad-subsection-1 The system
+\subsection ves-irtg-school-mainz-2020-metad-subsection-1 The system
 
 We consider the association/dissociation of NaCl in aqueous solution.
 The dissociation barrier is expected to be around 2.5 \f$k_\mathrm{B} T\f$.
@@ -35,11 +35,11 @@ We will use the potential developed in ref.\ \cite Pettitt-JCP-1986 for NaCl and
 parameters corrected to be used with long-range Coulomb solvers \cite Price-JCP-2004.
 The system contains 1 Na, 1 Cl, and 106 water molecules (total 320 atoms).
 
-\anchor irtg-school-mainz-2020-metad-NaCl
+\anchor ves-irtg-school-mainz-2020-metad-NaCl
 \image html ves-lugano2017-metad_NaCl.png "NaCl in water"
 
 
-\subsection irtg-school-mainz-2020-metad-subsection-2 Perform an unbiased simulation and control the distance Na-Cl
+\subsection ves-irtg-school-mainz-2020-metad-subsection-2 Perform an unbiased simulation and control the distance Na-Cl
 
 We first perform a standard MD simulation and control the distance Na-Cl.
 All the files needed for this example are contained in the folder Example1 .
@@ -121,7 +121,7 @@ You can play with different visualization styles and options that VMD has.
 Therefore, if we want the system to go back and forth between the associated and
 dissociated state, we will need enhanced sampling.
 
-\subsection irtg-school-mainz-2020-metad-subsection-3 Construct a bias potential on the distance Na-Cl
+\subsection ves-irtg-school-mainz-2020-metad-subsection-3 Construct a bias potential on the distance Na-Cl
 
 We now construct a bias potential \f$ V(\mathbf{s}) \f$ on the distance Na-Cl using well-tempered metadynamics.
 The files for this example are contained in the directory Example2.
@@ -200,7 +200,7 @@ GRID_* keywords. Remember that the bins in the grid should be small enough to
 describe the changes in the bias created by the Gaussian kernels. Normally a bin of
 size \f$ \sigma / 5 \f$ (with \f$ \sigma \f$ the gaussian width) is small enough.
 
-\subsection irtg-school-mainz-2020-metad-subsection-4 Assess convergence
+\subsection ves-irtg-school-mainz-2020-metad-subsection-4 Assess convergence
 
 One way to identify if a well tempered metadynamics simulation has converged is observing the
 estimated free energy surface at different times. The FES is estimated by
@@ -294,7 +294,7 @@ free energies of regions that have not been sampled, i.e. visited.
 Reweighting the simulation on the same CV that was used for biasing can also
 be used as a test of convergence. We will show that in the next section.
 
-\subsection irtg-school-mainz-2020-metad-subsection-5 Reweight the simulation
+\subsection ves-irtg-school-mainz-2020-metad-subsection-5 Reweight the simulation
 
 We first reweight the simulation on the distance Na-Cl, the same CV used for
 biasing.
@@ -409,7 +409,7 @@ coordination number of ~5.
 \image html ves-lugano2017-metad_reweightBoth.png "Free energy as a function of distance Na-Cl and the coordination number of Na and O."
 
 
-\subsection irtg-school-mainz-2020-metad-subsection-6 Construct a bias potential on the coordination Na-O
+\subsection ves-irtg-school-mainz-2020-metad-subsection-6 Construct a bias potential on the coordination Na-O
 
 As an exercise, you can write the input files for a simulation in which a bias
 potential is constructed on the coordination Na-0, i.e. the solvent degree of
@@ -426,7 +426,7 @@ relatively low. Real problems in materials science usually involve large barrier
 and are not as forgiving as this example; a bad CV may lead to huge hysteresis
 and problems in convergence.
 
-\subsection irtg-school-mainz-2020-metad-subsection-7 Construct a bias potential on both CVs
+\subsection ves-irtg-school-mainz-2020-metad-subsection-7 Construct a bias potential on both CVs
 
 We will now construct a bias potential on both CVs.
 We have already calculated the FES as a function of both CVs through
@@ -464,7 +464,7 @@ set pm3d map
 set zr [0:15]
 spl "fes.dat" u 1:2:3
 \endverbatim
-\section irtg-school-mainz-2020-metad-final Final remarks
+\section ves-irtg-school-mainz-2020-metad-final Final remarks
 
 Some valuable tools for metadynamics simulations will be discussed in the VES
 tutorial. These include:
@@ -478,7 +478,7 @@ tutorial. These include:
 
 */
 
-link: @subpage irtg-school-mainz-2020-metad
+link: @subpage ves-irtg-school-mainz-2020-metad
 
 description: Brief introduction to metadynamics.
 
