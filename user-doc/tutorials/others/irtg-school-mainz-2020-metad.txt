@@ -1,5 +1,5 @@
 irtg-school-mainz-2020-metad.txt /**
-\page irtg-school-mainz-2020-metad IRTG TRR 146 Metadynamics tutorial (Mainz Dec 2020)
+\page irtg-school-mainz-2020-metad TRR 146 IRTG Metadynamics Tutorial (Mainz Dec 2020)
 
 \section irtg-school-mainz-2020-metad-lo Learning Outcomes
 
