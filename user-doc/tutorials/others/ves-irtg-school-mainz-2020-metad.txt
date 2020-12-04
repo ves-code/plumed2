@@ -137,7 +137,8 @@ where we use the PLUMED input file plumed-driver.dat that outputs to a different
 \subsection ves-irtg-school-mainz-2020-metad-subsection-3 Construct a bias potential on the distance Na-Cl
 
 We now construct a bias potential \f$ V(\mathbf{s}) \f$ on the distance Na-Cl using well-tempered metadynamics.
-The files for this example are contained in the directory Example2.
+The files for this example are contained in the directory Biased-1.
+This time we run the simulation for 10 ns.
 As argument for the construction of the potential we will use the distance Na-Cl (label d1).
 We choose a gaussian height of 1 kJ/mol which is slightly less than 0.5 \f$k_\mathrm{B}
 T \f$. The gaussian width is 0.02 nm, in the same order of the features in the
@@ -477,9 +478,16 @@ set pm3d map
 set zr [0:15]
 spl "fes.dat" u 1:2:3
 \endverbatim
-\section ves-irtg-school-mainz-2020-metad-final Final remarks
 
-\subsection ves-irtg-school-mainz-2020-metad-subsection-8 Restarting
+\subsection ves-irtg-school-mainz-2020-metad-subsection-8 Changing the metadynamics parameters
+The result should be consistent if you change the some of the metadynamics parameters within reasonable ranges.
+For example, you can try to run with different values of the bias factor (BIASFACTOR) and see how this affects the convergence.
+
+\subsection ves-irtg-school-mainz-2020-metad-subsection-9 Restarting simulations
+Sometimes you observe that the initial simulation was not long enough to obtain converged results (or you want to split the run in short runs to fit into the scheduling system). In this case, you can restart the metadynamics simulation by adding the RESTART keyword to the top of the input file, and restarting the simulation in accordance with how the MD codes handles restarts. In the Restart folder, there is an example of this for LAMMPS. To restart the run, you need to copy the COLVAR and HILLS file from the previous run. Also copy the plumed input file from the previous run, rename it as plumed.restart.dat and add a RESTART keyword to the top of the input. Then, run the simulation using runRestart.sh. 
+
+
+
 
 
 */
