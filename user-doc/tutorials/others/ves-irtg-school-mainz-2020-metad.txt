@@ -62,6 +62,11 @@ COORDINATION ...
 ... COORDINATION
 \endplumedfile
 
+We will run this simulation for 1 ns as specified by the run keyword in the LAMMPS input file (start.lmp)
+\verbatim
+run             500000 # 1 ns
+\endverbatim
+
 To run LAMMPS you can use the run.sh script:
 \verbatim
 
@@ -70,7 +75,7 @@ To run LAMMPS you can use the run.sh script:
 ############################################################################
 # Definition of variables
 ############################################################################
-EXE=lmp_mpi
+EXE=lmp
 totalCores=2
 ############################################################################
 
@@ -120,6 +125,14 @@ pbc box
 You can play with different visualization styles and options that VMD has.
 Therefore, if we want the system to go back and forth between the associated and
 dissociated state, we will need enhanced sampling.
+
+\subsection ves-irtg-school-mainz-2020-metad-subsection-driver Using the driver on existing trajectories
+Sometimes you already have performed unbiased (or even biased) simulations where you did not use PLUMED or you want to calculate a new CVs that you did not included in the inital run. In this case, you can use the plumed driver to calculate CVs from the trajectory file without rerunning the simulation. In this case, we have a trajectory file called out.dcd, we can run the plumed driver on it by using the run-driver script:
+\verbatim
+plumed driver --plumed plumed-driver.dat --timestep 0.002 --trajectory-stride 100 --mf_dcd out.dcd
+\endverbatim
+where we use the PLUMED input file plumed-driver.dat that outputs to a different colvar file (COLVAR-driver). You can play with the CVs defined there, for example calculate distances for some other atoms, or changing the defination of the swtiching function in the coordination number.
+
 
 \subsection ves-irtg-school-mainz-2020-metad-subsection-3 Construct a bias potential on the distance Na-Cl
 
@@ -466,15 +479,8 @@ spl "fes.dat" u 1:2:3
 \endverbatim
 \section ves-irtg-school-mainz-2020-metad-final Final remarks
 
-Some valuable tools for metadynamics simulations will be discussed in the VES
-tutorial. These include:
+\subsection ves-irtg-school-mainz-2020-metad-subsection-8 Restarting
 
-- Restarting a simulation.
-- Using Plumed driver to calculate a CV that was not calculated during the
-  simulation. A reweighting can then be performed on this CV.
-- Constructing biased histograms, i.e. histograms without weights to calculate
-  the effective FES \f$ \tilde{F}(\mathbf{s}) = F(\mathbf{s}) + V(\mathbf{s}) \f$.
-- Use multiple walkers to improve the exploration of CV space.
 
 */
 
