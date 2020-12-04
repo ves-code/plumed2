@@ -123,6 +123,15 @@ pbc wrap -compound res -all
 pbc box
 \endverbatim
 You can play with different visualization styles and options that VMD has.
+A saved visualization state is also included that you can load as
+\verbatim
+vmd -e state.vmd
+\endverbatim
+however, you need to redo the pbc wrap command:
+\verbatim
+pbc wrap -compound res -all
+\endverbatim
+
 Therefore, if we want the system to go back and forth between the associated and
 dissociated state, we will need enhanced sampling.
 
@@ -484,7 +493,7 @@ The result should be consistent if you change the some of the metadynamics param
 For example, you can try to run with different values of the bias factor (BIASFACTOR) and see how this affects the convergence.
 
 \subsection ves-irtg-school-mainz-2020-metad-subsection-9 Restarting simulations
-Sometimes you observe that the initial simulation was not long enough to obtain converged results (or you want to split the run in short runs to fit into the scheduling system). In this case, you can restart the metadynamics simulation by adding the RESTART keyword to the top of the input file, and restarting the simulation in accordance with how the MD codes handles restarts. In the Restart folder, there is an example of this for LAMMPS. To restart the run, you need to copy the COLVAR and HILLS file from the previous run. Also copy the plumed input file from the previous run, rename it as plumed.restart.dat and add a RESTART keyword to the top of the input. Then, run the simulation using runRestart.sh. 
+Sometimes you observe that the initial simulation was not long enough to obtain converged results (or you want to split the run in short runs to fit into the scheduling system). In this case, you can restart the metadynamics simulation by adding the RESTART keyword to the top of the input file, and restarting the simulation in accordance with how the MD codes handles restarts. In the Restart folder, there is an example of this for LAMMPS. To restart the run, you need to copy the COLVAR, HILLS, and a file named restart from the previous run. Also copy the plumed input file from the previous run, rename it as plumed.restart.dat and add a RESTART keyword to the top of the input. Then, run the simulation using runRestart.sh.
 
 
 
