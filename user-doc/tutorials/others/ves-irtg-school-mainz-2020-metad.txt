@@ -17,9 +17,9 @@ The <a href="tutorial-resources/irtg-school-mainz-2020-metad.tar.gz"
 download="irtg-school-mainz-2020-metad.tar.gz"> tarball </a> for this project contains
 the following folders:
 
-- Example1 : Contains the input file for the unbiased simulation.
-- Example2 : Contains the input files for one of the biased simulations.
-  The rest of the biased simulations inputs should be created by modifying this one.
+- Unbiased-1 : Contains the input file for the unbiased simulation.
+- Biased-1 : Contains the input files for one of the biased simulations.
+  The rest of the biased simulations inputs should be created by modifying this one (the best is to start by copying files from a clean Biased-1 folder).
 
 \section ves-irtg-school-mainz-2020-metad-somesection Instructions
 
@@ -41,8 +41,8 @@ The system contains 1 Na, 1 Cl, and 106 water molecules (total 320 atoms).
 
 \subsection ves-irtg-school-mainz-2020-metad-subsection-2 Perform an unbiased simulation and control the distance Na-Cl
 
-We first perform a standard MD simulation and control the distance Na-Cl.
-All the files needed for this example are contained in the folder Example1 .
+We first perform a standard MD simulation and monitor the distance Na-Cl.
+All the files needed for this example are contained in the folder Unbiased-1 .
 The distance Na-Cl can be calculated in Plumed 2 using:
 \plumedfile
 d1:  DISTANCE ATOMS=319,320
@@ -433,7 +433,7 @@ We have already calculated the FES as a function of both CVs through
 reweighting.
 In this example the FES will be calculated using the metadynamics bias
 potential.
-You can use the input files from Example2.tar and changed the plumed.dat file.
+You can copy the input files from MetaD-2 folder and change the plumed.dat file.
 To construct a 2 dimensional bias with metadynamics use the following
 input:
 \plumedfile
