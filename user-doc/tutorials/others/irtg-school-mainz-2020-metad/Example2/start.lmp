@@ -36,9 +36,9 @@ reset_timestep 	0
 
 fix             1 all temp/csvr ${temperature} ${temperature} ${tempDamp} ${seed} # Bussi's thermostat
 fix             2 all shake 0.0001 20 100000 t 1 2 # Shake algorithm
-fix             3 all nph iso ${pressure} ${pressure} ${pressureDamp} # Isotropic barostat
-fix 		4 all momentum 10000 linear 1 1 1 # Set total linear momentum to zero every 10000 steps
-fix             5 all plumed plumedfile plumed.dat outfile plumed.out # Use plumed
+fix             3 all plumed plumedfile plumed.dat outfile plumed.out # Use plumed
+fix             4 all nph iso ${pressure} ${pressure} ${pressureDamp} # Isotropic barostat
+fix 		5 all momentum 10000 linear 1 1 1 # Set total linear momentum to zero every 10000 steps
 
 velocity        all create ${temperature} ${seed} dist gaussian
 
