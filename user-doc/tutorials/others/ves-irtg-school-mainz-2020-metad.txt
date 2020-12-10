@@ -306,7 +306,7 @@ After roughly 4 ns the barrier stabilizes around 3 and 3.5 \f$k_\mathrm{B} T\f$.
 \anchor ves-school-2017-metad-barrier
 \image html ves-lugano2017-metad_barrier.png "Dissociation barrier as a function of simulation time"
 
-Another way to track the convergence is to calculate relative free energy difference between two metastable states A and B, $\Delta F_{A,B}$ that can be obtained from the free energy surface by integrating the probabilities of the two  tates:
+Another way to track the convergence is to calculate relative free energy difference between two metastable states A and B that can be obtained from the free energy surface by integrating the probabilities of the two states:
 \f[
 	\Delta F_{A,B} = -\beta^{-1} \log \frac{\int_A ds \, e^{-\beta F(s)}}{\int_B ds \, e^{-\beta F(s)}}
 \f]
