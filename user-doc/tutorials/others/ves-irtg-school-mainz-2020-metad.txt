@@ -306,9 +306,61 @@ After roughly 4 ns the barrier stabilizes around 3 and 3.5 \f$k_\mathrm{B} T\f$.
 \anchor ves-school-2017-metad-barrier
 \image html ves-lugano2017-metad_barrier.png "Dissociation barrier as a function of simulation time"
 
+Another way to track the convergence is to calculate relative free energy difference between two metastable states A and B, $\Delta F_{A,B}$ that can be obtained from the free energy surface by integrating the probabilities of the two  tates:
+\f[
+	\Delta F_{A,B} = -\beta^{-1} \log \frac{\int_A ds \, e^{-\beta F(s)}}{\int_B ds \, e^{-\beta F(s)}}
+\f]
+where the we perform the integrations over the two regions in CV space that define the two  metastable states A and B, respectively. To identify the regions corresponding to the states, it is best to look at the probability distribution
+\f[
+	P(s) \propto \exp(-\beta*F(s))
+\f]
+which you can plot with gnuplot using
+\verbatim
+plot 'fes.dat' u 1:(exp(-0.400906*$2))
+\endverbatim
+
+In the FreeEnergyDifference_calculation folder, there is a simple example script to calculate the free energy difference for one-dimensional free energy surface:
+\code{.py}
+import numpy as np
+
+# Thermal energy in kBT 2.494353 kJ/mol at 300 K
+kBT=2.494353
+beta=1.0/kBT
+
+# Total number of fes files in folder
+total_files=201
+# Min and max initial guesses
+state_A_min = 0.200
+state_A_max = 0.359
+state_B_min = 0.361
+state_B_max = 0.800
+
+for i in range(total_files):
+        file_name="fes_" + str(i) + ".dat"
+        matrix=np.genfromtxt(file_name)
+        cv=matrix[:,0]
+        fes=matrix[:,1]
+        fes -= np.amin(fes)
+        sum_A = 0.0
+        sum_B = 0.0
+        for k in range(len(cv)):
+            if ( cv[k] >= state_A_min and cv[k] <= state_A_max ):
+                sum_A += np.exp(-beta*fes[k])
+            elif ( cv[k] >= state_B_min and cv[k] <= state_B_max ):
+                sum_B += np.exp(-beta*fes[k])
+        FE_Diff_AB = 0.0
+        if (sum_B > 0.0 and sum_A > 0.0): FE_Diff_AB = -kBT*np.log(sum_A/sum_B)
+        print(str(i) + " " + str(FE_Diff_AB))
+\endcode
+The script can be executed using:
+\verbatim
+calculate_free_energy_difference.py > barrier.txt
+\endverbatim
+and the results can be plotted using the gnuplot script plot.gpi.
+
 It is important to stress that it is only possible to calculate the free energy difference
-between two points if the system has gone back and forth
-between these points several times. This applies both for the calculation of a
+between two states if the system has gone back and forth
+between these states several times. This applies both for the calculation of a
 barrier and the difference in free energy between two basins. It is also
 important to understand that none of the free energy methods described in this
 series of tutorials  will be able to calculate
