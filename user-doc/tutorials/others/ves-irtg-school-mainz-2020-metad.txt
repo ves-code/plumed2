@@ -495,6 +495,37 @@ For example, you can try to run with different values of the bias factor (BIASFA
 \subsection ves-irtg-school-mainz-2020-metad-subsection-9 Restarting simulations
 Sometimes you observe that the initial simulation was not long enough to obtain converged results (or you want to split the run in short runs to fit into the scheduling system). In this case, you can restart the metadynamics simulation by adding the RESTART keyword to the top of the input file, and restarting the simulation in accordance with how the MD codes handles restarts. In the RunRestart folder, there is an example of this for LAMMPS. To restart the run, you need to copy the COLVAR, HILLS, and a file named restart from the previous run. Also copy the plumed input file from the previous run, rename it as plumed.restart.dat and add a RESTART keyword to the top of the input. Then, run the simulation using runRestart.sh script.
 
+\subsection ves-irtg-school-mainz-2020-metad-subsection-10 Multiple walkers
+A common way to reduce the walk clock time required to converge the simulations is to use multiple walkers. Then you have multiple copies of the system that are independent apart from that they share the same bias potential (i.e., the Gaussians deposited from all the walkers contribute to the bias potential).
+
+In LAMMPS, we can run such multiple walker simulations within the same MPI process by using partitions which you setup using the -p command line option.
+\verbatim
+#!/bin/bash
+
+############################################################################
+# Definition of variables
+############################################################################
+EXE=lmp
+Partitions=2
+coresPerPartition=2
+totalCores=`echo ${Partitions}*${coresPerPartition} | bc -l`
+############################################################################
+
+mpirun -np ${totalCores} ${EXE} -p ${Partitions}x${coresPerPartition} -in start.lmp > out.lmp
+\endverbatim
+Here are we using two partitions or walkers (Partitions=2) and using two cores per partition (coresPerPartition=2), so the total number of cores needed is four. If you have a workstation or node with a lot of cores, you can try to use four or more partitions.
+
+We also need to make sure that each walkers is independently started. We can do that by using a different random seed for the each walkers. We can do that by defining the seed in the start.lmp input file using the world command as follows, then each walker will be a different seed for the initial velocities
+\verbatim
+# Define random seed
+variable        seed world 14155 94823
+\endverbatim
+You need to define as many random seeds as there are walkers.
+
+In the PLUMED input file you need to add the WALKERS_MPI flag to METAD action to turn on the sharing of the bias potential between walkers via MPI (this is more convenient that sharing via files as sometimes done). A multiple walker simulation will results in multiple colvar files, COLVAR.#, one for each walker and but just one hills file, that you can use to calculate the free energy surface from.
+
+You should try to run a multiple walker simulations and see how this affects the convergence of the free energy surface.
+
 
 
 
