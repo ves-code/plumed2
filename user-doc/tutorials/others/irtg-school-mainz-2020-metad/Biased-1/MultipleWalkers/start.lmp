@@ -9,7 +9,7 @@ variable	pressure equal 1.0 # Pressure in bars
 variable	pressureDamp equal 500.0 # Relaxation time of the barostat 0.5 ps
 
 # Define random seed
-variable	seed world 14155 94823 31527 63625 
+variable	seed world 14155 94823 
 
 # Simulation setup
 units		real	
